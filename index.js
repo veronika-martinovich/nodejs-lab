@@ -16,13 +16,14 @@ const server = http.createServer((req, res) => {
     req.on('end', () => {
       const newProduct = JSON.parse(data);
       products.push(newProduct);
+      res.writeHead(204, { 'Content-Type': 'application/json' });
+      res.write(JSON.stringify({ message: 'Created successfully' }));
       res.end();
     });
-    res.writeHead(204, { 'Content-Type': 'application/json' });
-    res.write(JSON.stringify({ message: 'Created successfully' }));
   } else {
     res.writeHead(404, { 'Content-Type': 'application/json' });
     res.write(JSON.stringify({ message: 'Route not found' }));
+    res.end();
   }
 });
 
