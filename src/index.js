@@ -1,5 +1,7 @@
 const express = require('express');
-const products = require('./data');
+const mongoose = require('mongoose');
+
+// App
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -9,11 +11,11 @@ app.use(express.json());
 app
   .route('/products')
   .get((req, res) => {
-    res.status(200).json(products);
+    // res.status(200).json(products);
     res.end();
   })
   .post((req, res) => {
-    products.push(req.body);
+    // products.push(req.body);
     res.status(204).json(req.body);
     res.end();
   });
@@ -31,6 +33,19 @@ app.use((req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+// DB
+
+const connectionUrl = 'mongodb://localhost:27017/myapp';
+mongoose.connect(connectionUrl, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+const db = mongoose.connection;
+db.on('error', (error) => {
+  console.error('MongoDB connection error:', error);
+}).once('open', () => {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
 });
