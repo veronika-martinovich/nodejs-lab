@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const productsDb = require('./db/product/db');
 
 // App
 
@@ -10,13 +11,18 @@ app.use(express.json());
 
 app
   .route('/products')
-  .get((req, res) => {
-    // res.status(200).json(products);
+  .get(async (req, res) => {
+    const products = await productsDb.getAll();
+    res.status(200).json(products);
     res.end();
   })
-  .post((req, res) => {
-    // products.push(req.body);
-    res.status(204).json(req.body);
+  .post(async (req, res) => {
+    const newProduct = await productsDb.save({
+      displayName: req.body.displayName,
+      totalRating: req.body.totalRating,
+      price: req.body.price,
+    });
+    res.status(204).json(newProduct);
     res.end();
   });
 
