@@ -7,11 +7,11 @@ const productSchema = new Schema(
     __id: Schema.Types.ObjectId,
     displayName: String,
     categoryId: Schema.Types.ObjectId,
-    createdAt: Date,
+    createdAt: { type: Date, default: Date.now },
     totalRating: Number,
     price: Number,
   },
-  { collection: 'products' },
+  { collection: 'products' }
 );
 
 const ProductModel = mongoose.model('ProductModel', productSchema);

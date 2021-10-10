@@ -6,9 +6,9 @@ const categorySchema = new Schema(
   {
     __id: Schema.Types.ObjectId,
     displayName: String,
-    createdAt: Date,
+    createdAt: { type: Date, default: Date.now },
   },
-  { collection: 'categories' },
+  { collection: 'categories' }
 );
 
 const CategoryModel = mongoose.model('CategoryModel', categorySchema);
