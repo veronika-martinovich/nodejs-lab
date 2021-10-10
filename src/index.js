@@ -35,7 +35,7 @@ app.use((req, res) => {
 
 // DB
 
-const connectionUrl = 'mongodb://localhost:27017/myapp';
+const connectionUrl = 'mongodb://localhost:27017/game-store';
 mongoose.connect(connectionUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
