@@ -1,22 +1,23 @@
-const express = require('express');
+import express, { Express, Request, Response } from 'express';
+
 const mongoose = require('mongoose');
 const productsDb = require('./db/product/db');
 
 // App
 
-const app = express();
+const app: Express = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
 app
   .route('/products')
-  .get(async (req, res) => {
+  .get(async (req: Request, res: Response) => {
     const products = await productsDb.getAll();
     res.status(200).json(products);
     res.end();
   })
-  .post(async (req, res) => {
+  .post(async (req: Request, res: Response) => {
     const newProduct = await productsDb.save({
       displayName: req.body.displayName,
       totalRating: req.body.totalRating,
@@ -27,7 +28,7 @@ app
   });
 
 // Invalid request
-app.use((req, res) => {
+app.use((req: Request, res: Response) => {
   res.json({
     error: {
       name: 'Error',
@@ -48,7 +49,7 @@ mongoose.connect(connectionUrl, {
 });
 
 const db = mongoose.connection;
-db.on('error', (error) => {
+db.on('error', (error: unknown) => {
   console.error('MongoDB connection error:', error);
 }).once('open', () => {
   app.listen(PORT, () => {
