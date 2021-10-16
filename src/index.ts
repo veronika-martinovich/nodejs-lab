@@ -41,7 +41,6 @@ app.use((req: Request, res: Response) => {
 });
 
 // DB
-
 const connectionUrl = 'mongodb://localhost:27017/game-store';
 mongoose.connect(connectionUrl, {
   useNewUrlParser: true,
