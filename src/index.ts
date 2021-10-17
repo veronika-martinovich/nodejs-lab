@@ -1,31 +1,14 @@
 import express, { Express, Request, Response } from 'express';
+import productsRouter from './resources/product/product.router';
 
 const mongoose = require('mongoose');
-const productsDb = require('./db/product/db');
 
 // App
-
 const app: Express = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-
-app
-  .route('/products')
-  .get(async (req: Request, res: Response) => {
-    const products = await productsDb.getAll();
-    res.status(200).json(products);
-    res.end();
-  })
-  .post(async (req: Request, res: Response) => {
-    const newProduct = await productsDb.save({
-      displayName: req.body.displayName,
-      totalRating: req.body.totalRating,
-      price: req.body.price,
-    });
-    res.status(204).json(newProduct);
-    res.end();
-  });
+app.use('/', productsRouter);
 
 // Invalid request
 app.use((req: Request, res: Response) => {

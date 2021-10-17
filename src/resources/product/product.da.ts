@@ -1,7 +1,8 @@
-import { Product, ProductModel } from './product.model';
+import { ProductModel } from './product.model';
+import { IProduct } from '../../types';
 
 class ProductsDA {
-  public getAll = async (): Promise<Array<Product> | unknown> => {
+  public getAll = async (): Promise<Array<IProduct> | unknown> => {
     try {
       const products = await ProductModel.find({});
       return products;
@@ -10,7 +11,7 @@ class ProductsDA {
     }
   };
 
-  public save = async (product: Product): Promise<Product | unknown> => {
+  public save = async (product: IProduct): Promise<IProduct | unknown> => {
     try {
       const newProduct = await ProductModel.create(product);
       return newProduct;
@@ -20,4 +21,6 @@ class ProductsDA {
   };
 }
 
-export default ProductsDA;
+const productsDA = new ProductsDA();
+
+export default productsDA;

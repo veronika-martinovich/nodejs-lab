@@ -1,22 +1,24 @@
-import ProductsDA from './product.da';
-import { Product } from './product.model';
+import productsDA from './product.da';
+import { IProduct } from '../../types';
 
 class ProductsService {
-  public getAll = async (): Promise<Array<Product> | unknown> => {
+  public getAll = async (): Promise<Array<IProduct> | unknown> => {
     try {
-      return await ProductsDA.getAll();
+      return await productsDA.getAll();
     } catch (error) {
       return console.log(error);
     }
   };
 
-  public save = async (product: Product): Promise<Product | unknown> => {
+  public save = async (product: IProduct): Promise<IProduct | unknown> => {
     try {
-      return await ProductsDA.save(product);
+      return await productsDA.save(product);
     } catch (error) {
       return console.log(error);
     }
   };
 }
 
-export default ProductsService;
+const productsService = new ProductsService();
+
+export default productsService;
