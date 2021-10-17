@@ -35,27 +35,43 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var ProductModel = require('./model');
-var getAll = function () { return __awaiter(void 0, void 0, void 0, function () {
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = __importDefault(require("express"));
+var product_service_1 = __importDefault(require("./product.service"));
+var productsRouter = express_1.default.Router();
+productsRouter
+    .route('/products')
+    .get(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var products;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, ProductModel.find({})];
+            case 0: return [4 /*yield*/, product_service_1.default.getAll()];
             case 1:
                 products = _a.sent();
-                return [2 /*return*/, products];
+                res.status(200).json(products);
+                res.end();
+                return [2 /*return*/];
         }
     });
-}); };
-var save = function (product) { return __awaiter(void 0, void 0, void 0, function () {
+}); })
+    .post(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var newProduct;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, ProductModel.create(product)];
+            case 0: return [4 /*yield*/, product_service_1.default.save({
+                    displayName: req.body.displayName,
+                    totalRating: req.body.totalRating,
+                    price: req.body.price,
+                })];
             case 1:
                 newProduct = _a.sent();
-                return [2 /*return*/, newProduct];
+                res.status(204).json(newProduct);
+                res.end();
+                return [2 /*return*/];
         }
     });
-}); };
-module.exports = { getAll: getAll, save: save };
+}); });
+exports.default = productsRouter;
