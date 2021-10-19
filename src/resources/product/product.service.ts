@@ -1,22 +1,20 @@
 import productsDA from './product.da';
 import { IProduct } from '../../types';
 
-const { InternalServerError } = require('../../errors');
-
 class ProductsService {
-  public getAll = async (): Promise<Array<IProduct> | unknown> => {
+  public getAll = async (): Promise<Array<IProduct>> => {
     try {
       return await productsDA.getAll();
     } catch (error) {
-      return new InternalServerError(500, 'Internal server error');
+      throw new Error();
     }
   };
 
-  public save = async (product: IProduct): Promise<IProduct | unknown> => {
+  public save = async (product: IProduct): Promise<IProduct> => {
     try {
       return await productsDA.save(product);
     } catch (error) {
-      return new InternalServerError(500, 'Internal server error');
+      throw new Error();
     }
   };
 }

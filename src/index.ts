@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from 'express';
 import productsRouter from './resources/product/product.router';
 
 const mongoose = require('mongoose');
+const { middlewareErrorHandler } = require('./errors');
 
 // App
 const app: Express = express();
@@ -22,6 +23,9 @@ app.use((req: Request, res: Response) => {
     message: 'Route not found',
   });
 });
+
+// Error handler
+app.use(middlewareErrorHandler);
 
 // DB
 const connectionUrl = 'mongodb://localhost:27017/game-store';
