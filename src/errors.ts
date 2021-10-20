@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 
 const middlewareErrorHandler = (err: any, req: Request, res: Response) => {
   const { statusCode, message } = err;
@@ -9,14 +9,4 @@ const middlewareErrorHandler = (err: any, req: Request, res: Response) => {
   });
 };
 
-const asyncErrorHandler =
-  (callback: (req: Request, res: Response, next: NextFunction) => void) =>
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      return callback(req, res, next);
-    } catch (err) {
-      return next(err);
-    }
-  };
-
-module.exports = { middlewareErrorHandler, asyncErrorHandler };
+module.exports = { middlewareErrorHandler };

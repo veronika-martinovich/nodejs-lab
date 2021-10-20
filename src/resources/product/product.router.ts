@@ -1,21 +1,21 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import productsService from './product.service';
-
-const { asyncErrorHandler } = require('../../errors');
 
 const productsRouter = express.Router();
 
 productsRouter
   .route('/products')
-  .get(
-    asyncErrorHandler(async (req: Request, res: Response) => {
+  .get(async (req: Request, res: Response, next: NextFunction) => {
+    try {
       const products = await productsService.getAll();
       res.status(200).json(products);
       res.end();
-    })
-  )
-  .post(
-    asyncErrorHandler(async (req: Request, res: Response) => {
+    } catch (err) {
+      next(err);
+    }
+  })
+  .post(async (req: Request, res: Response, next: NextFunction) => {
+    try {
       const newProduct = await productsService.save({
         displayName: req.body.displayName,
         totalRating: req.body.totalRating,
@@ -23,7 +23,9 @@ productsRouter
       });
       res.status(204).json(newProduct);
       res.end();
-    })
-  );
+    } catch (err) {
+      next(err);
+    }
+  });
 
 export default productsRouter;
