@@ -1,12 +1,11 @@
 import { prop, modelOptions, getModelForClass } from '@typegoose/typegoose';
-import * as mongoose from 'mongoose';
 
 @modelOptions({
   schemaOptions: { collection: 'categories' },
 })
 export class Category {
   @prop()
-  __id: mongoose.Schema.Types.ObjectId;
+  public __id: string;
 
   @prop()
   public displayName: string;

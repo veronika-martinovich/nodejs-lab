@@ -46,10 +46,12 @@
       "linebreak-style": 0,
       "no-console": 0,
       "comma-dangle": 0,
-      "no-unused-vars": "off",
+      "no-unused-vars": 0,
       "indent": 0,
       "operator-linebreak": 0,
       "implicit-arrow-linebreak": 0,
-      "@typescript-eslint/no-unused-vars": "error"
+      "@typescript-eslint/no-unused-vars": "error",
+      "import/prefer-default-export": 0,
+      "object-curly-newline": 0
     }
 }

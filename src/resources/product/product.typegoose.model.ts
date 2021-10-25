@@ -5,7 +5,7 @@ import { prop, modelOptions, getModelForClass } from '@typegoose/typegoose';
 })
 export class Product {
   @prop()
-  __id: string;
+  public __id: string;
 
   @prop()
   public displayName: string;

@@ -1,4 +1,4 @@
-import { ProductModel } from './product.model';
+import { ProductModel } from './product.typegoose.model';
 import { IProduct } from '../../types';
 
 class ProductsDA {
