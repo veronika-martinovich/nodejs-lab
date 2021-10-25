@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import express, { Express, Request, Response } from 'express';
 import productsRouter from './resources/product/product.router';
 
