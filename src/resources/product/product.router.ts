@@ -21,7 +21,7 @@ productsRouter
         totalRating: req.body.totalRating,
         price: req.body.price,
       });
-      res.status(204).json(newProduct);
+      res.status(200).json(newProduct);
       res.end();
     } catch (err) {
       next(err);
