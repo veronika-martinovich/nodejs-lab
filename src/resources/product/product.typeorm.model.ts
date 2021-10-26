@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, RelationId } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, RelationId } from 'typeorm';
+import { Category } from '../category/category.typeorm.model';
 
 @Entity()
 class Product {
@@ -7,6 +8,9 @@ class Product {
 
   @Column()
   public displayName: string;
+
+  @ManyToOne(() => Category)
+  public category: Category;
 
   @Column()
   @RelationId((product: Product) => product.categoryId)
