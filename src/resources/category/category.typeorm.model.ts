@@ -11,5 +11,3 @@ export class Category {
   @CreateDateColumn()
   public createdAt: Date;
 }
-
-export const CategoryModel = new Category();

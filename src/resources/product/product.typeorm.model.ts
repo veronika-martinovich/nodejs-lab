@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, Re
 import { Category } from '../category/category.typeorm.model';
 
 @Entity()
-class Product {
+export class Product {
   @PrimaryGeneratedColumn('uuid')
   public __id: string;
 
@@ -10,11 +10,11 @@ class Product {
   public displayName: string;
 
   @ManyToOne(() => Category)
-  public category: Category;
+  public category?: Category;
 
-  @Column()
-  @RelationId((product: Product) => product.categoryId)
-  public categoryId: string;
+  @Column({ nullable: true })
+  @RelationId((product: Product) => product.category)
+  public categoryId?: string;
 
   @CreateDateColumn()
   public createdAt: Date;
@@ -25,5 +25,3 @@ class Product {
   @Column()
   public price: number;
 }
-
-export const ProductModel = new Product();
