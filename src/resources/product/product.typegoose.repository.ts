@@ -1,7 +1,7 @@
 import { ProductModel } from './product.typegoose.model';
 import { IProduct } from '../../types';
 
-class ProductsDA {
+class ProductTypegooseRepository {
   public getAll = async (): Promise<Array<IProduct>> => {
     const products = await ProductModel.find({});
     return products;
@@ -13,6 +13,6 @@ class ProductsDA {
   };
 }
 
-const productsDA = new ProductsDA();
+const productTypegooseRepository = new ProductTypegooseRepository();
 
-export default productsDA;
+export default productTypegooseRepository;

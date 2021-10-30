@@ -1,19 +1,22 @@
-import productsDA from './product.da';
+// import productTypegooseRepository from './product.typegoose.repository';
+import productTypeOrmRepository from './product.typeOrm.repository';
 import { IProduct } from '../../types';
 
 class ProductsService {
   public getAll = async (): Promise<Array<IProduct>> => {
     try {
-      return await productsDA.getAll();
+      return await productTypeOrmRepository.getAll();
     } catch (error) {
+      console.log(error);
       throw new Error();
     }
   };
 
   public save = async (product: IProduct): Promise<IProduct> => {
     try {
-      return await productsDA.save(product);
+      return await productTypeOrmRepository.save(product);
     } catch (error) {
+      console.log(error);
       throw new Error();
     }
   };
