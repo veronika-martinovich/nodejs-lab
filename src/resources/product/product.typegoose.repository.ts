@@ -1,18 +1,14 @@
 import { ProductModel } from './product.typegoose.model';
-import { IProduct } from '../../types';
+import { IProduct, IProductTypegooseRepository } from '../../types';
 
-class ProductTypegooseRepository {
-  public getAll = async (): Promise<Array<IProduct>> => {
+export class ProductTypegooseRepository implements IProductTypegooseRepository {
+  public getAll = async () => {
     const products = await ProductModel.find({});
     return products;
   };
 
-  public save = async (product: IProduct): Promise<IProduct> => {
+  public save = async (product: IProduct) => {
     const newProduct = await ProductModel.create(product);
     return newProduct;
   };
 }
-
-const productTypegooseRepository = new ProductTypegooseRepository();
-
-export default productTypegooseRepository;

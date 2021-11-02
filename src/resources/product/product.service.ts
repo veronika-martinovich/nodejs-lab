@@ -1,11 +1,11 @@
 // import productTypegooseRepository from './product.typegoose.repository';
-import productTypeOrmRepository from './product.typeOrm.repository';
+import productRepository from './product.repository';
 import { IProduct } from '../../types';
 
 class ProductsService {
   public getAll = async (): Promise<Array<IProduct>> => {
     try {
-      return await productTypeOrmRepository.getAll();
+      return await productRepository.getAll();
     } catch (error) {
       console.log(error);
       throw new Error();
@@ -14,7 +14,7 @@ class ProductsService {
 
   public save = async (product: IProduct): Promise<IProduct> => {
     try {
-      return await productTypeOrmRepository.save(product);
+      return await productRepository.save(product);
     } catch (error) {
       console.log(error);
       throw new Error();

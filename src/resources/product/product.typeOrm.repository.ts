@@ -1,15 +1,15 @@
 import { getRepository } from 'typeorm';
 import { Product } from './product.typeorm.model';
-import { IProduct } from '../../types';
+import { IProduct, IProductTypeormRepository } from '../../types';
 
-class ProductTypeOrmRepository {
-  getAll = async (): Promise<Array<IProduct>> => {
+export class ProductTypeormRepository implements IProductTypeormRepository {
+  getAll = async () => {
     const productRepository = getRepository(Product);
     const products = await productRepository.find();
     return products;
   };
 
-  save = async (product: IProduct): Promise<IProduct> => {
+  save = async (product: IProduct) => {
     /* Question: Should product be created via new Product() or we can just save
         product object from the params? Works with both variants
       */
@@ -23,7 +23,3 @@ class ProductTypeOrmRepository {
     return savedProduct;
   };
 }
-
-const productTypeOrmRepository = new ProductTypeOrmRepository();
-
-export default productTypeOrmRepository;
