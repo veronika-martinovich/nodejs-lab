@@ -3,7 +3,6 @@ import express, { Express, Request, Response } from 'express';
 import productsRouter from './resources/product/product.router';
 import { DBConnect } from './helpers/DBConnect';
 
-// const mongoose = require('mongoose');
 const { middlewareErrorHandler } = require('./errors');
 
 // App
@@ -30,22 +29,6 @@ app.use((req: Request, res: Response) => {
 app.use(middlewareErrorHandler);
 
 DBConnect();
-
-// DB Mongo
-// const connectionUrl = 'mongodb://localhost:27017/game-store';
-// mongoose.connect(connectionUrl, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
-
-// const db = mongoose.connection;
-// db.on('error', (error: unknown) => {
-//   console.error('MongoDB connection error:', error);
-// }).once('open', () => {
-//   app.listen(PORT, () => {
-//     console.log(`Server is running on port ${PORT}`);
-//   });
-// });
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
