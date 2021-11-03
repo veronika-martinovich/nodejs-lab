@@ -11,10 +11,11 @@ export class ProductTypeormRepository implements IProductRepository {
 
   save = async (product: IProduct) => {
     const productRepository = getRepository(Product);
-    const newProduct = new Product();
-    newProduct.displayName = product.displayName;
-    newProduct.price = product.price;
-    newProduct.totalRating = product.totalRating;
+    const newProduct = productRepository.create({
+      displayName: product.displayName,
+      price: product.price,
+      totalRating: product.totalRating,
+    });
 
     const savedProduct = await productRepository.save(newProduct);
     return savedProduct;
