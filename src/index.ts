@@ -28,8 +28,8 @@ app.use((req: Request, res: Response) => {
 // Error handler
 app.use(middlewareErrorHandler);
 
-DBConnect();
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+DBConnect().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
 });
