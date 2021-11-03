@@ -1,16 +1,17 @@
 import { createConnection } from 'typeorm';
 import ORMConfig from '../ormconfig';
-import { DB } from '../constants';
+import { DB_TYPES } from '../constants';
 
 const mongoose = require('mongoose');
+const { DB, MONGO_DB_URL } = require('../config');
 
 export const DBConnect = async () => {
   try {
-    if (process.env.DB === DB.postgres) {
+    if (DB === DB_TYPES.POSTGRES) {
       await createConnection(ORMConfig);
       console.log('Postgres DB connection was successful');
     } else {
-      mongoose.connect(process.env.MONGO_DB_CONNECTION_URL, {
+      mongoose.connect(MONGO_DB_URL, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       });

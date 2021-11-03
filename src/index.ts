@@ -3,11 +3,13 @@ import express, { Express, Request, Response } from 'express';
 import productsRouter from './resources/product/product.router';
 import { DBConnect } from './helpers/DBConnect';
 
+const { PORT } = require('./config');
+
 const { middlewareErrorHandler } = require('./errors');
 
 // App
 const app: Express = express();
-const PORT = process.env.PORT || 3000;
+const port = PORT || 3000;
 
 app.use(express.json());
 app.use('/', productsRouter);
@@ -30,6 +32,6 @@ app.use(middlewareErrorHandler);
 
 DBConnect().then(() => {
   app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port ${port}`);
   });
 });

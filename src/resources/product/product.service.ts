@@ -1,7 +1,9 @@
 import { ProductTypegooseRepository } from './product.typegoose.repository';
 import { ProductTypeormRepository } from './product.typeorm.repository';
 import { IProduct, IProductService, IProductRepository } from '../../types';
-import { DB } from '../../constants';
+import { DB_TYPES } from '../../constants';
+
+const { DB } = require('../../config');
 
 class ProductsService implements IProductService {
   repository: IProductRepository;
@@ -29,7 +31,7 @@ class ProductsService implements IProductService {
   };
 }
 
-const repository = process.env.DB === DB.postgres ? new ProductTypeormRepository() : new ProductTypegooseRepository();
+const repository = DB === DB_TYPES.POSTGRES ? new ProductTypeormRepository() : new ProductTypegooseRepository();
 const productsService = new ProductsService(repository);
 
 export default productsService;

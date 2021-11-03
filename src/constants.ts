@@ -1,4 +1,4 @@
-export const DB = {
-  postgres: 'postgres',
-  mongo: 'mongo',
+export const DB_TYPES = {
+  POSTGRES: 'postgres',
+  MONGO: 'mongo',
 };
