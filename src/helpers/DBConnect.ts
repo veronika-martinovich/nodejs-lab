@@ -8,11 +8,9 @@ export const DBConnect = async () => {
   try {
     if (process.env.DB === DB.postgres) {
       await createConnection(ORMConfig);
-
       console.log('Postgres DB connection was successful');
     } else {
-      const connectionUrl = 'mongodb://localhost:27017/game-store';
-      mongoose.connect(connectionUrl, {
+      mongoose.connect(process.env.MONGO_DB_CONNECTION_URL, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       });
