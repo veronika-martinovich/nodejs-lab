@@ -1,7 +1,7 @@
 import { ConnectionOptions } from 'typeorm';
 import { Product } from './resources/product/product.typeorm.model';
 import { Category } from './resources/category/category.typeorm.model';
-import ormCredentials from './orm.credentials';
+import ormCredentials from './credentials/orm.creds';
 
 export default {
   type: 'postgres',
