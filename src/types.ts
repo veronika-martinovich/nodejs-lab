@@ -12,3 +12,14 @@ export interface ICategory {
   displayName: string;
   createdAt?: Date;
 }
+
+export interface IProductRepository {
+  getAll: () => Promise<Array<IProduct>>;
+  save: (product: IProduct) => Promise<IProduct>;
+}
+
+export interface IProductService {
+  repository: IProductRepository;
+  getAll: () => Promise<Array<IProduct>>;
+  save: (product: IProduct) => Promise<IProduct>;
+}

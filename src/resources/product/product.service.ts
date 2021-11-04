@@ -1,24 +1,37 @@
-import productsDA from './product.da';
-import { IProduct } from '../../types';
+import { ProductTypegooseRepository } from './product.typegoose.repository';
+import { ProductTypeormRepository } from './product.typeorm.repository';
+import { IProduct, IProductService, IProductRepository } from '../../types';
+import { DB_TYPES } from '../../constants';
 
-class ProductsService {
-  public getAll = async (): Promise<Array<IProduct>> => {
+const { DB } = require('../../config');
+
+class ProductsService implements IProductService {
+  repository: IProductRepository;
+
+  constructor(repository: IProductRepository) {
+    this.repository = repository;
+  }
+
+  public getAll = async () => {
     try {
-      return await productsDA.getAll();
+      return await this.repository.getAll();
     } catch (error) {
+      console.log(error);
       throw new Error();
     }
   };
 
-  public save = async (product: IProduct): Promise<IProduct> => {
+  public save = async (product: IProduct) => {
     try {
-      return await productsDA.save(product);
+      return await this.repository.save(product);
     } catch (error) {
+      console.log(error);
       throw new Error();
     }
   };
 }
 
-const productsService = new ProductsService();
+const repository = DB === DB_TYPES.POSTGRES ? new ProductTypeormRepository() : new ProductTypegooseRepository();
+const productsService = new ProductsService(repository);
 
 export default productsService;

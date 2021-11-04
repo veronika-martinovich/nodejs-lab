@@ -1,14 +1,18 @@
-import { prop, modelOptions, getModelForClass } from '@typegoose/typegoose';
+import { prop, modelOptions, getModelForClass, Ref } from '@typegoose/typegoose';
+import { Category } from '../category/category.typegoose.model';
 
 @modelOptions({
   schemaOptions: { collection: 'products' },
 })
 export class Product {
   @prop()
-  __id: string;
+  public __id: string;
 
   @prop()
   public displayName: string;
+
+  @prop({ ref: () => Category })
+  public category?: Ref<Category>;
 
   @prop()
   public categoryId: string;
