@@ -31,3 +31,8 @@ export interface IHttpLoggerProps {
   req?: Request;
   res?: Response;
 }
+
+export interface IMongodbLoggerProps {
+  method: string;
+  data: any;
+}

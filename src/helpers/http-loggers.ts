@@ -1,7 +1,6 @@
 import { IHttpLoggerProps } from '../types';
 
 const { createLogger, transports, format } = require('winston');
-
 const { NODE_ENV } = require('../config');
 
 const { combine, timestamp, json } = format;
@@ -24,7 +23,7 @@ const loggerOptions = {
   },
 };
 
-const httpLogFormat = combine(
+export const httpLogFormat = combine(
   timestamp({
     format: 'YYYY-MM-DD HH:mm:ss',
   }),
