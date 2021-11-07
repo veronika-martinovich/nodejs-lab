@@ -1,0 +1,1 @@
+{"level":"http","message":"POST http://localhost:3000/products body:{\"displayName\":\"Alice in Wonderland\",\"price\":1150,\"totalRating\":8}","timestamp":"2021-11-07 18:22:49"}

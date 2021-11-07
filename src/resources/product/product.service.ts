@@ -1,7 +1,7 @@
 import { ProductTypegooseRepository } from './product.typegoose.repository';
 import { ProductTypeormRepository } from './product.typeorm.repository';
 import { IProduct, IProductService, IProductRepository } from '../../types';
-import { DB_TYPES } from '../../constants';
+import { DB_TYPES } from '../../helpers/constants';
 
 const { DB } = require('../../config');
 

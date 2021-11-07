@@ -1,31 +1,24 @@
 import 'reflect-metadata';
-import express, { Express, Request, Response } from 'express';
+import express, { Express } from 'express';
 import productsRouter from './resources/product/product.router';
 import { DBConnect } from './helpers/DBConnect';
 
 const { PORT } = require('./config');
+const { middlewareErrorHandler, middlewareHttpLogger, middlewareNotFoundHandler } = require('./helpers/middlewares');
 
-const { middlewareErrorHandler } = require('./errors');
-
-// App
 const app: Express = express();
 const port = PORT || 3000;
 
 app.use(express.json());
+
+// Http logger
+app.use(middlewareHttpLogger);
+
+// Routers
 app.use('/', productsRouter);
 
 // Invalid request
-app.use((req: Request, res: Response) => {
-  res.json({
-    error: {
-      name: 'Error',
-      status: 404,
-      message: 'Invalid Request',
-      statusCode: 404,
-    },
-    message: 'Route not found',
-  });
-});
+app.use(middlewareNotFoundHandler);
 
 // Error handler
 app.use(middlewareErrorHandler);
