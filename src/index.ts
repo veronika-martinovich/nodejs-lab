@@ -1,4 +1,10 @@
+/* eslint-disable import/order */
+/* eslint-disable import/first */
 import 'reflect-metadata';
+import { logMongodbQuery } from './helpers/mongodb-query-logger';
+
+logMongodbQuery();
+
 import express, { Express } from 'express';
 import productsRouter from './resources/product/product.router';
 import { DBConnect } from './helpers/DBConnect';
