@@ -1,0 +1,12 @@
+{"level":"http","message":"POST http://localhost:3000/products queryParams:{} body:{\"displayName\":\"Alice in Wonderland\",\"price\":1150,\"totalRating\":8}","timestamp":"2021-11-07 18:22:49"}
+{"level":"http","message":"GET http://localhost:3000/products queryParams:{} body:{}","timestamp":"2021-11-07 18:48:50"}
+{"level":"http","message":"GET http://localhost:3000/products queryParams:{} body:{}","timestamp":"2021-11-07 18:48:51"}
+{"level":"http","message":"GET http://localhost:3000/products queryParams:{} body:{}","timestamp":"2021-11-07 18:50:43"}
+{"level":"http","message":"GET http://localhost:3000/products queryParams:{} body:{}","timestamp":"2021-11-07 18:52:27"}
+{"level":"http","message":"GET http://localhost:3000/products queryParams:{} body:{}","timestamp":"2021-11-07 18:52:27"}
+{"level":"http","message":"GET http://localhost:3000/products queryParams:{} body:{}","timestamp":"2021-11-07 18:53:47"}
+{"level":"http","message":"GET http://localhost:3000/products queryParams:{} body:{}","timestamp":"2021-11-07 19:01:57"}
+{"level":"http","message":"POST http://localhost:3000/products queryParams:{} body:{\"displayName\":\"Pokemon\",\"price\":50,\"totalRating\":8}","timestamp":"2021-11-07 19:02:52"}
+{"level":"http","message":"GET http://localhost:3000/products queryParams:{} body:{}","timestamp":"2021-11-07 19:05:18"}
+{"level":"http","message":"GET http://localhost:3000/products queryParams:{} body:{}","timestamp":"2021-11-07 19:06:16"}
+{"level":"http","message":"GET http://localhost:3000/products queryParams:{} body:{}","timestamp":"2021-11-07 19:11:47"}

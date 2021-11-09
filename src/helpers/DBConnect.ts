@@ -1,6 +1,6 @@
 import { createConnection } from 'typeorm';
 import ORMConfig from '../ormconfig';
-import { DB_TYPES } from '../constants';
+import { DB_TYPES } from './constants';
 
 const mongoose = require('mongoose');
 const { DB, MONGO_DB_URL } = require('../config');

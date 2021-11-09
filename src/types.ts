@@ -1,3 +1,5 @@
+import { Request, Response } from 'express';
+
 export interface IProduct {
   __id?: string;
   displayName: string;
@@ -22,4 +24,10 @@ export interface IProductService {
   repository: IProductRepository;
   getAll: () => Promise<Array<IProduct>>;
   save: (product: IProduct) => Promise<IProduct>;
+}
+
+export interface IHttpLoggerProps {
+  err?: any;
+  req?: Request;
+  res?: Response;
 }
