@@ -7,7 +7,13 @@ productsRouter
   .route('/products')
   .get(async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const products = await productsService.getAll();
+      let products;
+      if (Object.keys(req.query).length === 0) {
+        products = await productsService.getAll();
+      } else {
+        products = await productsService.getByParams(req.query);
+      }
+
       res.status(200).json(products);
       res.end();
     } catch (err) {
