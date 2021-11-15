@@ -1,10 +1,11 @@
 import { ProductTypegooseRepository } from './product.typegoose.repository';
-// import { ProductTypeormRepository } from './product.typeorm.repository';
-import { IProduct, IProductService, IProductRepository, IProductQueryParams, IProductDbParams } from '../../types';
-// import { DB_TYPES } from '../../helpers/constants';
-import { formProductQueryParams } from '../../helpers/form-product-query-params';
+import { ProductTypeormRepository } from './product.typeorm.repository';
+import { IProduct, IProductService, IProductRepository, IProductQueryParams, IProductSearchParams } from '../../types';
+import { DB_TYPES } from '../../helpers/constants';
+import { formProductSearchParamsPostgres } from '../../helpers/form-product-search-params-postgres';
+import { formProductSearchParamsMongo } from '../../helpers/form-product-search-params-mongo';
 
-// const { DB } = require('../../config');
+const { DB } = require('../../config');
 
 class ProductsService implements IProductService {
   repository: IProductRepository;
@@ -24,8 +25,9 @@ class ProductsService implements IProductService {
 
   public getByParams = async (params: IProductQueryParams) => {
     try {
-      const dbParams: IProductDbParams = formProductQueryParams(params);
-      return await this.repository.getAndSort(dbParams.searchParams!, dbParams.sortParams!);
+      const searchParams: IProductSearchParams =
+        DB === DB_TYPES.POSTGRES ? formProductSearchParamsPostgres(params) : formProductSearchParamsMongo(params);
+      return await this.repository.getAndSort(searchParams);
     } catch (error) {
       console.log(error);
       throw new Error();
@@ -42,8 +44,7 @@ class ProductsService implements IProductService {
   };
 }
 
-// const repository = DB === DB_TYPES.POSTGRES ? new ProductTypeormRepository() : new ProductTypegooseRepository();
-const repository = new ProductTypegooseRepository();
+const repository = DB === DB_TYPES.POSTGRES ? new ProductTypeormRepository() : new ProductTypegooseRepository();
 const productsService = new ProductsService(repository);
 
 export default productsService;

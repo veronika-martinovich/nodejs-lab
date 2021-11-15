@@ -28,26 +28,26 @@ export interface IProductQueryParams {
   sortBy?: string;
 }
 
-export interface IProductSearchParams {
+export interface IProductWhereParams {
   displayName?: string;
   createdAt?: Date;
-  totalRating?: IMongoDBRange;
-  price?: IMongoDBRange;
+  totalRating?: any;
+  price?: any;
 }
 
-export interface IProductSortParams {
+export interface IProductOrderParams {
   [key: string]: string;
 }
 
-export interface IProductDbParams {
-  searchParams?: IProductSearchParams;
-  sortParams?: IProductSortParams;
+export interface IProductSearchParams {
+  where?: IProductWhereParams;
+  order?: IProductOrderParams;
 }
 
 export interface IProductRepository {
   getAll: () => Promise<Array<IProduct>>;
   save: (product: IProduct) => Promise<IProduct>;
-  getAndSort: (searchParams: IProductSearchParams, sortParams: IProductSortParams) => Promise<Array<IProduct>>;
+  getAndSort: (searchParams: IProductSearchParams) => Promise<Array<IProduct>>;
 }
 
 export interface IProductService {

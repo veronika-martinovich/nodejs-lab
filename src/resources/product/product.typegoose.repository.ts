@@ -1,5 +1,5 @@
 import { ProductModel } from './product.typegoose.model';
-import { IProduct, IProductRepository, IProductSearchParams, IProductSortParams } from '../../types';
+import { IProduct, IProductRepository, IProductSearchParams } from '../../types';
 
 export class ProductTypegooseRepository implements IProductRepository {
   public getAll = async () => {
@@ -7,8 +7,8 @@ export class ProductTypegooseRepository implements IProductRepository {
     return products;
   };
 
-  public getAndSort = async (searchParams: IProductSearchParams, sortParams: IProductSortParams) => {
-    const products = await ProductModel.find(searchParams).sort(sortParams);
+  public getAndSort = async (searchParams: IProductSearchParams) => {
+    const products = await ProductModel.find(searchParams.where!).sort(searchParams.order);
     return products;
   };
 

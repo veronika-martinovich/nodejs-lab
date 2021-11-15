@@ -1,12 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, RelationId } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, RelationId, Index } from 'typeorm';
 import { Category } from '../category/category.typeorm.model';
 
 @Entity()
+@Index(['displayName', 'totalRating', 'price'])
 export class Product {
   @PrimaryGeneratedColumn('uuid')
   public __id: string;
 
   @Column()
+  @Index()
   public displayName: string;
 
   @ManyToOne(() => Category)
@@ -20,8 +22,10 @@ export class Product {
   public createdAt: Date;
 
   @Column()
+  @Index()
   public totalRating: number;
 
   @Column()
+  @Index()
   public price: number;
 }
