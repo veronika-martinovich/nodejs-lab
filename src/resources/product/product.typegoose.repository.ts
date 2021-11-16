@@ -7,7 +7,7 @@ export class ProductTypegooseRepository implements IProductRepository {
     return products;
   };
 
-  public getAndSort = async (searchParams: IProductSearchParams) => {
+  public get = async (searchParams: IProductSearchParams) => {
     const products = await ProductModel.find(searchParams.where!)
       .sort(searchParams.order)
       .skip(searchParams.skip!)

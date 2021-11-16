@@ -9,7 +9,7 @@ export class ProductTypeormRepository implements IProductRepository {
     return products;
   };
 
-  getAndSort = async (searchParams: IProductSearchParams) => {
+  get = async (searchParams: IProductSearchParams) => {
     const productRepository = getRepository(Product);
     const products = await productRepository.find(searchParams);
     return products;

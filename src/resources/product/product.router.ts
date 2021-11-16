@@ -11,7 +11,7 @@ productsRouter
       if (Object.keys(req.query).length === 0) {
         products = await productsService.getAll();
       } else {
-        products = await productsService.getByParams(req.query);
+        products = await productsService.get(req.query);
       }
 
       res.status(200).json(products);

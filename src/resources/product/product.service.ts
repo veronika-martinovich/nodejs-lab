@@ -22,10 +22,10 @@ class ProductsService implements IProductService {
     }
   };
 
-  public getByParams = async (params: IProductQueryParams) => {
+  public get = async (params: IProductQueryParams) => {
     try {
       const searchParams: IProductSearchParams = formProductSearchParams(params);
-      return await this.repository.getAndSort(searchParams);
+      return await this.repository.get(searchParams);
     } catch (error) {
       console.log(error);
       throw new Error();

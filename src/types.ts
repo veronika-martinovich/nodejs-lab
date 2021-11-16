@@ -51,13 +51,13 @@ export interface IProductSearchParams {
 export interface IProductRepository {
   getAll: () => Promise<Array<IProduct>>;
   save: (product: IProduct) => Promise<IProduct>;
-  getAndSort: (searchParams: IProductSearchParams) => Promise<Array<IProduct>>;
+  get: (searchParams: IProductSearchParams) => Promise<Array<IProduct>>;
 }
 
 export interface IProductService {
   repository: IProductRepository;
   getAll: () => Promise<Array<IProduct>>;
-  getByParams: (params: IProductQueryParams) => Promise<Array<IProduct> | null>;
+  get: (params: IProductQueryParams) => Promise<Array<IProduct> | null>;
   save: (product: IProduct) => Promise<IProduct>;
 }
 
