@@ -8,7 +8,10 @@ export class ProductTypegooseRepository implements IProductRepository {
   };
 
   public getAndSort = async (searchParams: IProductSearchParams) => {
-    const products = await ProductModel.find(searchParams.where!).sort(searchParams.order);
+    const products = await ProductModel.find(searchParams.where!)
+      .sort(searchParams.order)
+      .skip(searchParams.skip!)
+      .limit(searchParams.take!);
     return products;
   };
 

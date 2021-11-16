@@ -26,6 +26,8 @@ export interface IProductQueryParams {
   minRating?: string;
   price?: string;
   sortBy?: string;
+  offset?: string;
+  limit?: string;
 }
 
 export interface IProductWhereParams {
@@ -42,6 +44,8 @@ export interface IProductOrderParams {
 export interface IProductSearchParams {
   where?: IProductWhereParams;
   order?: IProductOrderParams;
+  skip?: number;
+  take?: number;
 }
 
 export interface IProductRepository {

@@ -5,31 +5,20 @@ import { formComparisonParamsMongo } from './form-comparison-params-mongo';
 
 const { DB } = require('../config');
 
-const formComparisonParams = ({
-  comparisonValue,
-  minValue,
-  maxValue,
-}: {
-  comparisonValue: string;
-  minValue?: number;
-  maxValue?: number;
-}) => {
+const formComparisonParams = (params: { comparisonValue: string; minValue?: number; maxValue?: number }) => {
   if (DB === DB_TYPES.POSTGRES) {
-    formComparisonParamsPostgres({
-      comparisonValue,
-      minValue,
-      maxValue,
-    });
-  } else {
-    formComparisonParamsMongo({
-      comparisonValue,
-      minValue,
-      maxValue,
+    return formComparisonParamsPostgres({
+      ...params,
     });
   }
+  return formComparisonParamsMongo({
+    ...params,
+  });
 };
 
 export const formProductSearchParams = (queryParams: IProductQueryParams) => {
+  const searchParams: IProductSearchParams = {};
+
   const where: IProductWhereParams = {};
   const order: IProductOrderParams = {};
 
@@ -62,10 +51,16 @@ export const formProductSearchParams = (queryParams: IProductQueryParams) => {
     order[sortField] = sortDirection;
   }
 
-  const newParams: IProductSearchParams = {
-    where,
-    order,
-  };
+  searchParams.where = where;
+  searchParams.order = order;
 
-  return newParams;
+  if (queryParams.offset) {
+    searchParams.skip = Number(queryParams.offset);
+  }
+
+  if (queryParams.limit) {
+    searchParams.take = Number(queryParams.limit);
+  }
+
+  return searchParams;
 };
