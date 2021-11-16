@@ -17,7 +17,7 @@ export class Product {
   public displayName: string;
 
   @prop({ ref: () => Category })
-  public category?: Ref<Category>;
+  public category?: Ref<Category>[];
 
   @prop()
   public categoryId: string;
