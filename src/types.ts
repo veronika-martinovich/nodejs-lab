@@ -1,5 +1,21 @@
 import { Request, Response } from 'express';
 
+export interface IMongoDBRange {
+  $gte?: number;
+  $lte?: number;
+}
+
+export interface IHttpLoggerProps {
+  err?: any;
+  req?: Request;
+  res?: Response;
+}
+
+export interface IStringKeyValue {
+  [key: string]: string;
+}
+// Product
+
 export interface IProduct {
   __id?: string;
   displayName: string;
@@ -8,18 +24,6 @@ export interface IProduct {
   totalRating: number;
   price: number;
 }
-
-export interface ICategory {
-  __id?: string;
-  displayName: string;
-  createdAt?: Date;
-}
-
-export interface IMongoDBRange {
-  $gte?: number;
-  $lte?: number;
-}
-
 export interface IProductQueryParams {
   displayName?: string;
   createdAt?: Date;
@@ -36,14 +40,9 @@ export interface IProductWhereParams {
   totalRating?: any;
   price?: any;
 }
-
-export interface IProductOrderParams {
-  [key: string]: string;
-}
-
 export interface IProductSearchParams {
   where?: IProductWhereParams;
-  order?: IProductOrderParams;
+  order?: IStringKeyValue;
   skip?: number;
   take?: number;
 }
@@ -61,8 +60,39 @@ export interface IProductService {
   save: (product: IProduct) => Promise<IProduct>;
 }
 
-export interface IHttpLoggerProps {
-  err?: any;
-  req?: Request;
-  res?: Response;
+// Category
+
+export interface ICategory {
+  __id?: string;
+  displayName: string;
+  createdAt?: Date;
+}
+
+export interface ICategoryWhereParams {
+  displayName?: string;
+}
+
+export interface ICategorySearchParams {
+  where?: ICategoryWhereParams;
+  order?: IStringKeyValue;
+  skip?: number;
+  take?: number;
+}
+
+export interface ICategoryQueryParams {
+  displayName?: string;
+  createdAt?: Date;
+}
+
+export interface ICategoryRepository {
+  getAll: () => Promise<Array<ICategory>>;
+  save: (category: ICategory) => Promise<ICategory>;
+  get: (searchParams: ICategorySearchParams) => Promise<Array<ICategory>>;
+}
+
+export interface ICategoryService {
+  repository: ICategoryRepository;
+  getAll: () => Promise<Array<ICategory>>;
+  get: (params: ICategoryQueryParams) => Promise<Array<ICategory>>;
+  save: (category: ICategory) => Promise<ICategory>;
 }
