@@ -87,12 +87,12 @@ export interface ICategoryQueryParams {
 export interface ICategoryRepository {
   getAll: () => Promise<Array<ICategory>>;
   save: (category: ICategory) => Promise<ICategory>;
-  get: (searchParams: ICategorySearchParams) => Promise<Array<ICategory>>;
+  getById: (id: string) => Promise<ICategory | Array<ICategory> | null>;
 }
 
 export interface ICategoryService {
   repository: ICategoryRepository;
   getAll: () => Promise<Array<ICategory>>;
-  get: (params: ICategoryQueryParams) => Promise<Array<ICategory>>;
+  getById: (id: string) => Promise<ICategory | Array<ICategory> | null>;
   save: (category: ICategory) => Promise<ICategory>;
 }

@@ -7,12 +7,7 @@ categoriesRouter
   .route('/categories')
   .get(async (req: Request, res: Response, next: NextFunction) => {
     try {
-      let categories;
-      if (Object.keys(req.query).length === 0) {
-        categories = await categoryService.getAll();
-      } else {
-        categories = await categoryService.get(req.query);
-      }
+      const categories = await categoryService.getAll();
 
       res.status(200).json(categories);
       res.end();
@@ -32,4 +27,19 @@ categoriesRouter
     }
   });
 
+categoriesRouter.route('/categories/:catId').get(async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    let category;
+    if (Object.keys(req.query).length === 0) {
+      category = await categoryService.getById(req.params.catId);
+    } else {
+      // category = await categoryService.getByIdWithProducts(req.params.catId, req.query);
+    }
+
+    res.status(200).json(category);
+    res.end();
+  } catch (err) {
+    next(err);
+  }
+});
 export default categoriesRouter;

@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
 import { Category } from './category.typeorm.model';
-import { ICategory, ICategoryRepository, ICategorySearchParams } from '../../types';
+import { ICategory, ICategoryRepository } from '../../types';
 
 export class CategoryTypeormRepository implements ICategoryRepository {
   getAll = async () => {
@@ -9,10 +9,10 @@ export class CategoryTypeormRepository implements ICategoryRepository {
     return categories;
   };
 
-  get = async (searchParams: ICategorySearchParams) => {
+  getById = async (id: string) => {
     const categoryRepository = getRepository(Category);
-    const categories = await categoryRepository.find(searchParams);
-    return categories;
+    const category = await categoryRepository.find({ where: { __id: id } });
+    return category;
   };
 
   save = async (category: ICategory) => {

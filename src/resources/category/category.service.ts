@@ -1,12 +1,6 @@
 import { CategoryTypegooseRepository } from './category.typegoose.repository';
 import { CategoryTypeormRepository } from './category.typeorm.repository';
-import {
-  ICategory,
-  ICategoryService,
-  ICategoryRepository,
-  ICategoryQueryParams,
-  ICategorySearchParams,
-} from '../../types';
+import { ICategory, ICategoryService, ICategoryRepository } from '../../types';
 import { DB_TYPES } from '../../helpers/constants';
 // import { formCategorySearchParams } from '../../helpers/form-category-search-params';
 
@@ -28,16 +22,25 @@ class CategoryService implements ICategoryService {
     }
   };
 
-  public get = async (params: ICategoryQueryParams) => {
+  public getById = async (id: string) => {
     try {
-      // const searchParams: ICategorySearchParams = formCategorySearchParams(params);
-      const searchParams: ICategorySearchParams = { where: { displayName: 'avc' } };
-      return await this.repository.get(searchParams);
+      return await this.repository.getById(id);
     } catch (error) {
       console.log(error);
       throw new Error();
     }
   };
+
+  // public getByIdWithProducts = async (id: string, params: ICategoryQueryParams) => {
+  //   try {
+  //     // const searchParams: ICategorySearchParams = formCategorySearchParams(params);
+  //     const searchParams: ICategorySearchParams = { where: { displayName: 'avc' } };
+  //     return await this.repository.get(searchParams);
+  //   } catch (error) {
+  //     console.log(error);
+  //     throw new Error();
+  //   }
+  // };
 
   public save = async (category: ICategory) => {
     try {
