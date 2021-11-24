@@ -32,6 +32,32 @@ class ProductsService implements IProductService {
     }
   };
 
+  public getByCategory = async ({
+    id,
+    limit,
+    sortDirection,
+    sortField,
+  }: {
+    id: string;
+    limit?: number;
+    sortDirection?: string;
+    sortField?: string;
+  }) => {
+    try {
+      const searchParams: IProductSearchParams = { where: { categoryId: id }, relations: ['category'] };
+      if (!!sortField && !!sortDirection) {
+        searchParams.order = { [sortField as string]: sortDirection };
+      }
+      if (limit) {
+        searchParams.take = limit;
+      }
+      return await this.repository.get(searchParams);
+    } catch (error) {
+      console.log(error);
+      throw new Error();
+    }
+  };
+
   public save = async (product: IProduct) => {
     try {
       return await this.repository.save(product);

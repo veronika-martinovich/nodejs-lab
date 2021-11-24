@@ -21,6 +21,7 @@ export class ProductTypeormRepository implements IProductRepository {
       displayName: product.displayName,
       price: product.price,
       totalRating: product.totalRating,
+      categoryId: product.categoryId,
     });
 
     const savedProduct = await productRepository.save(newProduct);

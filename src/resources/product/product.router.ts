@@ -26,6 +26,7 @@ productsRouter
         displayName: req.body.displayName,
         totalRating: req.body.totalRating,
         price: req.body.price,
+        categoryId: req.body.categoryId,
       });
       res.status(200).json(newProduct);
       res.end();

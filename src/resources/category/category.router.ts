@@ -29,13 +29,7 @@ categoriesRouter
 
 categoriesRouter.route('/categories/:catId').get(async (req: Request, res: Response, next: NextFunction) => {
   try {
-    let category;
-    if (Object.keys(req.query).length === 0) {
-      category = await categoryService.getById(req.params.catId);
-    } else {
-      // category = await categoryService.getByIdWithProducts(req.params.catId, req.query);
-    }
-
+    const category = await categoryService.getByIdAndQueryParams(req.params.catId, req.query);
     res.status(200).json(category);
     res.end();
   } catch (err) {
