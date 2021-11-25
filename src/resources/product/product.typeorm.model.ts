@@ -17,7 +17,6 @@ export class Product {
   public __id: string;
 
   @Column()
-  @Index()
   public displayName: string;
 
   @ManyToMany(() => Category)
@@ -32,10 +31,8 @@ export class Product {
   public createdAt: Date;
 
   @Column()
-  @Index()
   public totalRating: number;
 
   @Column()
-  @Index()
   public price: number;
 }

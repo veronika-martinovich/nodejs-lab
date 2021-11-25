@@ -4,11 +4,7 @@ import { Category } from '../category/category.typegoose.model';
 @modelOptions({
   schemaOptions: { collection: 'products' },
 })
-@index({ displayName: 1 })
-@index({ totalRating: 1 })
-@index({ price: 1 })
 @index({ displayName: 1, totalRating: 1, price: 1 })
-@index({ displayName: -1, totalRating: -1, price: -1 })
 export class Product {
   @prop()
   public __id: string;
