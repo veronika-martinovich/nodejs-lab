@@ -88,7 +88,7 @@ export interface ICategory {
 
 export interface ICategoryExtended {
   __id?: string;
-  displayName: string;
+  displayName?: string;
   createdAt?: Date;
   products?: Array<IProduct>;
   includeTop3Products?: Array<IProduct>;
@@ -113,7 +113,7 @@ export interface ICategoryQueryParams {
 export interface ICategoryRepository {
   getAll: () => Promise<Array<ICategory>>;
   save: (category: ICategory) => Promise<ICategory>;
-  getById: (id: string) => Promise<ICategory | null | any>;
+  getById: (id: string) => Promise<ICategory | null>;
 }
 
 export interface ICategoryService {
