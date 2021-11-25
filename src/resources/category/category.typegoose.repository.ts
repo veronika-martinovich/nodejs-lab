@@ -5,16 +5,15 @@ import { PRODUCT_FIELDS } from '../../helpers/constants';
 export class CategoryTypegooseRepository implements ICategoryRepository {
   public getAll = async () => {
     const selectQuery = `${PRODUCT_FIELDS.id} ${PRODUCT_FIELDS.displayName}`;
-    const categories = await CategoryModel.find({}).select(selectQuery);
+    const categories = await CategoryModel.find({}, selectQuery).lean().exec();
     return categories;
   };
 
   public getById = async (id: string) => {
     const selectQuery = `${PRODUCT_FIELDS.id} ${PRODUCT_FIELDS.displayName}`;
-    const category = await CategoryModel.findById(id).select(selectQuery);
+    const category = await CategoryModel.findById(id, selectQuery).lean().exec();
     if (!category) return null;
-    // @ts-ignore
-    return category._doc;
+    return category;
   };
 
   public save = async (category: ICategory) => {
