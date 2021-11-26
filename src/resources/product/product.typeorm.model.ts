@@ -1,7 +1,17 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, RelationId } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  ManyToMany,
+  RelationId,
+  Index,
+  JoinTable,
+} from 'typeorm';
 import { Category } from '../category/category.typeorm.model';
 
 @Entity()
+@Index(['displayName', 'totalRating', 'price'])
 export class Product {
   @PrimaryGeneratedColumn('uuid')
   public __id: string;
@@ -9,12 +19,13 @@ export class Product {
   @Column()
   public displayName: string;
 
-  @ManyToOne(() => Category)
-  public category?: Category;
+  @ManyToMany(() => Category)
+  @JoinTable()
+  category: Category[];
 
   @Column({ nullable: true })
   @RelationId((product: Product) => product.category)
-  public categoryId?: string;
+  public categoryId: string;
 
   @CreateDateColumn()
   public createdAt: Date;

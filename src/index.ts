@@ -7,6 +7,7 @@ logMongodbQuery();
 
 import express, { Express } from 'express';
 import productsRouter from './resources/product/product.router';
+import categoriesRouter from './resources/category/category.router';
 import { DBConnect } from './helpers/DBConnect';
 
 const { PORT } = require('./config');
@@ -22,6 +23,7 @@ app.use(middlewareHttpLogger);
 
 // Routers
 app.use('/', productsRouter);
+app.use('/', categoriesRouter);
 
 // Invalid request
 app.use(middlewareNotFoundHandler);

@@ -7,7 +7,13 @@ productsRouter
   .route('/products')
   .get(async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const products = await productsService.getAll();
+      let products;
+      if (Object.keys(req.query).length === 0) {
+        products = await productsService.getAll();
+      } else {
+        products = await productsService.get(req.query);
+      }
+
       res.status(200).json(products);
       res.end();
     } catch (err) {
@@ -20,6 +26,7 @@ productsRouter
         displayName: req.body.displayName,
         totalRating: req.body.totalRating,
         price: req.body.price,
+        categoryId: req.body.categoryId,
       });
       res.status(200).json(newProduct);
       res.end();

@@ -1,7 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, Index } from 'typeorm';
+import { ICategory } from '../../types';
 
 @Entity()
-export class Category {
+@Index(['__id', 'displayName'])
+export class Category implements ICategory {
   @PrimaryGeneratedColumn('uuid')
   public __id: string;
 
