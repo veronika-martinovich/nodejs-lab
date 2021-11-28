@@ -7,7 +7,7 @@ export class InvalidRequestError extends Error implements IError {
 
   constructor(message: string) {
     super();
-    this.statusCode = 404;
+    this.statusCode = 400;
     this.message = message;
   }
 }

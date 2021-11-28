@@ -1,4 +1,4 @@
-import { IProductQueryParams, IProductWhereParams, IStringKeyValue, IProductSearchParams } from '../types';
+import { IProductQueryParams, IProductWhereParams, IStringValue, IProductSearchParams } from '../types';
 import { SELECTION_PARAMS, DB_TYPES } from './constants';
 import { formComparisonParamsPostgres } from './form-comparison-params-postgres';
 import { formComparisonParamsMongo } from './form-comparison-params-mongo';
@@ -20,7 +20,7 @@ export const formProductSearchParams = (queryParams: IProductQueryParams) => {
   const searchParams: IProductSearchParams = {};
 
   const where: IProductWhereParams = {};
-  const order: IStringKeyValue = {};
+  const order: IStringValue = {};
 
   if (queryParams.displayName) {
     where.displayName = queryParams.displayName;

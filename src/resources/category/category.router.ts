@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import categoryService from './category.service';
+import { validateCategoryQueryParams } from './category.validation';
 
 const categoriesRouter = express.Router();
 
@@ -27,13 +28,27 @@ categoriesRouter
     }
   });
 
-categoriesRouter.route('/categories/:catId').get(async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const category = await categoryService.getByIdAndQueryParams(req.params.catId, req.query);
-    res.status(200).json(category);
-    res.end();
-  } catch (err) {
-    next(err);
-  }
-});
+categoriesRouter
+  .route('/categories/:catId')
+  .all(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      if (Object.keys(req.query).length === 0) {
+        next();
+      } else {
+        validateCategoryQueryParams(req.query);
+        next();
+      }
+    } catch (err) {
+      next(err);
+    }
+  })
+  .get(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const category = await categoryService.getByIdAndQueryParams(req.params.catId, req.query);
+      res.status(200).json(category);
+      res.end();
+    } catch (err) {
+      next(err);
+    }
+  });
 export default categoriesRouter;

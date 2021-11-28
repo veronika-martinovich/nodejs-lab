@@ -1,3 +1,5 @@
+import { IBooleanValue } from '../types';
+
 export const DB_TYPES = {
   POSTGRES: 'postgres',
   MONGO: 'mongo',
@@ -18,4 +20,9 @@ export const PRODUCT_FIELDS = {
   id: '__id',
   displayName: 'displayName',
   totalRating: 'totalRating',
+};
+
+export const BOOLEAN_MAP: IBooleanValue = {
+  true: true,
+  false: false,
 };

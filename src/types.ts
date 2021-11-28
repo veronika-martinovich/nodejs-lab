@@ -11,8 +11,12 @@ export interface IHttpLoggerProps {
   res?: Response;
 }
 
-export interface IStringKeyValue {
+export interface IStringValue {
   [key: string]: string;
+}
+
+export interface IBooleanValue {
+  [key: string]: boolean;
 }
 
 export interface IBooleanKeyValue {
@@ -53,7 +57,7 @@ export interface IProductWhereParams {
 }
 export interface IProductSearchParams {
   where?: IProductWhereParams;
-  order?: IStringKeyValue;
+  order?: IStringValue;
   skip?: number;
   take?: number;
   relations?: Array<string>;
@@ -105,7 +109,7 @@ export interface ICategoryWhereParams {
 
 export interface ICategorySearchParams {
   where?: ICategoryWhereParams;
-  order?: IStringKeyValue;
+  order?: IStringValue;
   skip?: number;
   take?: number;
 }

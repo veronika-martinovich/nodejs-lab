@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import productsService from './product.service';
-import { validateProductQueryParams } from './product.validate';
+import { validateProductQueryParams } from './product.validation';
 
 const productsRouter = express.Router();
 

@@ -1,7 +1,8 @@
+import { BOOLEAN_MAP, DB_TYPES, SORTING_ORDER, PRODUCT_FIELDS } from '../../helpers/constants';
 import { CategoryTypegooseRepository } from './category.typegoose.repository';
 import { CategoryTypeormRepository } from './category.typeorm.repository';
 import { ICategory, ICategoryService, ICategoryRepository, ICategoryQueryParams, ICategoryExtended } from '../../types';
-import { DB_TYPES, SORTING_ORDER, PRODUCT_FIELDS } from '../../helpers/constants';
+
 import productsService from '../product/product.service';
 
 const { DB } = require('../../config');
@@ -29,12 +30,12 @@ class CategoryService implements ICategoryService {
       }
 
       const extendedCategory: ICategoryExtended = { ...category };
-      if (params.includeProducts) {
+      if (params.includeProducts && BOOLEAN_MAP[params.includeProducts]) {
         const products = await productsService.getByCategory({ id });
 
         if (products) extendedCategory.products = products;
       }
-      if (params.includeTop3Products) {
+      if (params.includeTop3Products && BOOLEAN_MAP[params.includeTop3Products]) {
         const PORDUCTS_NUMBER = 3;
         const top3Products = await productsService.getByCategory({
           id,
