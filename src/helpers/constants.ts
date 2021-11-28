@@ -1,5 +1,3 @@
-const { DB } = require('../config');
-
 export const DB_TYPES = {
   POSTGRES: 'postgres',
   MONGO: 'mongo',
@@ -12,8 +10,8 @@ export const SELECTION_PARAMS = {
 };
 
 export const SORTING_ORDER = {
-  ASC: DB === DB_TYPES.MONGO ? 'asc' : 'ASC',
-  DESC: DB === DB_TYPES.MONGO ? 'desc' : 'DESC',
+  ASC: 'asc',
+  DESC: 'desc',
 };
 
 export const PRODUCT_FIELDS = {

@@ -39,7 +39,7 @@ class CategoryService implements ICategoryService {
         const top3Products = await productsService.getByCategory({
           id,
           limit: PORDUCTS_NUMBER,
-          sortDirection: SORTING_ORDER.DESC,
+          sortDirection: DB_TYPES.MONGO ? SORTING_ORDER.DESC : SORTING_ORDER.DESC.toUpperCase(),
           sortField: PRODUCT_FIELDS.totalRating,
         });
         if (top3Products) extendedCategory.includeTop3Products = top3Products;

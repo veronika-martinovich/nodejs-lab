@@ -1,10 +1,23 @@
 import express, { Request, Response, NextFunction } from 'express';
 import productsService from './product.service';
+import { validateProductQueryParams } from './product.validate';
 
 const productsRouter = express.Router();
 
 productsRouter
   .route('/products')
+  .all(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      if (Object.keys(req.query).length === 0) {
+        next();
+      } else {
+        validateProductQueryParams(req.query);
+        next();
+      }
+    } catch (err) {
+      next(err);
+    }
+  })
   .get(async (req: Request, res: Response, next: NextFunction) => {
     try {
       let products;
