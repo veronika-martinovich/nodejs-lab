@@ -16,12 +16,11 @@ const middlewareErrorHandler = (err: any, req: Request, res: Response, next: Nex
 const middlewareNotFoundHandler = (req: Request, res: Response, next: NextFunction) => {
   res.json({
     error: {
-      name: 'Error',
+      name: 'Invalid Request',
       status: 404,
-      message: 'Invalid Request',
+      message: 'Route not found',
       statusCode: 404,
     },
-    message: 'Route not found',
   });
 
   logHttpData({ req, res });

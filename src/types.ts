@@ -19,6 +19,11 @@ export interface IBooleanKeyValue {
   [key: string]: boolean;
 }
 
+export interface IError {
+  statusCode?: number;
+  message?: string;
+}
+
 // Product
 
 export interface IProduct {

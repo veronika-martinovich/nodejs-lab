@@ -17,7 +17,6 @@ class CategoryService implements ICategoryService {
     try {
       return await this.repository.getAll();
     } catch (error) {
-      console.log(error);
       throw new Error();
     }
   };
@@ -47,7 +46,6 @@ class CategoryService implements ICategoryService {
       }
       return extendedCategory;
     } catch (error) {
-      console.log(error);
       throw new Error();
     }
   };
@@ -56,7 +54,6 @@ class CategoryService implements ICategoryService {
     try {
       return await this.repository.save(category);
     } catch (error) {
-      console.log(error);
       throw new Error();
     }
   };
