@@ -28,6 +28,20 @@ export interface IError {
   message?: string;
 }
 
+export interface IValidationParams {
+  displayName?: string;
+  categoryId?: string;
+  createdAt?: Date;
+  totalRating?: number;
+  price?: string;
+  sortBy?: string;
+  offset?: string;
+  limit?: string;
+  minRating?: string;
+  includeProducts?: string;
+  includeTop3Products?: string;
+}
+
 // Product
 
 export interface IProduct {
