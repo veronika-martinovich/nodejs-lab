@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import categoryService from './category.service';
 import { validateCategoryQueryParams } from './category.validation';
+import { isEmptyObject } from '../../helpers/validation';
 
 const categoriesRouter = express.Router();
 
@@ -32,7 +33,7 @@ categoriesRouter
   .route('/categories/:catId')
   .all(async (req: Request, res: Response, next: NextFunction) => {
     try {
-      if (Object.keys(req.query).length === 0) {
+      if (isEmptyObject(req.query)) {
         next();
       } else {
         validateCategoryQueryParams(req.query);

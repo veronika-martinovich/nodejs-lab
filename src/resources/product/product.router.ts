@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import productsService from './product.service';
 import { validateProductQueryParams } from './product.validation';
+import { isEmptyObject } from '../../helpers/validation';
 
 const productsRouter = express.Router();
 
@@ -8,7 +9,7 @@ productsRouter
   .route('/products')
   .all(async (req: Request, res: Response, next: NextFunction) => {
     try {
-      if (Object.keys(req.query).length === 0) {
+      if (isEmptyObject(req.query)) {
         next();
       } else {
         validateProductQueryParams(req.query);
@@ -21,7 +22,7 @@ productsRouter
   .get(async (req: Request, res: Response, next: NextFunction) => {
     try {
       let products;
-      if (Object.keys(req.query).length === 0) {
+      if (isEmptyObject(req.query)) {
         products = await productsService.getAll();
       } else {
         products = await productsService.get(req.query);

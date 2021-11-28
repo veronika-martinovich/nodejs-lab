@@ -2,7 +2,7 @@ import { BOOLEAN_MAP, DB_TYPES, SORTING_ORDER, PRODUCT_FIELDS } from '../../help
 import { CategoryTypegooseRepository } from './category.typegoose.repository';
 import { CategoryTypeormRepository } from './category.typeorm.repository';
 import { ICategory, ICategoryService, ICategoryRepository, ICategoryQueryParams, ICategoryExtended } from '../../types';
-
+import { isEmptyObject } from '../../helpers/validation';
 import productsService from '../product/product.service';
 
 const { DB } = require('../../config');
@@ -25,7 +25,7 @@ class CategoryService implements ICategoryService {
   public getByIdAndQueryParams = async (id: string, params: ICategoryQueryParams) => {
     try {
       const category = await this.repository.getById(id);
-      if (Object.keys(params).length === 0) {
+      if (isEmptyObject(params)) {
         return category;
       }
 
