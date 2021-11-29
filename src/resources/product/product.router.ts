@@ -2,26 +2,15 @@ import express, { Request, Response, NextFunction } from 'express';
 import productsService from './product.service';
 import { validateQuery } from '../../helpers/validate-query';
 import { isEmptyObject } from '../../helpers/validation';
-import { IValidationParams } from '../../types';
 
 const productsRouter = express.Router();
-
-productsRouter.all('*', async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    if (!isEmptyObject(req.query) || !isEmptyObject(req.body)) {
-      const validationParams: IValidationParams = { ...req.query, ...req.body };
-      validateQuery(validationParams);
-    }
-    next();
-  } catch (err) {
-    next(err);
-  }
-});
 
 productsRouter
   .route('/')
   .get(async (req: Request, res: Response, next: NextFunction) => {
     try {
+      validateQuery(req.query, req.body);
+
       let products;
       if (isEmptyObject(req.query)) {
         products = await productsService.getAll();
@@ -37,6 +26,8 @@ productsRouter
   })
   .post(async (req: Request, res: Response, next: NextFunction) => {
     try {
+      validateQuery(req.query, req.body);
+
       const newProduct = await productsService.save({
         displayName: req.body.displayName,
         totalRating: req.body.totalRating,

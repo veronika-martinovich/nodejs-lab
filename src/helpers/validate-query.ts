@@ -1,8 +1,8 @@
-import { isString, isNumber, isDate, isSortOrder, isBoolean } from './validation';
+import { isString, isNumber, isDate, isSortOrder, isBoolean, isEmptyObject } from './validation';
 import { IValidationParams } from '../types';
 import { InvalidRequestError } from './errors';
 
-export const validateQuery = (params: IValidationParams) => {
+export const validateParams = (params: IValidationParams) => {
   const FIELD_NAMES = {
     DISPLAY_NAME: 'display name',
     MIN_RATING: 'minimal rating',
@@ -63,5 +63,12 @@ export const validateQuery = (params: IValidationParams) => {
 
   if (errorFields.length) {
     throw new InvalidRequestError(`Invalid data: ${errorFields.join(', ')}.`);
+  }
+};
+
+export const validateQuery = (queryParams: any, bodyParams: any) => {
+  if (!isEmptyObject(queryParams) || !isEmptyObject(bodyParams)) {
+    const validationParams: IValidationParams = { ...queryParams, ...bodyParams };
+    validateParams(validationParams);
   }
 };
