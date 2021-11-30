@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import categoryService from './category.service';
 import { validateQuery } from '../../helpers/validate-query';
+import { InvalidRequestError } from '../../helpers/errors';
 
 const categoriesRouter = express.Router();
 
@@ -18,7 +19,11 @@ categoriesRouter
   })
   .post(async (req: Request, res: Response, next: NextFunction) => {
     try {
-      validateQuery(req.query, req.body);
+      const invalidFields: Array<string> | undefined = validateQuery(req.query, req.body);
+
+      if (invalidFields) {
+        throw new InvalidRequestError(`Invalid data: ${invalidFields.join(', ')}.`);
+      }
 
       const newCategory = await categoryService.save({
         displayName: req.body.displayName,
@@ -32,7 +37,11 @@ categoriesRouter
 
 categoriesRouter.route('/:catId').get(async (req: Request, res: Response, next: NextFunction) => {
   try {
-    validateQuery(req.query, req.body);
+    const invalidFields: Array<string> | undefined = validateQuery(req.query, req.body);
+
+    if (invalidFields) {
+      throw new InvalidRequestError(`Invalid data: ${invalidFields.join(', ')}.`);
+    }
 
     const category = await categoryService.getByIdAndQueryParams(req.params.catId, req.query);
     res.status(200).json(category);

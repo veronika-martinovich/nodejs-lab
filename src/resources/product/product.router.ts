@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import productsService from './product.service';
 import { validateQuery } from '../../helpers/validate-query';
 import { isEmptyObject } from '../../helpers/validation';
+import { InvalidRequestError } from '../../helpers/errors';
 
 const productsRouter = express.Router();
 
@@ -9,7 +10,11 @@ productsRouter
   .route('/')
   .get(async (req: Request, res: Response, next: NextFunction) => {
     try {
-      validateQuery(req.query, req.body);
+      const invalidFields: Array<string> | undefined = validateQuery(req.query, req.body);
+
+      if (invalidFields) {
+        throw new InvalidRequestError(`Invalid data: ${invalidFields.join(', ')}.`);
+      }
 
       let products;
       if (isEmptyObject(req.query)) {
@@ -26,7 +31,11 @@ productsRouter
   })
   .post(async (req: Request, res: Response, next: NextFunction) => {
     try {
-      validateQuery(req.query, req.body);
+      const invalidFields: Array<string> | undefined = validateQuery(req.query, req.body);
+
+      if (invalidFields) {
+        throw new InvalidRequestError(`Invalid data: ${invalidFields.join(', ')}.`);
+      }
 
       const newProduct = await productsService.save({
         displayName: req.body.displayName,
