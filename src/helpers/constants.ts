@@ -1,4 +1,4 @@
-const { DB } = require('../config');
+import { IBooleanValue } from '../types';
 
 export const DB_TYPES = {
   POSTGRES: 'postgres',
@@ -12,12 +12,17 @@ export const SELECTION_PARAMS = {
 };
 
 export const SORTING_ORDER = {
-  ASC: DB === DB_TYPES.MONGO ? 'asc' : 'ASC',
-  DESC: DB === DB_TYPES.MONGO ? 'desc' : 'DESC',
+  ASC: 'asc',
+  DESC: 'desc',
 };
 
 export const PRODUCT_FIELDS = {
   id: '__id',
   displayName: 'displayName',
   totalRating: 'totalRating',
+};
+
+export const BOOLEAN_MAP: IBooleanValue = {
+  true: true,
+  false: false,
 };

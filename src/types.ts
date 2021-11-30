@@ -11,12 +11,35 @@ export interface IHttpLoggerProps {
   res?: Response;
 }
 
-export interface IStringKeyValue {
+export interface IStringValue {
   [key: string]: string;
+}
+
+export interface IBooleanValue {
+  [key: string]: boolean;
 }
 
 export interface IBooleanKeyValue {
   [key: string]: boolean;
+}
+
+export interface IError {
+  statusCode?: number;
+  message?: string;
+}
+
+export interface IValidationParams {
+  displayName?: string;
+  categoryId?: string;
+  createdAt?: Date;
+  totalRating?: number;
+  price?: string;
+  sortBy?: string;
+  offset?: string;
+  limit?: string;
+  minRating?: string;
+  includeProducts?: string;
+  includeTop3Products?: string;
 }
 
 // Product
@@ -48,7 +71,7 @@ export interface IProductWhereParams {
 }
 export interface IProductSearchParams {
   where?: IProductWhereParams;
-  order?: IStringKeyValue;
+  order?: IStringValue;
   skip?: number;
   take?: number;
   relations?: Array<string>;
@@ -100,7 +123,7 @@ export interface ICategoryWhereParams {
 
 export interface ICategorySearchParams {
   where?: ICategoryWhereParams;
-  order?: IStringKeyValue;
+  order?: IStringValue;
   skip?: number;
   take?: number;
 }

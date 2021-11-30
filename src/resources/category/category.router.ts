@@ -1,10 +1,12 @@
 import express, { Request, Response, NextFunction } from 'express';
 import categoryService from './category.service';
+import { validateQuery } from '../../helpers/validate-query';
+import { InvalidRequestError } from '../../helpers/errors';
 
 const categoriesRouter = express.Router();
 
 categoriesRouter
-  .route('/categories')
+  .route('/')
   .get(async (req: Request, res: Response, next: NextFunction) => {
     try {
       const categories = await categoryService.getAll();
@@ -17,6 +19,12 @@ categoriesRouter
   })
   .post(async (req: Request, res: Response, next: NextFunction) => {
     try {
+      const invalidFields: Array<string> | undefined = validateQuery(req.query, req.body);
+
+      if (invalidFields) {
+        throw new InvalidRequestError(`Invalid data: ${invalidFields.join(', ')}.`);
+      }
+
       const newCategory = await categoryService.save({
         displayName: req.body.displayName,
       });
@@ -27,8 +35,14 @@ categoriesRouter
     }
   });
 
-categoriesRouter.route('/categories/:catId').get(async (req: Request, res: Response, next: NextFunction) => {
+categoriesRouter.route('/:catId').get(async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const invalidFields: Array<string> | undefined = validateQuery(req.query, req.body);
+
+    if (invalidFields) {
+      throw new InvalidRequestError(`Invalid data: ${invalidFields.join(', ')}.`);
+    }
+
     const category = await categoryService.getByIdAndQueryParams(req.params.catId, req.query);
     res.status(200).json(category);
     res.end();
@@ -36,4 +50,5 @@ categoriesRouter.route('/categories/:catId').get(async (req: Request, res: Respo
     next(err);
   }
 });
+
 export default categoriesRouter;

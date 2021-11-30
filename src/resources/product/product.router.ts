@@ -1,14 +1,23 @@
 import express, { Request, Response, NextFunction } from 'express';
 import productsService from './product.service';
+import { validateQuery } from '../../helpers/validate-query';
+import { isEmptyObject } from '../../helpers/validation';
+import { InvalidRequestError } from '../../helpers/errors';
 
 const productsRouter = express.Router();
 
 productsRouter
-  .route('/products')
+  .route('/')
   .get(async (req: Request, res: Response, next: NextFunction) => {
     try {
+      const invalidFields: Array<string> | undefined = validateQuery(req.query, req.body);
+
+      if (invalidFields) {
+        throw new InvalidRequestError(`Invalid data: ${invalidFields.join(', ')}.`);
+      }
+
       let products;
-      if (Object.keys(req.query).length === 0) {
+      if (isEmptyObject(req.query)) {
         products = await productsService.getAll();
       } else {
         products = await productsService.get(req.query);
@@ -22,6 +31,12 @@ productsRouter
   })
   .post(async (req: Request, res: Response, next: NextFunction) => {
     try {
+      const invalidFields: Array<string> | undefined = validateQuery(req.query, req.body);
+
+      if (invalidFields) {
+        throw new InvalidRequestError(`Invalid data: ${invalidFields.join(', ')}.`);
+      }
+
       const newProduct = await productsService.save({
         displayName: req.body.displayName,
         totalRating: req.body.totalRating,

@@ -18,10 +18,9 @@ const middlewareNotFoundHandler = (req: Request, res: Response, next: NextFuncti
     error: {
       name: 'Error',
       status: 404,
-      message: 'Invalid Request',
+      message: 'Route not found',
       statusCode: 404,
     },
-    message: 'Route not found',
   });
 
   logHttpData({ req, res });

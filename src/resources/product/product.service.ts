@@ -17,7 +17,6 @@ class ProductsService implements IProductService {
     try {
       return await this.repository.getAll();
     } catch (error) {
-      console.log(error);
       throw new Error();
     }
   };
@@ -27,7 +26,6 @@ class ProductsService implements IProductService {
       const searchParams: IProductSearchParams = formProductSearchParams(params);
       return await this.repository.get(searchParams);
     } catch (error) {
-      console.log(error);
       throw new Error();
     }
   };
@@ -53,7 +51,6 @@ class ProductsService implements IProductService {
       }
       return await this.repository.get(searchParams);
     } catch (error) {
-      console.log(error);
       throw new Error();
     }
   };
@@ -62,7 +59,6 @@ class ProductsService implements IProductService {
     try {
       return await this.repository.save(product);
     } catch (error) {
-      console.log(error);
       throw new Error();
     }
   };

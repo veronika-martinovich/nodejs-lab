@@ -22,8 +22,8 @@ app.use(express.json());
 app.use(middlewareHttpLogger);
 
 // Routers
-app.use('/', productsRouter);
-app.use('/', categoriesRouter);
+app.use('/products', productsRouter);
+app.use('/categories', categoriesRouter);
 
 // Invalid request
 app.use(middlewareNotFoundHandler);
