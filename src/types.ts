@@ -145,3 +145,14 @@ export interface ICategoryService {
   getByIdAndQueryParams: (id: string, params: ICategoryQueryParams) => Promise<ICategory | ICategoryExtended | null>;
   save: (category: ICategory) => Promise<ICategory>;
 }
+
+// User
+
+export interface IUser {
+  __id?: string;
+  username?: string;
+  passworg?: string;
+  firstName?: string;
+  lastName?: string;
+  createdAt?: Date;
+}
