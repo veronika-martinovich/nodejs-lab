@@ -10,8 +10,8 @@ export class User {
   @prop()
   public username: string;
 
-  @prop()
-  public password: string;
+  @prop({ select: false })
+  public password: { type: String; select: false };
 
   @prop()
   public firstName: string;

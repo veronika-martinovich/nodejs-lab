@@ -148,11 +148,30 @@ export interface ICategoryService {
 
 // User
 
-export interface IUser {
+export interface INewUser {
   __id?: string;
   username?: string;
-  passworg?: string;
+  password?: string;
   firstName?: string;
   lastName?: string;
   createdAt?: Date;
+}
+
+export interface IUser {
+  __id?: string;
+  username?: string;
+  firstName?: string;
+  lastName?: string;
+  createdAt?: Date;
+}
+
+export interface IUserRepository {
+  getAll: () => Promise<Array<IUser>>;
+  save: (user: INewUser) => Promise<IUser>;
+}
+
+export interface IUserService {
+  repository: IUserRepository;
+  getAll: () => Promise<Array<IUser>>;
+  save: (user: INewUser) => Promise<IUser>;
 }
