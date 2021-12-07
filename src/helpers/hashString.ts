@@ -1,4 +1,4 @@
-import { HASHING_SECRET } from '../credentials/config';
+import { HASHING_SECRET } from '../../credentials/configs';
 
 const crypto = require('crypto');
 

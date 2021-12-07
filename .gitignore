@@ -1,6 +1,6 @@
 /node_modules
 /dist
-/src/credentials/**
+/credentials
 http-err.log
 http-req.log
 http-res.log
