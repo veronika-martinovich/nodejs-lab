@@ -163,6 +163,7 @@ export interface IUserToRegister {
 export interface IUser {
   __id?: string;
   username?: string;
+  password?: string;
   firstName?: string;
   lastName?: string;
   createdAt?: Date;

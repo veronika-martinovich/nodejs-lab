@@ -3,7 +3,10 @@ import usersService from './user.service';
 import { validateUser } from './user.validation';
 import { hashString } from '../../helpers/hashString';
 import { IUserToRegister } from '../../types';
-import { AlreadyExistsError } from '../../helpers/errors';
+import { Error403 } from '../../helpers/errors';
+import { PASSPORT_SECRET } from '../../../credentials/configs';
+
+const jwt = require('jsonwebtoken');
 
 const usersRouter = express.Router();
 
@@ -28,10 +31,51 @@ usersRouter.route('/register').post(validateUser, async (req: Request, res: Resp
         username,
         password: hashedPassword,
       });
-      res.status(200).json(newUser);
+      const payload = {
+        username: newUser.username,
+        id: newUser.__id,
+      };
+      const token = jwt.sign(payload, PASSPORT_SECRET, {
+        expiresIn: 10000000,
+      });
+      const userToReturn = { ...newUser, ...{ token } };
+      delete userToReturn.password;
+      res.status(200).json(userToReturn);
       res.end();
     } else {
-      throw new AlreadyExistsError('User with provided username already exists');
+      throw new Error403('User with provided username already exists');
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
+usersRouter.route('/authenticate').post(async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { username, password }: IUserToRegister = req.body;
+    const user = await usersService.getByUsername(username);
+
+    if (user) {
+      const isPasswordMatched = hashString(password) === user.password;
+      if (isPasswordMatched) {
+        const payload = {
+          username: user.username,
+          id: user.__id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+        };
+        const token = jwt.sign(payload, PASSPORT_SECRET, {
+          expiresIn: 10000000,
+        });
+        const userToReturn = { ...user, ...{ token } };
+        delete userToReturn.password;
+        res.status(200).json(userToReturn);
+        res.end();
+      } else {
+        throw new Error403('Password is incorrect');
+      }
+    } else {
+      throw new Error403('Username is incorrect');
     }
   } catch (err) {
     next(err);

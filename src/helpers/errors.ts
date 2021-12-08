@@ -24,7 +24,7 @@ export class NotFoundError extends Error implements IError {
   }
 }
 
-export class AlreadyExistsError extends Error implements IError {
+export class Error403 extends Error implements IError {
   statusCode: number;
 
   message: string;
