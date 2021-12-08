@@ -13,6 +13,16 @@ export class UserTypeormRepository implements IUserRepository {
     return users;
   };
 
+  getByUsername = async (username: string) => {
+    const userRepository = getRepository(User);
+    const users = await userRepository.find({ where: { username } });
+    if (!users) {
+      return null;
+    }
+    if (users.length > 1) throw new Error('More than one user found with provided username');
+    return users[0];
+  };
+
   save = async (user: INewUser) => {
     const userRepository = getRepository(User);
     const newUser = userRepository.create({

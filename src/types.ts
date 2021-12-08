@@ -156,7 +156,10 @@ export interface INewUser {
   lastName?: string;
   createdAt?: Date;
 }
-
+export interface IUserToRegister {
+  username: string;
+  password: string;
+}
 export interface IUser {
   __id?: string;
   username?: string;
@@ -167,11 +170,13 @@ export interface IUser {
 
 export interface IUserRepository {
   getAll: () => Promise<Array<IUser>>;
+  getByUsername: (username: string) => Promise<IUser | null>;
   save: (user: INewUser) => Promise<IUser>;
 }
 
 export interface IUserService {
   repository: IUserRepository;
   getAll: () => Promise<Array<IUser>>;
+  getByUsername: (username: string) => Promise<IUser | null>;
   save: (user: INewUser) => Promise<IUser>;
 }

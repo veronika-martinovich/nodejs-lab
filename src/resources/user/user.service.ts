@@ -20,6 +20,14 @@ class UsersService implements IUserService {
     }
   };
 
+  public getByUsername = async (username: string) => {
+    try {
+      return await this.repository.getByUsername(username);
+    } catch (error) {
+      throw new Error();
+    }
+  };
+
   public save = async (user: INewUser) => {
     try {
       return await this.repository.save(user);
