@@ -12,7 +12,7 @@ export class UserTypegooseRepository implements IUserRepository {
   };
 
   getByUsername = async (username: string) => {
-    const user = await UserModel.findOne({ username });
+    const user = await UserModel.findOne({ username }).lean().exec();
 
     if (!user) {
       return null;

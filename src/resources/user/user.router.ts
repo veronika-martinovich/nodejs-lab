@@ -7,10 +7,12 @@ import { Error403 } from '../../helpers/errors';
 import { PASSPORT_SECRET } from '../../../credentials/configs';
 
 const jwt = require('jsonwebtoken');
+const passport = require('passport');
 
 const usersRouter = express.Router();
 
-usersRouter.route('/users').get(async (req: Request, res: Response, next: NextFunction) => {
+const authenticate = passport.authenticate('jwt', { session: false });
+usersRouter.route('/users').get(authenticate, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const users = await usersService.getAll();
 
