@@ -25,6 +25,17 @@ usersRouter.route('/users').get(authenticate, async (req: Request, res: Response
   }
 });
 
+usersRouter.route('/profile').put(authenticate, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { username, updateFields } = req.body;
+
+    res.status(200).json(user);
+    res.end();
+  } catch (err) {
+    next(err);
+  }
+});
+
 usersRouter.route('/register').post(validateUser, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { username, password, firstName, lastName }: IUserToRegister = req.body;

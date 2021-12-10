@@ -28,4 +28,13 @@ export class UserTypegooseRepository implements IUserRepository {
     }
     return newUser;
   };
+
+  update = async (username: string, updateFields: INewUser) => {
+    const newUser = await UserModel.where({ username }).update({ ...updateFields });
+
+    if (!newUser) {
+      throw new NotFoundError('User was not created');
+    }
+    return newUser;
+  };
 }

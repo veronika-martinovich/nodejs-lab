@@ -190,6 +190,7 @@ export interface IUserRepository {
   getAll: () => Promise<Array<IUser>>;
   getByUsername: (username: string) => Promise<IUser | null>;
   save: (user: INewUser) => Promise<IUser>;
+  update: (username: string, updateFields: INewUser) => Promise<IUser>;
 }
 
 export interface IUserService {
@@ -197,4 +198,5 @@ export interface IUserService {
   getAll: () => Promise<Array<IUser>>;
   getByUsername: (username: string) => Promise<IUser | null>;
   save: (user: INewUser) => Promise<IUser>;
+  update: (username: string, updateFields: INewUser) => Promise<IUser>;
 }

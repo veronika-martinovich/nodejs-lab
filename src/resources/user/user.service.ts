@@ -12,7 +12,7 @@ class UsersService implements IUserService {
     this.repository = repository;
   }
 
-  public getAll = async () => {
+  getAll = async () => {
     try {
       return await this.repository.getAll();
     } catch (error) {
@@ -20,7 +20,7 @@ class UsersService implements IUserService {
     }
   };
 
-  public getByUsername = async (username: string) => {
+  getByUsername = async (username: string) => {
     try {
       return await this.repository.getByUsername(username);
     } catch (error) {
@@ -28,9 +28,17 @@ class UsersService implements IUserService {
     }
   };
 
-  public save = async (user: INewUser) => {
+  save = async (user: INewUser) => {
     try {
       return await this.repository.save(user);
+    } catch (error) {
+      throw new Error();
+    }
+  };
+
+  update = async (username: string, updateFields: INewUser) => {
+    try {
+      return await this.repository.save(username, updateFields);
     } catch (error) {
       throw new Error();
     }
