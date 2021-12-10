@@ -1,4 +1,4 @@
-import { PASSPORT_SECRET } from '../../credentials/configs';
+import { TOKEN } from '../../credentials/configs';
 import usersService from '../resources/user/user.service';
 
 const { Strategy, ExtractJwt } = require('passport-jwt');
@@ -6,7 +6,7 @@ const { Strategy, ExtractJwt } = require('passport-jwt');
 export const applyPassportStrategy = (passport: any) => {
   const options: { jwtFromRequest?: string; secretOrKey?: string } = {};
   options.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-  options.secretOrKey = PASSPORT_SECRET;
+  options.secretOrKey = TOKEN.secret;
 
   passport.use(
     new Strategy(options, async (payload: any, done: any) => {

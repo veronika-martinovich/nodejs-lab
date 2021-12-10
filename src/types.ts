@@ -159,6 +159,19 @@ export interface INewUser {
 export interface IUserToRegister {
   username: string;
   password: string;
+  firstName?: string;
+  lastName?: string;
+}
+
+export interface IUserToReturn {
+  __id?: string;
+  username?: string;
+  password?: string;
+  firstName?: string;
+  lastName?: string;
+  createdAt?: Date;
+  token: string;
+  refreshToken?: string;
 }
 export interface IUser {
   __id?: string;
@@ -167,6 +180,10 @@ export interface IUser {
   firstName?: string;
   lastName?: string;
   createdAt?: Date;
+}
+
+export interface ITokenList {
+  [key: string]: IUserToReturn;
 }
 
 export interface IUserRepository {

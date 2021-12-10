@@ -2,14 +2,16 @@ import express, { Request, Response, NextFunction } from 'express';
 import usersService from './user.service';
 import { validateUser } from './user.validation';
 import { hashString } from '../../helpers/hashString';
-import { IUserToRegister } from '../../types';
+import { IUserToRegister, IUserToReturn, ITokenList } from '../../types';
 import { Error403 } from '../../helpers/errors';
-import { PASSPORT_SECRET } from '../../../credentials/configs';
+import { TOKEN, REFRESH_TOKEN } from '../../../credentials/configs';
 
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 
 const usersRouter = express.Router();
+
+const tokenList: ITokenList = {};
 
 const authenticate = passport.authenticate('jwt', { session: false });
 usersRouter.route('/users').get(authenticate, async (req: Request, res: Response, next: NextFunction) => {
@@ -25,23 +27,19 @@ usersRouter.route('/users').get(authenticate, async (req: Request, res: Response
 
 usersRouter.route('/register').post(validateUser, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { username, password }: IUserToRegister = req.body;
+    const { username, password, firstName, lastName }: IUserToRegister = req.body;
     const user = await usersService.getByUsername(username);
     if (!user) {
       const hashedPassword = hashString(password);
       const newUser = await usersService.save({
         username,
         password: hashedPassword,
+        firstName,
+        lastName,
       });
-      const payload = {
-        username: newUser.username,
-        id: newUser.__id,
-      };
-      const token = jwt.sign(payload, PASSPORT_SECRET, {
-        expiresIn: 10000000,
-      });
-      const userToReturn = { ...newUser, ...{ token } };
+      const userToReturn = { ...newUser };
       delete userToReturn.password;
+
       res.status(200).json(userToReturn);
       res.end();
     } else {
@@ -63,14 +61,17 @@ usersRouter.route('/authenticate').post(async (req: Request, res: Response, next
         const payload = {
           username: user.username,
           id: user.__id,
-          firstName: user.firstName,
-          lastName: user.lastName,
         };
-        const token = jwt.sign(payload, PASSPORT_SECRET, {
-          expiresIn: 10000000,
+        const token: string = jwt.sign(payload, TOKEN.secret, {
+          expiresIn: TOKEN.expiresIn,
         });
-        const userToReturn = { ...user, ...{ token } };
+        const refreshToken: string = jwt.sign(payload, REFRESH_TOKEN.secret, {
+          expiresIn: REFRESH_TOKEN.expiresIn,
+        });
+        const userToReturn: IUserToReturn = { ...user, token, refreshToken };
+        tokenList[refreshToken] = userToReturn;
         delete userToReturn.password;
+
         res.status(200).json(userToReturn);
         res.end();
       } else {
@@ -78,6 +79,39 @@ usersRouter.route('/authenticate').post(async (req: Request, res: Response, next
       }
     } else {
       throw new Error403('Username is incorrect');
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
+usersRouter.route('/token').post(async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { refreshToken: oldRefreshToken } = req.body;
+
+    if (!!oldRefreshToken && oldRefreshToken in tokenList) {
+      const user = tokenList[oldRefreshToken];
+      const payload = {
+        username: user.username,
+        id: user.__id,
+      };
+
+      const token: string = jwt.sign(payload, TOKEN.secret, {
+        expiresIn: TOKEN.expiresIn,
+      });
+      const refreshToken: string = jwt.sign(payload, REFRESH_TOKEN.secret, {
+        expiresIn: REFRESH_TOKEN.expiresIn,
+      });
+
+      delete tokenList[oldRefreshToken];
+
+      const userToReturn = { ...user, token, refreshToken };
+      tokenList[refreshToken] = userToReturn;
+
+      res.status(200).json(userToReturn);
+      res.end();
+    } else {
+      throw new Error403('Invalid refreshToken');
     }
   } catch (err) {
     next(err);
