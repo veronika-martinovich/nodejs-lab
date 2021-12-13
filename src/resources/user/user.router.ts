@@ -27,10 +27,44 @@ usersRouter.route('/users').get(authenticate, async (req: Request, res: Response
 
 usersRouter.route('/profile').put(authenticate, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { username, updateFields } = req.body;
+    const { __id, fieldsToUpdate } = req.body;
+    const user = await usersService.getById(__id);
 
-    res.status(200).json(user);
-    res.end();
+    if (user && fieldsToUpdate) {
+      const updatedUser = await usersService.update(__id, fieldsToUpdate);
+      const userToReturn = { ...updatedUser };
+      delete userToReturn.password;
+
+      res.status(200).json(userToReturn);
+      res.end();
+    } else {
+      throw new Error403('Incorrect user data');
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
+usersRouter.route('/profile/password').put(authenticate, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { __id, password, newPassword } = req.body;
+    const user = await usersService.getById(__id);
+    const isPasswordMatched = user?.password === hashString(password);
+
+    if (isPasswordMatched && newPassword) {
+      const newHashedPassword = hashString(newPassword);
+      const fieldsToUpdate = {
+        password: newHashedPassword,
+      };
+      const updatedUser = await usersService.update(__id, fieldsToUpdate);
+      const userToReturn = { ...updatedUser };
+      delete userToReturn.password;
+
+      res.status(200).json(userToReturn);
+      res.end();
+    } else {
+      throw new Error403('Incorrect user data');
+    }
   } catch (err) {
     next(err);
   }

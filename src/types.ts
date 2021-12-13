@@ -189,14 +189,16 @@ export interface ITokenList {
 export interface IUserRepository {
   getAll: () => Promise<Array<IUser>>;
   getByUsername: (username: string) => Promise<IUser | null>;
+  getById: (__id: string) => Promise<IUser | null>;
   save: (user: INewUser) => Promise<IUser>;
-  update: (username: string, updateFields: INewUser) => Promise<IUser>;
+  update: (__id: string, fieldsToUpdate: INewUser) => Promise<IUser>;
 }
 
 export interface IUserService {
   repository: IUserRepository;
   getAll: () => Promise<Array<IUser>>;
   getByUsername: (username: string) => Promise<IUser | null>;
+  getById: (__id: string) => Promise<IUser | null>;
   save: (user: INewUser) => Promise<IUser>;
-  update: (username: string, updateFields: INewUser) => Promise<IUser>;
+  update: (__id: string, fieldsToUpdate: INewUser) => Promise<IUser>;
 }

@@ -20,6 +20,15 @@ export class UserTypegooseRepository implements IUserRepository {
     return user;
   };
 
+  getById = async (__id: string) => {
+    const user = await UserModel.findById(__id).lean().exec();
+
+    if (!user) {
+      return null;
+    }
+    return user;
+  };
+
   save = async (user: INewUser) => {
     const newUser = await UserModel.create(user);
 
@@ -29,12 +38,12 @@ export class UserTypegooseRepository implements IUserRepository {
     return newUser;
   };
 
-  update = async (username: string, updateFields: INewUser) => {
-    const newUser = await UserModel.where({ username }).update({ ...updateFields });
-
-    if (!newUser) {
-      throw new NotFoundError('User was not created');
+  update = async (__id: string, fieldsToUpdate: INewUser) => {
+    await UserModel.updateOne({ _id: __id }, { ...fieldsToUpdate }).exec();
+    const updatedUser = await UserModel.findOne({ _id: __id }).lean().exec();
+    if (!updatedUser) {
+      throw new NotFoundError('User was not updated');
     }
-    return newUser;
+    return updatedUser;
   };
 }

@@ -28,6 +28,14 @@ class UsersService implements IUserService {
     }
   };
 
+  getById = async (__id: string) => {
+    try {
+      return await this.repository.getById(__id);
+    } catch (error) {
+      throw new Error();
+    }
+  };
+
   save = async (user: INewUser) => {
     try {
       return await this.repository.save(user);
@@ -36,9 +44,9 @@ class UsersService implements IUserService {
     }
   };
 
-  update = async (username: string, updateFields: INewUser) => {
+  update = async (__id: string, fieldsToUpdate: INewUser) => {
     try {
-      return await this.repository.save(username, updateFields);
+      return await this.repository.update(__id, fieldsToUpdate);
     } catch (error) {
       throw new Error();
     }
