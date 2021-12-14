@@ -145,3 +145,60 @@ export interface ICategoryService {
   getByIdAndQueryParams: (id: string, params: ICategoryQueryParams) => Promise<ICategory | ICategoryExtended | null>;
   save: (category: ICategory) => Promise<ICategory>;
 }
+
+// User
+
+export interface INewUser {
+  __id?: string;
+  username?: string;
+  password?: string;
+  firstName?: string;
+  lastName?: string;
+  createdAt?: Date;
+}
+export interface IUserToRegister {
+  username: string;
+  password: string;
+  firstName?: string;
+  lastName?: string;
+}
+
+export interface IUserToReturn {
+  __id?: string;
+  username?: string;
+  password?: string;
+  firstName?: string;
+  lastName?: string;
+  createdAt?: Date;
+  token: string;
+  refreshToken?: string;
+}
+export interface IUser {
+  __id?: string;
+  username?: string;
+  password?: string;
+  firstName?: string;
+  lastName?: string;
+  createdAt?: Date;
+}
+
+export interface ITokenList {
+  [key: string]: IUserToReturn;
+}
+
+export interface IUserRepository {
+  getAll: () => Promise<Array<IUser>>;
+  getByUsername: (username: string) => Promise<IUser | null>;
+  getById: (__id: string) => Promise<IUser | null>;
+  save: (user: INewUser) => Promise<IUser>;
+  update: (__id: string, fieldsToUpdate: INewUser) => Promise<IUser>;
+}
+
+export interface IUserService {
+  repository: IUserRepository;
+  getAll: () => Promise<Array<IUser>>;
+  getByUsername: (username: string) => Promise<IUser | null>;
+  getById: (__id: string) => Promise<IUser | null>;
+  save: (user: INewUser) => Promise<IUser>;
+  update: (__id: string, fieldsToUpdate: INewUser) => Promise<IUser>;
+}

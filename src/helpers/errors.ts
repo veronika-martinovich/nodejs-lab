@@ -23,3 +23,15 @@ export class NotFoundError extends Error implements IError {
     this.message = message;
   }
 }
+
+export class Error403 extends Error implements IError {
+  statusCode: number;
+
+  message: string;
+
+  constructor(message: string) {
+    super();
+    this.statusCode = 403;
+    this.message = message;
+  }
+}
