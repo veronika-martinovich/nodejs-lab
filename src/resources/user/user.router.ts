@@ -3,7 +3,7 @@ import usersService from './user.service';
 import { validateUser } from './user.validation';
 import { hashString } from '../../helpers/hashString';
 import { IUserToRegister, IUserToReturn, ITokenList } from '../../types';
-import { Error403 } from '../../helpers/errors';
+import { ForbiddenError, UnauthorizedError } from '../../helpers/errors';
 import { TOKEN, REFRESH_TOKEN } from '../../../credentials/configs';
 
 const jwt = require('jsonwebtoken');
@@ -13,7 +13,11 @@ const usersRouter = express.Router();
 
 const tokenList: ITokenList = {};
 
-const authenticate = passport.authenticate('jwt', { session: false });
+const authenticate = passport.authenticate('jwt', { session: false }, async (error: any, token: string) => {
+  if (error || !token) {
+    throw new UnauthorizedError('Unauthorized');
+  }
+});
 
 usersRouter.route('/profile').put(authenticate, async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -28,7 +32,7 @@ usersRouter.route('/profile').put(authenticate, async (req: Request, res: Respon
       res.status(200).json(userToReturn);
       res.end();
     } else {
-      throw new Error403('Incorrect user data');
+      throw new ForbiddenError('Incorrect user data');
     }
   } catch (err) {
     next(err);
@@ -53,7 +57,7 @@ usersRouter.route('/profile/password').put(authenticate, async (req: Request, re
       res.status(200).json(userToReturn);
       res.end();
     } else {
-      throw new Error403('Incorrect user data');
+      throw new ForbiddenError('Incorrect user data');
     }
   } catch (err) {
     next(err);
@@ -78,7 +82,7 @@ usersRouter.route('/register').post(validateUser, async (req: Request, res: Resp
       res.status(200).json(userToReturn);
       res.end();
     } else {
-      throw new Error403('User with provided username already exists');
+      throw new ForbiddenError('User with provided username already exists');
     }
   } catch (err) {
     next(err);
@@ -110,10 +114,10 @@ usersRouter.route('/authenticate').post(async (req: Request, res: Response, next
         res.status(200).json(userToReturn);
         res.end();
       } else {
-        throw new Error403('Password is incorrect');
+        throw new ForbiddenError('Password is incorrect');
       }
     } else {
-      throw new Error403('Username is incorrect');
+      throw new ForbiddenError('Username is incorrect');
     }
   } catch (err) {
     next(err);
@@ -146,7 +150,7 @@ usersRouter.route('/token').post(async (req: Request, res: Response, next: NextF
       res.status(200).json(userToReturn);
       res.end();
     } else {
-      throw new Error403('Invalid refreshToken');
+      throw new ForbiddenError('Invalid refreshToken');
     }
   } catch (err) {
     next(err);

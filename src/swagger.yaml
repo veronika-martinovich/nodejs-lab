@@ -1,0 +1,155 @@
+openapi: 3.0.3
+info:
+  title: Games Store
+  description: Online Games Store
+  version: 1.0.0
+
+servers:
+- url: http://localhost:3000/
+  description: Local server
+
+components:
+  schemas:
+    GeneralError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    User:
+      type: object
+      properties:
+        __id:
+          type: string
+        username:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        token:
+          type: string
+        refreshToken:
+          type: string
+    Category:
+      type: object
+      properties:
+        __id:
+          type: string
+        displayName:
+          type: string
+    Product:
+      type: object
+      properties:
+        __id:
+          type: string
+        displayName:
+          type: string
+        categoryId:
+          type: string
+        totalRating:
+          type: integer
+        price:
+          type: integer
+  responses:
+    NotFoundError:
+      description: Entity not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GeneralError'
+    BadRequestError:
+      description: Illegal input for operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GeneralError'
+    ForbiddenError:
+      description: Incorrect or invalid data.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GeneralError'
+    UnauthorizedError:
+      description: Unauthorized user.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GeneralError'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+paths:
+  /register:
+    post:
+      tags:
+        - Register
+      summary: Register user
+      description: Register new users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Username
+                password:
+                  type: string
+                  description: Password
+              required:
+                - username
+                - password
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/User"
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+  /authenticate:
+    post:
+      tags:
+        - Authenticate
+      summary: Authenticate user
+      description: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Username
+                password:
+                  type: string
+                  description: Password
+              required:
+                - username
+                - password
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/User"
+        403:
+          $ref: '#/components/responses/ForbiddenError'

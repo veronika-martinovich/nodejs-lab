@@ -1,6 +1,6 @@
 import { IError } from '../types';
 
-export class InvalidRequestError extends Error implements IError {
+export class BadRequestError extends Error implements IError {
   statusCode: number;
 
   message: string;
@@ -24,7 +24,7 @@ export class NotFoundError extends Error implements IError {
   }
 }
 
-export class Error403 extends Error implements IError {
+export class ForbiddenError extends Error implements IError {
   statusCode: number;
 
   message: string;
@@ -32,6 +32,18 @@ export class Error403 extends Error implements IError {
   constructor(message: string) {
     super();
     this.statusCode = 403;
+    this.message = message;
+  }
+}
+
+export class UnauthorizedError extends Error implements IError {
+  statusCode: number;
+
+  message: string;
+
+  constructor(message: string) {
+    super();
+    this.statusCode = 401;
     this.message = message;
   }
 }
