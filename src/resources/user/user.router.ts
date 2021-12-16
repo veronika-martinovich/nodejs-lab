@@ -14,16 +14,6 @@ const usersRouter = express.Router();
 const tokenList: ITokenList = {};
 
 const authenticate = passport.authenticate('jwt', { session: false });
-usersRouter.route('/users').get(authenticate, async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const users = await usersService.getAll();
-
-    res.status(200).json(users);
-    res.end();
-  } catch (err) {
-    next(err);
-  }
-});
 
 usersRouter.route('/profile').put(authenticate, async (req: Request, res: Response, next: NextFunction) => {
   try {
