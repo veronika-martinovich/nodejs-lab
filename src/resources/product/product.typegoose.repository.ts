@@ -24,9 +24,11 @@ export class ProductTypegooseRepository implements IProductRepository {
 
   public save = async (product: IProduct) => {
     const newProduct = await ProductModel.create(product);
-    if (!newProduct) {
+    const productToReturn = await ProductModel.findOne({ _id: newProduct._id }).lean().exec();
+
+    if (!productToReturn) {
       throw new NotFoundError('Product was not created');
     }
-    return newProduct;
+    return productToReturn;
   };
 }

@@ -24,9 +24,11 @@ export class CategoryTypegooseRepository implements ICategoryRepository {
 
   public save = async (category: ICategory) => {
     const newCategory = await CategoryModel.create(category);
-    if (!newCategory) {
+    const categoryToReturn = await CategoryModel.findOne({ _id: newCategory._id }).lean().exec();
+
+    if (!categoryToReturn) {
       throw new NotFoundError('Category was not created');
     }
-    return newCategory;
+    return categoryToReturn;
   };
 }

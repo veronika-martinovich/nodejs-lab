@@ -114,7 +114,7 @@ export interface ICategoryExtended {
   displayName?: string;
   createdAt?: Date;
   products?: Array<IProduct>;
-  includeTop3Products?: Array<IProduct>;
+  top3Products?: Array<IProduct>;
 }
 
 export interface ICategoryWhereParams {
@@ -190,7 +190,7 @@ export interface IUserRepository {
   getAll: () => Promise<Array<IUser>>;
   getByUsername: (username: string) => Promise<IUser | null>;
   getById: (__id: string) => Promise<IUser | null>;
-  save: (user: INewUser) => Promise<IUser>;
+  save: (user: INewUser) => Promise<IUser | null>;
   update: (__id: string, fieldsToUpdate: INewUser) => Promise<IUser>;
 }
 
@@ -199,6 +199,6 @@ export interface IUserService {
   getAll: () => Promise<Array<IUser>>;
   getByUsername: (username: string) => Promise<IUser | null>;
   getById: (__id: string) => Promise<IUser | null>;
-  save: (user: INewUser) => Promise<IUser>;
+  save: (user: INewUser) => Promise<IUser | null>;
   update: (__id: string, fieldsToUpdate: INewUser) => Promise<IUser>;
 }
