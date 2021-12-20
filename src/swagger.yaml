@@ -15,10 +15,20 @@ components:
       properties:
         code:
           type: integer
-          format: int32
         message:
           type: string
     User:
+      type: object
+      properties:
+        __id:
+          type: string
+        username:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+    AuthUser:
       type: object
       properties:
         __id:
@@ -40,6 +50,23 @@ components:
           type: string
         displayName:
           type: string
+    ExtendedCategory:
+      type: object
+      properties:
+        __id:
+          type: string
+        displayName:
+          type: string
+        createdAt:
+          type: string
+        products:
+          type: array
+          items:
+            $ref: "#/components/schemas/Product"
+        top3Products:
+          type: array
+          items:
+            $ref: "#/components/schemas/Product"
     Product:
       type: object
       properties:
@@ -88,7 +115,7 @@ paths:
   /register:
     post:
       tags:
-        - Register
+        - User
       summary: Register user
       description: Register new users
       requestBody:
@@ -113,9 +140,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: "#/components/schemas/User"
+                $ref: "#/components/schemas/User"
         400:
           $ref: '#/components/responses/BadRequestError'
         403:
@@ -123,7 +148,7 @@ paths:
   /authenticate:
     post:
       tags:
-        - Authenticate
+        - User
       summary: Authenticate user
       description: Login
       requestBody:
@@ -148,8 +173,263 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: "#/components/schemas/User"
+                $ref: "#/components/schemas/AuthUser"
         403:
           $ref: '#/components/responses/ForbiddenError'
+  /token:
+    post:
+      tags:
+        - User
+      summary: Get token and new refresh token
+      description: Token and new refresh token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refreshToken:
+                  type: string
+                  description: Refresh token
+              required:
+                - refreshToken
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthUser"
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+  /profile:
+    put:
+      tags:
+        - User
+      summary: User profile
+      description: Updates user profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                __id:
+                  type: string
+                  description: User id
+                fieldsToUpdate:
+                  type: object
+                  description: Fields to update
+              required:
+                - __id
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+  /profile/password:
+    put:
+      tags:
+        - User
+      summary: User password
+      description: Updates user password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                __id:
+                  type: string
+                  description: User id
+                password:
+                  type: string
+                  description: Old password
+                newPassword:
+                  type: string
+                  description: New password
+              required:
+                - __id
+                - password
+                - newPassword
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+  
+  /products:
+    get:
+      tags:
+        - Product
+      summary: Get products
+      description: Get all products or search products
+      parameters:
+        - in: query
+          name: displayName
+          schema:
+            type: string
+          description: The display name of items to filter the result set
+        - in: query
+          name: createdAt
+          schema:
+            type: string
+          description: The creation date of items to filter the result set
+        - in: query
+          name: minRating
+          schema:
+            type: integer
+          description: The minimal item to filter the result set
+        - in: query
+          name: price
+          schema:
+            type: integer
+          description: The price of items to filter the result set (price=min:max)
+        - in: offset
+          name: createdAt
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
+        - in: query
+          name: sortBy
+          schema:
+            type: integer
+          description: The field and its direction to sort the result set (sortBy=sortField:sortDirection)
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+        400:
+          $ref: '#/components/responses/BadRequestError'
+    post:
+      tags:
+        - Product
+      summary: Create product
+      description: Create new product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                displayName:
+                  type: string
+                  description: Display Name
+                totalRating:
+                  type: float
+                  description: Total Rating
+                price:
+                  type: integer
+                  description: Price
+                categoryId:
+                  type: string
+                  description: Category Id
+              required:
+                - displayName
+                - totalRating
+                - price
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        400:
+          $ref: '#/components/responses/BadRequestError'
+
+  /categories:
+    get:
+      tags:
+        - Category
+      summary: Get categories
+      description: Get all categories
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
+    post:
+      tags:
+        - Category
+      summary: Create category
+      description: Create new category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                displayName:
+                  type: string
+                  description: Display Name
+              required:
+                - displayName
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+  /categories/{catId}:
+    get:
+      tags:
+        - Category
+      summary: Find category
+      description: Find category by Id and query prameters
+      parameters:
+        - in: path
+          name: catId
+          schema:
+            type: string
+          required: true
+          description: Category Id
+        - in: query
+          name: includeProducts
+          schema:
+            type: boolean
+          description: If true products that belong to the category will be included
+        - in: query
+          name: includeTop3Products
+          schema:
+            type: boolean
+          description: If true top 3 products with highest rating that belong to the category will be included
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+             schema:
+                $ref: "#/components/schemas/ExtendedCategory"
