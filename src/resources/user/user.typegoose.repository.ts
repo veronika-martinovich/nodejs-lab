@@ -31,11 +31,13 @@ export class UserTypegooseRepository implements IUserRepository {
 
   save = async (user: INewUser) => {
     const newUser = await UserModel.create(user);
+    const userToReturn = await UserModel.findOne({ _id: newUser._id }).lean().exec();
 
-    if (!newUser) {
+    if (!userToReturn) {
       throw new NotFoundError('User was not created');
     }
-    return newUser;
+
+    return userToReturn;
   };
 
   update = async (__id: string, fieldsToUpdate: INewUser) => {

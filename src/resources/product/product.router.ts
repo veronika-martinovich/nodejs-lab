@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import productsService from './product.service';
 import { validateQuery } from '../../helpers/validate-query';
 import { isEmptyObject } from '../../helpers/validation';
-import { InvalidRequestError } from '../../helpers/errors';
+import { BadRequestError } from '../../helpers/errors';
 
 const productsRouter = express.Router();
 
@@ -13,7 +13,7 @@ productsRouter
       const invalidFields: Array<string> | undefined = validateQuery(req.query, req.body);
 
       if (invalidFields) {
-        throw new InvalidRequestError(`Invalid data: ${invalidFields.join(', ')}.`);
+        throw new BadRequestError(`Invalid data: ${invalidFields.join(', ')}.`);
       }
 
       let products;
@@ -34,7 +34,7 @@ productsRouter
       const invalidFields: Array<string> | undefined = validateQuery(req.query, req.body);
 
       if (invalidFields) {
-        throw new InvalidRequestError(`Invalid data: ${invalidFields.join(', ')}.`);
+        throw new BadRequestError(`Invalid data: ${invalidFields.join(', ')}.`);
       }
 
       const newProduct = await productsService.save({

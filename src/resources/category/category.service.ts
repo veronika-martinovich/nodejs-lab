@@ -43,7 +43,7 @@ class CategoryService implements ICategoryService {
           sortDirection: DB_TYPES.MONGO ? SORTING_ORDER.DESC : SORTING_ORDER.DESC.toUpperCase(),
           sortField: PRODUCT_FIELDS.totalRating,
         });
-        if (top3Products) extendedCategory.includeTop3Products = top3Products;
+        if (top3Products) extendedCategory.top3Products = top3Products;
       }
       return extendedCategory;
     } catch (error) {

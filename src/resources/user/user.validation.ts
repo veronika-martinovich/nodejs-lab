@@ -1,6 +1,6 @@
 import { check, validationResult } from 'express-validator';
 import { Request, Response, NextFunction } from 'express';
-import { InvalidRequestError } from '../../helpers/errors';
+import { BadRequestError } from '../../helpers/errors';
 
 export const validateUser = [
   check('username').isString().isLength({ min: 3 }),
@@ -11,7 +11,7 @@ export const validateUser = [
     const errors = validationResult(req).array();
     const errorFields = errors.map((item) => item.param);
     if (errors.length) {
-      throw new InvalidRequestError(`Invalid data: ${errorFields.join(', ')}.`);
+      throw new BadRequestError(`Invalid data: ${errorFields.join(', ')}.`);
     }
     next();
   },

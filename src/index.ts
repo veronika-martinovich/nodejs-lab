@@ -12,9 +12,14 @@ import usersRouter from './resources/user/user.router';
 import { DBConnect } from './helpers/DBConnect';
 import { applyPassportStrategy } from './helpers/passport';
 
+const path = require('path');
 const passport = require('passport');
 const { PORT } = require('./config');
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
 const { middlewareErrorHandler, middlewareHttpLogger, middlewareNotFoundHandler } = require('./helpers/middlewares');
+
+const swaggerDocument = YAML.load(path.join(__dirname, './swagger.yaml'));
 
 const app: Express = express();
 const port = PORT || 3000;
@@ -27,6 +32,9 @@ app.use(express.json());
 
 // Http logger
 app.use(middlewareHttpLogger);
+
+// Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Routers
 app.use('/products', productsRouter);
