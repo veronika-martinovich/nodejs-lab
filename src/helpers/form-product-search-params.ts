@@ -22,6 +22,10 @@ export const formProductSearchParams = (queryParams: IProductQueryParams) => {
   const where: IProductWhereParams = {};
   const order: IStringValue = {};
 
+  if (queryParams.__id) {
+    where.__id = queryParams.__id;
+  }
+
   if (queryParams.displayName) {
     where.displayName = queryParams.displayName;
   }
