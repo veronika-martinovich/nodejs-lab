@@ -1,5 +1,5 @@
 import { ProductModel } from './product.typegoose.model';
-import { IProduct, IProductRepository, IProductSearchParams } from '../../types';
+import { IProduct, IProductRepository, IProductSearchParams, IProductFieldsToUpdate } from '../../types';
 import { NotFoundError } from '../../helpers/errors';
 
 export class ProductTypegooseRepository implements IProductRepository {
@@ -30,5 +30,14 @@ export class ProductTypegooseRepository implements IProductRepository {
       throw new NotFoundError('Product was not created');
     }
     return productToReturn;
+  };
+
+  update = async (__id: string, fieldsToUpdate: IProductFieldsToUpdate) => {
+    await ProductModel.updateOne({ _id: __id }, { ...fieldsToUpdate }).exec();
+    const updatedProduct = await ProductModel.findOne({ _id: __id }).lean().exec();
+    if (!updatedProduct) {
+      throw new NotFoundError('Product was not updated');
+    }
+    return updatedProduct;
   };
 }

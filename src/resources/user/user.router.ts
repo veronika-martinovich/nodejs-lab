@@ -3,21 +3,15 @@ import usersService from './user.service';
 import { validateUser } from './user.validation';
 import { hashString } from '../../helpers/hashString';
 import { IUserToRegister, IUserToReturn, ITokenList } from '../../types';
-import { ForbiddenError, UnauthorizedError } from '../../helpers/errors';
+import { ForbiddenError } from '../../helpers/errors';
 import { TOKEN, REFRESH_TOKEN } from '../../../credentials/configs';
+import { authenticate } from '../../helpers/authenticate';
 
 const jwt = require('jsonwebtoken');
-const passport = require('passport');
 
 const usersRouter = express.Router();
 
 const tokenList: ITokenList = {};
-
-const authenticate = passport.authenticate('jwt', { session: false }, async (error: any, token: string) => {
-  if (error || !token) {
-    throw new UnauthorizedError('Unauthorized');
-  }
-});
 
 usersRouter.route('/profile').put(authenticate, async (req: Request, res: Response, next: NextFunction) => {
   try {

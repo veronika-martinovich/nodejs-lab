@@ -23,7 +23,7 @@ export class UserRatingsTypeormRepository implements IUserRatingsRepository {
     if (!avg) {
       throw new NotFoundError('User ratings not found');
     }
-    return avg[0].avg;
+    return Number(avg[0].avg);
   };
 
   get = async (params: IUserRatingSearchParams) => {

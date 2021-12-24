@@ -83,6 +83,14 @@ export interface IProduct {
   totalRating: number;
   price: number;
 }
+
+export interface IProductFieldsToUpdate {
+  displayName?: string;
+  categoryId?: string;
+  totalRating?: number;
+  price?: number;
+}
+
 export interface IProductQueryParams {
   __id?: string;
   displayName?: string;
@@ -114,6 +122,7 @@ export interface IProductRepository {
   getAll: () => Promise<Array<IProduct>>;
   save: (product: IProduct) => Promise<IProduct>;
   get: (searchParams: IProductSearchParams) => Promise<Array<IProduct>>;
+  update: (__id: string, fieldsToUpdate: IProductFieldsToUpdate) => Promise<IProduct>;
 }
 
 export interface IProductService {
@@ -121,6 +130,7 @@ export interface IProductService {
   getAll: () => Promise<Array<IProduct>>;
   get: (params: IProductQueryParams) => Promise<Array<IProduct> | null>;
   save: (product: IProduct) => Promise<IProduct>;
+  update: (__id: string, fieldsToUpdate: IProductFieldsToUpdate) => Promise<IProduct>;
   getByCategory: ({
     id,
     limit,

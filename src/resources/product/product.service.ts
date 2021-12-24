@@ -1,6 +1,15 @@
 import { ProductTypegooseRepository } from './product.typegoose.repository';
 import { ProductTypeormRepository } from './product.typeorm.repository';
-import { IProduct, IProductService, IProductRepository, IProductQueryParams, IProductSearchParams } from '../../types';
+import userRatingsService from '../user-ratings/user-ratings.service';
+import {
+  IUserRating,
+  IProduct,
+  IProductService,
+  IProductRepository,
+  IProductQueryParams,
+  IProductSearchParams,
+  IProductFieldsToUpdate,
+} from '../../types';
 import { DB_TYPES } from '../../helpers/constants';
 import { formProductSearchParams } from '../../helpers/form-product-search-params';
 
@@ -13,7 +22,7 @@ class ProductsService implements IProductService {
     this.repository = repository;
   }
 
-  public getAll = async () => {
+  getAll = async () => {
     try {
       return await this.repository.getAll();
     } catch (error) {
@@ -21,7 +30,7 @@ class ProductsService implements IProductService {
     }
   };
 
-  public get = async (params: IProductQueryParams) => {
+  get = async (params: IProductQueryParams) => {
     try {
       const searchParams: IProductSearchParams = formProductSearchParams(params);
       return await this.repository.get(searchParams);
@@ -30,7 +39,7 @@ class ProductsService implements IProductService {
     }
   };
 
-  public getByCategory = async ({
+  getByCategory = async ({
     id,
     limit,
     sortDirection,
@@ -55,11 +64,42 @@ class ProductsService implements IProductService {
     }
   };
 
-  public save = async (product: IProduct) => {
+  save = async (product: IProduct) => {
+    console.log(product);
     try {
       return await this.repository.save(product);
     } catch (error) {
       throw new Error();
+    }
+  };
+
+  update = async (__id: string, fieldsToUpdate: IProductFieldsToUpdate) => {
+    try {
+      return await this.repository.update(__id, fieldsToUpdate);
+    } catch (error) {
+      throw new Error();
+    }
+  };
+
+  rate = async (userRating: IUserRating) => {
+    if (DB === DB_TYPES.POSTGRES && userRating.productId) {
+      const currentUserRating = await userRatingsService.get({
+        where: { productId: userRating.productId, userId: userRating.userId },
+      });
+      const isUserRatingExist = !!currentUserRating.length;
+
+      if (isUserRatingExist && currentUserRating[0].__id) {
+        await userRatingsService.update(currentUserRating[0].__id, userRating);
+      } else {
+        await userRatingsService.save(userRating);
+      }
+
+      const avgRating = await userRatingsService.getAvgByProduct(userRating.productId);
+      const fieldsToUpdate: IProductFieldsToUpdate = {
+        totalRating: avgRating,
+      };
+      const updatedProduct = await this.update(userRating.productId, fieldsToUpdate);
+      return updatedProduct;
     }
   };
 }

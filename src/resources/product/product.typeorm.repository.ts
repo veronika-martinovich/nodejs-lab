@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
 import { Product } from './product.typeorm.model';
-import { IProduct, IProductRepository, IProductSearchParams } from '../../types';
+import { IProduct, IProductRepository, IProductSearchParams, IProductFieldsToUpdate } from '../../types';
 import { NotFoundError } from '../../helpers/errors';
 
 export class ProductTypeormRepository implements IProductRepository {
@@ -36,5 +36,16 @@ export class ProductTypeormRepository implements IProductRepository {
       throw new NotFoundError('Product was not created');
     }
     return savedProduct;
+  };
+
+  update = async (__id: string, fieldsToUpdate: IProductFieldsToUpdate) => {
+    const productRepository = getRepository(Product);
+    await productRepository.update({ __id }, { ...fieldsToUpdate });
+    const updatedProduct = await productRepository.find({ where: { __id } });
+
+    if (!updatedProduct) {
+      throw new NotFoundError('Product was not updated');
+    }
+    return updatedProduct[0];
   };
 }
