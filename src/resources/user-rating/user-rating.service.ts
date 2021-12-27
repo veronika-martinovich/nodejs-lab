@@ -1,10 +1,10 @@
-import { UserRatingsTypeormRepository } from './user-ratings.typeorm.repository';
-import { IUserRatingSearchParams, IUserRating, IUserRatingsService, IUserRatingsRepository } from '../../types';
+import { UserRatingTypeormRepository } from './user-rating.typeorm.repository';
+import { IUserRatingSearchParams, IUserRating, IUserRatingService, IUserRatingRepository } from '../../types';
 
-class UserRatingsService implements IUserRatingsService {
-  repository: IUserRatingsRepository;
+class UserRatingService implements IUserRatingService {
+  repository: IUserRatingRepository;
 
-  constructor(repository: IUserRatingsRepository) {
+  constructor(repository: IUserRatingRepository) {
     this.repository = repository;
   }
 
@@ -49,7 +49,7 @@ class UserRatingsService implements IUserRatingsService {
   };
 }
 
-const repository = new UserRatingsTypeormRepository();
-const userRatingsService = new UserRatingsService(repository);
+const repository = new UserRatingTypeormRepository();
+const userRatingsService = new UserRatingService(repository);
 
 export default userRatingsService;

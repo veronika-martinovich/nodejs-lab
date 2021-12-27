@@ -1,11 +1,11 @@
 import { getRepository } from 'typeorm';
-import { UserRatings } from './user-ratings.typeorm.model';
-import { IUserRatingsRepository, IUserRating, IUserRatingSearchParams } from '../../types';
+import { UserRating } from './user-rating.typeorm.model';
+import { IUserRatingRepository, IUserRating, IUserRatingSearchParams } from '../../types';
 import { NotFoundError } from '../../helpers/errors';
 
-export class UserRatingsTypeormRepository implements IUserRatingsRepository {
+export class UserRatingTypeormRepository implements IUserRatingRepository {
   getAll = async () => {
-    const userRatingsRepository = getRepository(UserRatings);
+    const userRatingsRepository = getRepository(UserRating);
     const usersRatings = await userRatingsRepository.find();
     if (!usersRatings) {
       throw new NotFoundError('User ratings not found');
@@ -14,7 +14,7 @@ export class UserRatingsTypeormRepository implements IUserRatingsRepository {
   };
 
   getAvgByProduct = async (prodId: string) => {
-    const userRatingsRepository = getRepository(UserRatings);
+    const userRatingsRepository = getRepository(UserRating);
     const avg = await userRatingsRepository
       .createQueryBuilder('userRatings')
       .select('AVG(userRatings.rating)')
@@ -27,7 +27,7 @@ export class UserRatingsTypeormRepository implements IUserRatingsRepository {
   };
 
   get = async (params: IUserRatingSearchParams) => {
-    const userRatingsRepository = getRepository(UserRatings);
+    const userRatingsRepository = getRepository(UserRating);
     const userRatings = await userRatingsRepository.find(params);
     if (!userRatings) {
       throw new NotFoundError('User ratings not found');
@@ -36,7 +36,7 @@ export class UserRatingsTypeormRepository implements IUserRatingsRepository {
   };
 
   save = async (userRating: IUserRating) => {
-    const userRatingsRepository = getRepository(UserRatings);
+    const userRatingsRepository = getRepository(UserRating);
     const newUserRating = userRatingsRepository.create({
       userId: userRating.userId,
       productId: userRating.productId,
@@ -53,7 +53,7 @@ export class UserRatingsTypeormRepository implements IUserRatingsRepository {
   };
 
   update = async (__id: string, userRating: IUserRating) => {
-    const userRatingsRepository = getRepository(UserRatings);
+    const userRatingsRepository = getRepository(UserRating);
     await userRatingsRepository.update({ __id }, { ...userRating });
     const updatedUser = await userRatingsRepository.find({ where: { __id } });
 

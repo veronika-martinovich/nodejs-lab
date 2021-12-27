@@ -56,7 +56,7 @@ export interface IUserRatingSearchParams {
   where?: IUserRating;
 }
 
-export interface IUserRatingsRepository {
+export interface IUserRatingRepository {
   getAll: () => Promise<Array<IUserRating>>;
   get: (params: IUserRatingSearchParams) => Promise<Array<IUserRating>>;
   getAvgByProduct: (prodId: string) => Promise<number>;
@@ -64,8 +64,8 @@ export interface IUserRatingsRepository {
   update: (__id: string, userRating: IUserRating) => Promise<IUserRating | null>;
 }
 
-export interface IUserRatingsService {
-  repository: IUserRatingsRepository;
+export interface IUserRatingService {
+  repository: IUserRatingRepository;
   getAll: () => Promise<Array<IUserRating>>;
   get: (params: IUserRatingSearchParams) => Promise<Array<IUserRating>>;
   getAvgByProduct: (prodId: string) => Promise<number>;

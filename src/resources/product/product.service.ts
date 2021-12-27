@@ -1,6 +1,6 @@
 import { ProductTypegooseRepository } from './product.typegoose.repository';
 import { ProductTypeormRepository } from './product.typeorm.repository';
-import userRatingsService from '../user-ratings/user-ratings.service';
+import userRatingsService from '../user-rating/user-rating.service';
 import {
   IUserRating,
   IProduct,
