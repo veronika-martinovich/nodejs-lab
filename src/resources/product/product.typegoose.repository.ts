@@ -33,7 +33,7 @@ export class ProductTypegooseRepository implements IProductRepository {
     return productToReturn;
   };
 
-  update = async (__id: string, fieldsToUpdate: IProductFieldsToUpdate) => {
+  public update = async (__id: string, fieldsToUpdate: IProductFieldsToUpdate) => {
     await ProductModel.updateOne({ _id: __id }, { ...fieldsToUpdate }).exec();
     const updatedProduct = await ProductModel.findOne({ _id: __id }).lean().exec();
     if (!updatedProduct) {
@@ -42,7 +42,7 @@ export class ProductTypegooseRepository implements IProductRepository {
     return updatedProduct;
   };
 
-  updateSubdocBySelectors = async (__id: string, querySelector: any, updateSelector: any) => {
+  public updateSubdocBySelectors = async (__id: string, querySelector: any, updateSelector: any) => {
     await ProductModel.updateOne(querySelector, updateSelector).exec();
     const updatedProduct = await ProductModel.findOne({ _id: __id }).lean().exec();
     if (!updatedProduct) {
@@ -51,7 +51,7 @@ export class ProductTypegooseRepository implements IProductRepository {
     return updatedProduct;
   };
 
-  getAvgRating = async (__id: string) => {
+  public getAvgRating = async (__id: string) => {
     const avgResponse = await ProductModel.aggregate([
       { $match: { _id: new ObjectId(__id) } },
       { $unwind: '$ratings' },

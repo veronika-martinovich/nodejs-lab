@@ -22,7 +22,7 @@ class ProductsService implements IProductService {
     this.repository = repository;
   }
 
-  getAll = async () => {
+  public getAll = async () => {
     try {
       return await this.repository.getAll();
     } catch (error) {
@@ -30,7 +30,7 @@ class ProductsService implements IProductService {
     }
   };
 
-  get = async (params: IProductQueryParams) => {
+  public get = async (params: IProductQueryParams) => {
     try {
       const searchParams: IProductSearchParams = formProductSearchParams(params);
       return await this.repository.get(searchParams);
@@ -39,7 +39,7 @@ class ProductsService implements IProductService {
     }
   };
 
-  getByCategory = async ({
+  public getByCategory = async ({
     id,
     limit,
     sortDirection,
@@ -64,7 +64,7 @@ class ProductsService implements IProductService {
     }
   };
 
-  save = async (product: IProduct) => {
+  public save = async (product: IProduct) => {
     try {
       return await this.repository.save(product);
     } catch (error) {
@@ -72,7 +72,7 @@ class ProductsService implements IProductService {
     }
   };
 
-  update = async (__id: string, fieldsToUpdate: IProductFieldsToUpdate) => {
+  public update = async (__id: string, fieldsToUpdate: IProductFieldsToUpdate) => {
     try {
       return await this.repository.update(__id, fieldsToUpdate);
     } catch (error) {
@@ -80,7 +80,7 @@ class ProductsService implements IProductService {
     }
   };
 
-  updateSubdocBySelectors = async (__id: string, querySelector: any, updateSelector: any) => {
+  public updateSubdocBySelectors = async (__id: string, querySelector: any, updateSelector: any) => {
     try {
       return await this.repository.updateSubdocBySelectors(__id, querySelector, updateSelector);
     } catch (error) {
@@ -88,7 +88,7 @@ class ProductsService implements IProductService {
     }
   };
 
-  getAvgRating = async (__id: string) => {
+  public getAvgRating = async (__id: string) => {
     try {
       return await this.repository.getAvgRating(__id);
     } catch (error) {
@@ -96,7 +96,7 @@ class ProductsService implements IProductService {
     }
   };
 
-  rate = async (userRating: IUserRatingReq) => {
+  public rate = async (userRating: IUserRatingReq) => {
     if (DB === DB_TYPES.POSTGRES && userRating.productId) {
       const currentUserRating = await userRatingsService.get({
         where: { productId: userRating.productId, userId: userRating.userId },
