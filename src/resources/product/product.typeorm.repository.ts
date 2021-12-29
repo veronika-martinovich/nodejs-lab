@@ -48,4 +48,17 @@ export class ProductTypeormRepository implements IProductRepository {
     }
     return updatedProduct[0];
   };
+
+  updateSubdocBySelectors = async (querySelector: any, updateSelector: any) => {
+    // Dummy method for mongo db repository compatability
+    console.log(querySelector, updateSelector);
+  };
+
+  getAvgRating = async (__id: string) => {
+    // Dummy method for mongo db repository compatability
+    console.log(__id);
+    const mockAvg = 1;
+
+    return mockAvg;
+  };
 }

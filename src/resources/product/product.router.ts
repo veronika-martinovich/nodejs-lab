@@ -4,7 +4,7 @@ import { validateQuery } from '../../helpers/validate-query';
 import { isEmptyObject } from '../../helpers/validation';
 import { BadRequestError } from '../../helpers/errors';
 import { authenticate } from '../../helpers/authenticate';
-import { IUserRating } from '../../types';
+import { IUserRatingReq } from '../../types';
 
 const productsRouter = express.Router();
 
@@ -54,7 +54,7 @@ productsRouter
 
 productsRouter.route('/:prodId/rate').post(authenticate, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const userRating: IUserRating = { ...req.body, productId: req.params.prodId };
+    const userRating: IUserRatingReq = { ...req.body, productId: req.params.prodId };
     const updatedProduct = await productsService.rate(userRating);
 
     res.status(200).json(updatedProduct);

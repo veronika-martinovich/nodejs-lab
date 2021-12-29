@@ -44,6 +44,13 @@ export interface IValidationParams {
 
 // User Ratings
 
+export interface IUserRatingReq {
+  userId: string;
+  productId: string;
+  rating: number;
+  comment?: string;
+}
+
 export interface IUserRating {
   __id?: string;
   userId?: string;
@@ -82,6 +89,7 @@ export interface IProduct {
   createdAt?: Date;
   totalRating: number;
   price: number;
+  ratings?: Array<IUserRating>;
 }
 
 export interface IProductFieldsToUpdate {
@@ -104,6 +112,7 @@ export interface IProductQueryParams {
 
 export interface IProductWhereParams {
   __id?: string;
+  _id?: string;
   displayName?: string;
   createdAt?: Date;
   totalRating?: any;
@@ -123,6 +132,8 @@ export interface IProductRepository {
   save: (product: IProduct) => Promise<IProduct>;
   get: (searchParams: IProductSearchParams) => Promise<Array<IProduct>>;
   update: (__id: string, fieldsToUpdate: IProductFieldsToUpdate) => Promise<IProduct>;
+  updateSubdocBySelectors: (__id: string, querySelector: any, updateSelector: any) => Promise<IProduct | void>;
+  getAvgRating: (__id: string) => Promise<number>;
 }
 
 export interface IProductService {
@@ -131,6 +142,8 @@ export interface IProductService {
   get: (params: IProductQueryParams) => Promise<Array<IProduct> | null>;
   save: (product: IProduct) => Promise<IProduct>;
   update: (__id: string, fieldsToUpdate: IProductFieldsToUpdate) => Promise<IProduct>;
+  updateSubdocBySelectors: (__id: string, querySelector: any, updateSelector: any) => Promise<IProduct | void>;
+  getAvgRating: (__id: string) => Promise<number>;
   getByCategory: ({
     id,
     limit,
@@ -142,8 +155,7 @@ export interface IProductService {
     sortDirection?: string;
     sortField?: string;
   }) => Promise<Array<IProduct>>;
-  // rate: (userRating: IUserRating) => Promise<IProduct>;
-  rate: (userRating: IUserRating) => void;
+  rate: (userRating: IUserRatingReq) => Promise<IProduct>;
 }
 
 // Category
