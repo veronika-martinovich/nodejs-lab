@@ -1,5 +1,6 @@
 import { prop, modelOptions, getModelForClass, Ref, index } from '@typegoose/typegoose';
 import { Category } from '../category/category.typegoose.model';
+import { UserRating } from '../user-rating/user-rating.typegoose.model';
 
 @modelOptions({
   schemaOptions: { collection: 'products' },
@@ -26,6 +27,9 @@ export class Product {
 
   @prop()
   public price: number;
+
+  @prop({ type: () => UserRating })
+  public ratings: UserRating[];
 }
 
 export const ProductModel = getModelForClass(Product);

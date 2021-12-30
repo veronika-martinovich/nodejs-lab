@@ -42,6 +42,44 @@ export interface IValidationParams {
   includeTop3Products?: string;
 }
 
+// User Ratings
+
+export interface IUserRatingReq {
+  userId: string;
+  productId: string;
+  rating: number;
+  comment?: string;
+}
+
+export interface IUserRating {
+  __id?: string;
+  userId?: string;
+  productId?: string;
+  rating?: number;
+  comment?: string;
+}
+
+export interface IUserRatingSearchParams {
+  where?: IUserRating;
+}
+
+export interface IUserRatingRepository {
+  getAll: () => Promise<Array<IUserRating>>;
+  get: (params: IUserRatingSearchParams) => Promise<Array<IUserRating>>;
+  getAvgByProduct: (prodId: string) => Promise<number>;
+  save: (userRating: IUserRating) => Promise<IUserRating | null>;
+  update: (__id: string, userRating: IUserRating) => Promise<IUserRating | null>;
+}
+
+export interface IUserRatingService {
+  repository: IUserRatingRepository;
+  getAll: () => Promise<Array<IUserRating>>;
+  get: (params: IUserRatingSearchParams) => Promise<Array<IUserRating>>;
+  getAvgByProduct: (prodId: string) => Promise<number>;
+  save: (userRating: IUserRating) => Promise<IUserRating | null>;
+  update: (__id: string, userRating: IUserRating) => Promise<IUserRating | null>;
+}
+
 // Product
 
 export interface IProduct {
@@ -51,8 +89,18 @@ export interface IProduct {
   createdAt?: Date;
   totalRating: number;
   price: number;
+  ratings?: Array<IUserRating>;
 }
+
+export interface IProductFieldsToUpdate {
+  displayName?: string;
+  categoryId?: string;
+  totalRating?: number;
+  price?: number;
+}
+
 export interface IProductQueryParams {
+  __id?: string;
   displayName?: string;
   createdAt?: Date;
   minRating?: string;
@@ -63,6 +111,8 @@ export interface IProductQueryParams {
 }
 
 export interface IProductWhereParams {
+  __id?: string;
+  _id?: string;
   displayName?: string;
   createdAt?: Date;
   totalRating?: any;
@@ -81,6 +131,9 @@ export interface IProductRepository {
   getAll: () => Promise<Array<IProduct>>;
   save: (product: IProduct) => Promise<IProduct>;
   get: (searchParams: IProductSearchParams) => Promise<Array<IProduct>>;
+  update: (__id: string, fieldsToUpdate: IProductFieldsToUpdate) => Promise<IProduct>;
+  updateSubdocBySelectors: (__id: string, querySelector: any, updateSelector: any) => Promise<IProduct | void>;
+  getAvgRating: (__id: string) => Promise<number>;
 }
 
 export interface IProductService {
@@ -88,6 +141,9 @@ export interface IProductService {
   getAll: () => Promise<Array<IProduct>>;
   get: (params: IProductQueryParams) => Promise<Array<IProduct> | null>;
   save: (product: IProduct) => Promise<IProduct>;
+  update: (__id: string, fieldsToUpdate: IProductFieldsToUpdate) => Promise<IProduct>;
+  updateSubdocBySelectors: (__id: string, querySelector: any, updateSelector: any) => Promise<IProduct | void>;
+  getAvgRating: (__id: string) => Promise<number>;
   getByCategory: ({
     id,
     limit,
@@ -99,6 +155,7 @@ export interface IProductService {
     sortDirection?: string;
     sortField?: string;
   }) => Promise<Array<IProduct>>;
+  rate: (userRating: IUserRatingReq) => Promise<IProduct>;
 }
 
 // Category

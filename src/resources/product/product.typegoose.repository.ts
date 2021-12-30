@@ -1,5 +1,6 @@
+import { ObjectId } from 'mongodb';
 import { ProductModel } from './product.typegoose.model';
-import { IProduct, IProductRepository, IProductSearchParams } from '../../types';
+import { IProduct, IProductRepository, IProductSearchParams, IProductFieldsToUpdate } from '../../types';
 import { NotFoundError } from '../../helpers/errors';
 
 export class ProductTypegooseRepository implements IProductRepository {
@@ -30,5 +31,43 @@ export class ProductTypegooseRepository implements IProductRepository {
       throw new NotFoundError('Product was not created');
     }
     return productToReturn;
+  };
+
+  public update = async (__id: string, fieldsToUpdate: IProductFieldsToUpdate) => {
+    await ProductModel.updateOne({ _id: __id }, { ...fieldsToUpdate }).exec();
+    const updatedProduct = await ProductModel.findOne({ _id: __id }).lean().exec();
+    if (!updatedProduct) {
+      throw new NotFoundError('Product was not updated');
+    }
+    return updatedProduct;
+  };
+
+  public updateSubdocBySelectors = async (__id: string, querySelector: any, updateSelector: any) => {
+    await ProductModel.updateOne(querySelector, updateSelector).exec();
+    const updatedProduct = await ProductModel.findOne({ _id: __id }).lean().exec();
+    if (!updatedProduct) {
+      throw new NotFoundError('Product was not updated');
+    }
+    return updatedProduct;
+  };
+
+  public getAvgRating = async (__id: string) => {
+    const avgResponse = await ProductModel.aggregate([
+      { $match: { _id: new ObjectId(__id) } },
+      { $unwind: '$ratings' },
+      {
+        $group: {
+          _id: null,
+          avg: { $avg: '$ratings.rating' },
+        },
+      },
+    ]).exec();
+
+    const { avg } = avgResponse[0];
+
+    if (!avg) {
+      throw new NotFoundError('Avg rating was not calculated');
+    }
+    return avg;
   };
 }
