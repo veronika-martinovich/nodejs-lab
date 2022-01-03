@@ -22,24 +22,24 @@ class ProductsService implements IProductService {
     this.repository = repository;
   }
 
-  public getAll = async () => {
+  public async getAll() {
     try {
       return await this.repository.getAll();
     } catch (error) {
       throw new Error();
     }
-  };
+  }
 
-  public get = async (params: IProductQueryParams) => {
+  public async get(params: IProductQueryParams) {
     try {
       const searchParams: IProductSearchParams = formProductSearchParams(params);
       return await this.repository.get(searchParams);
     } catch (error) {
       throw new Error();
     }
-  };
+  }
 
-  public getByCategory = async ({
+  public async getByCategory({
     id,
     limit,
     sortDirection,
@@ -49,7 +49,7 @@ class ProductsService implements IProductService {
     limit?: number;
     sortDirection?: string;
     sortField?: string;
-  }) => {
+  }) {
     try {
       const searchParams: IProductSearchParams = { where: { categoryId: id }, relations: ['category'] };
       if (!!sortField && !!sortDirection) {
@@ -62,41 +62,41 @@ class ProductsService implements IProductService {
     } catch (error) {
       throw new Error();
     }
-  };
+  }
 
-  public save = async (product: IProduct) => {
+  public async save(product: IProduct) {
     try {
       return await this.repository.save(product);
     } catch (error) {
       throw new Error();
     }
-  };
+  }
 
-  public update = async (__id: string, fieldsToUpdate: IProductFieldsToUpdate) => {
+  public async update(__id: string, fieldsToUpdate: IProductFieldsToUpdate) {
     try {
       return await this.repository.update(__id, fieldsToUpdate);
     } catch (error) {
       throw new Error();
     }
-  };
+  }
 
-  public updateSubdocBySelectors = async (__id: string, querySelector: any, updateSelector: any) => {
+  public async updateSubdocBySelectors(__id: string, querySelector: any, updateSelector: any) {
     try {
       return await this.repository.updateSubdocBySelectors(__id, querySelector, updateSelector);
     } catch (error) {
       throw new Error();
     }
-  };
+  }
 
-  public getAvgRating = async (__id: string) => {
+  public async getAvgRating(__id: string) {
     try {
       return await this.repository.getAvgRating(__id);
     } catch (error) {
       throw new Error();
     }
-  };
+  }
 
-  public rate = async (userRating: IUserRatingReq) => {
+  public async rate(userRating: IUserRatingReq) {
     if (DB === DB_TYPES.POSTGRES && userRating.productId) {
       const currentUserRating = await userRatingsService.get({
         where: { productId: userRating.productId, userId: userRating.userId },
@@ -152,7 +152,7 @@ class ProductsService implements IProductService {
     };
     const updatedProduct = await this.update(userRating.productId, fieldsToUpdate);
     return updatedProduct;
-  };
+  }
 }
 
 const repository = DB === DB_TYPES.POSTGRES ? new ProductTypeormRepository() : new ProductTypegooseRepository();

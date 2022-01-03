@@ -64,20 +64,20 @@ export interface IUserRatingSearchParams {
 }
 
 export interface IUserRatingRepository {
-  getAll: () => Promise<Array<IUserRating>>;
-  get: (params: IUserRatingSearchParams) => Promise<Array<IUserRating>>;
-  getAvgByProduct: (prodId: string) => Promise<number>;
-  save: (userRating: IUserRating) => Promise<IUserRating | null>;
-  update: (__id: string, userRating: IUserRating) => Promise<IUserRating | null>;
+  getAll(): Promise<Array<IUserRating>>;
+  get(params: IUserRatingSearchParams): Promise<Array<IUserRating>>;
+  getAvgByProduct(prodId: string): Promise<number>;
+  save(userRating: IUserRating): Promise<IUserRating | null>;
+  update(__id: string, userRating: IUserRating): Promise<IUserRating | null>;
 }
 
 export interface IUserRatingService {
   repository: IUserRatingRepository;
-  getAll: () => Promise<Array<IUserRating>>;
-  get: (params: IUserRatingSearchParams) => Promise<Array<IUserRating>>;
-  getAvgByProduct: (prodId: string) => Promise<number>;
-  save: (userRating: IUserRating) => Promise<IUserRating | null>;
-  update: (__id: string, userRating: IUserRating) => Promise<IUserRating | null>;
+  getAll(): Promise<Array<IUserRating>>;
+  get(params: IUserRatingSearchParams): Promise<Array<IUserRating>>;
+  getAvgByProduct(prodId: string): Promise<number>;
+  save(userRating: IUserRating): Promise<IUserRating | null>;
+  update(__id: string, userRating: IUserRating): Promise<IUserRating | null>;
 }
 
 // Product
@@ -128,23 +128,23 @@ export interface IProductSearchParams {
 }
 
 export interface IProductRepository {
-  getAll: () => Promise<Array<IProduct>>;
-  save: (product: IProduct) => Promise<IProduct>;
-  get: (searchParams: IProductSearchParams) => Promise<Array<IProduct>>;
-  update: (__id: string, fieldsToUpdate: IProductFieldsToUpdate) => Promise<IProduct>;
-  updateSubdocBySelectors: (__id: string, querySelector: any, updateSelector: any) => Promise<IProduct | void>;
-  getAvgRating: (__id: string) => Promise<number>;
+  getAll(): Promise<Array<IProduct>>;
+  save(product: IProduct): Promise<IProduct>;
+  get(searchParams: IProductSearchParams): Promise<Array<IProduct>>;
+  update(__id: string, fieldsToUpdate: IProductFieldsToUpdate): Promise<IProduct>;
+  updateSubdocBySelectors(__id: string, querySelector: any, updateSelector: any): Promise<IProduct | void>;
+  getAvgRating(__id: string): Promise<number>;
 }
 
 export interface IProductService {
   repository: IProductRepository;
-  getAll: () => Promise<Array<IProduct>>;
-  get: (params: IProductQueryParams) => Promise<Array<IProduct> | null>;
-  save: (product: IProduct) => Promise<IProduct>;
-  update: (__id: string, fieldsToUpdate: IProductFieldsToUpdate) => Promise<IProduct>;
-  updateSubdocBySelectors: (__id: string, querySelector: any, updateSelector: any) => Promise<IProduct | void>;
-  getAvgRating: (__id: string) => Promise<number>;
-  getByCategory: ({
+  getAll(): Promise<Array<IProduct>>;
+  get(params: IProductQueryParams): Promise<Array<IProduct> | null>;
+  save(product: IProduct): Promise<IProduct>;
+  update(__id: string, fieldsToUpdate: IProductFieldsToUpdate): Promise<IProduct>;
+  updateSubdocBySelectors(__id: string, querySelector: any, updateSelector: any): Promise<IProduct | void>;
+  getAvgRating(__id: string): Promise<number>;
+  getByCategory({
     id,
     limit,
     sortDirection,
@@ -154,8 +154,8 @@ export interface IProductService {
     limit?: number;
     sortDirection?: string;
     sortField?: string;
-  }) => Promise<Array<IProduct>>;
-  rate: (userRating: IUserRatingReq) => Promise<IProduct>;
+  }): Promise<Array<IProduct>>;
+  rate(userRating: IUserRatingReq): Promise<IProduct>;
 }
 
 // Category
@@ -191,16 +191,16 @@ export interface ICategoryQueryParams {
 }
 
 export interface ICategoryRepository {
-  getAll: () => Promise<Array<ICategory>>;
-  save: (category: ICategory) => Promise<ICategory>;
-  getById: (id: string) => Promise<ICategory | null>;
+  getAll(): Promise<Array<ICategory>>;
+  save(category: ICategory): Promise<ICategory>;
+  getById(id: string): Promise<ICategory | null>;
 }
 
 export interface ICategoryService {
   repository: ICategoryRepository;
-  getAll: () => Promise<Array<ICategory>>;
-  getByIdAndQueryParams: (id: string, params: ICategoryQueryParams) => Promise<ICategory | ICategoryExtended | null>;
-  save: (category: ICategory) => Promise<ICategory>;
+  getAll(): Promise<Array<ICategory>>;
+  getByIdAndQueryParams(id: string, params: ICategoryQueryParams): Promise<ICategory | ICategoryExtended | null>;
+  save(category: ICategory): Promise<ICategory>;
 }
 
 // User
@@ -244,18 +244,18 @@ export interface ITokenList {
 }
 
 export interface IUserRepository {
-  getAll: () => Promise<Array<IUser>>;
-  getByUsername: (username: string) => Promise<IUser | null>;
-  getById: (__id: string) => Promise<IUser | null>;
-  save: (user: INewUser) => Promise<IUser | null>;
-  update: (__id: string, fieldsToUpdate: INewUser) => Promise<IUser>;
+  getAll(): Promise<Array<IUser>>;
+  getByUsername(username: string): Promise<IUser | null>;
+  getById(__id: string): Promise<IUser | null>;
+  save(user: INewUser): Promise<IUser | null>;
+  update(__id: string, fieldsToUpdate: INewUser): Promise<IUser>;
 }
 
 export interface IUserService {
   repository: IUserRepository;
-  getAll: () => Promise<Array<IUser>>;
-  getByUsername: (username: string) => Promise<IUser | null>;
-  getById: (__id: string) => Promise<IUser | null>;
-  save: (user: INewUser) => Promise<IUser | null>;
-  update: (__id: string, fieldsToUpdate: INewUser) => Promise<IUser>;
+  getAll(): Promise<Array<IUser>>;
+  getByUsername(username: string): Promise<IUser | null>;
+  getById(__id: string): Promise<IUser | null>;
+  save(user: INewUser): Promise<IUser | null>;
+  update(__id: string, fieldsToUpdate: INewUser): Promise<IUser>;
 }

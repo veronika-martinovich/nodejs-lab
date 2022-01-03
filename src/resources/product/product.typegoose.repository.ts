@@ -4,15 +4,15 @@ import { IProduct, IProductRepository, IProductSearchParams, IProductFieldsToUpd
 import { NotFoundError } from '../../helpers/errors';
 
 export class ProductTypegooseRepository implements IProductRepository {
-  public getAll = async () => {
+  public async getAll() {
     const products = await ProductModel.find({});
     if (!products) {
       throw new NotFoundError('Products not found');
     }
     return products;
-  };
+  }
 
-  public get = async (searchParams: IProductSearchParams) => {
+  public async get(searchParams: IProductSearchParams) {
     const products = await ProductModel.find(searchParams.where!)
       .sort(searchParams.order)
       .skip(searchParams.skip!)
@@ -21,9 +21,9 @@ export class ProductTypegooseRepository implements IProductRepository {
       throw new NotFoundError('Products not found');
     }
     return products;
-  };
+  }
 
-  public save = async (product: IProduct) => {
+  public async save(product: IProduct) {
     const newProduct = await ProductModel.create(product);
     const productToReturn = await ProductModel.findOne({ _id: newProduct._id }).lean().exec();
 
@@ -31,27 +31,27 @@ export class ProductTypegooseRepository implements IProductRepository {
       throw new NotFoundError('Product was not created');
     }
     return productToReturn;
-  };
+  }
 
-  public update = async (__id: string, fieldsToUpdate: IProductFieldsToUpdate) => {
+  public async update(__id: string, fieldsToUpdate: IProductFieldsToUpdate) {
     await ProductModel.updateOne({ _id: __id }, { ...fieldsToUpdate }).exec();
     const updatedProduct = await ProductModel.findOne({ _id: __id }).lean().exec();
     if (!updatedProduct) {
       throw new NotFoundError('Product was not updated');
     }
     return updatedProduct;
-  };
+  }
 
-  public updateSubdocBySelectors = async (__id: string, querySelector: any, updateSelector: any) => {
+  public async updateSubdocBySelectors(__id: string, querySelector: any, updateSelector: any) {
     await ProductModel.updateOne(querySelector, updateSelector).exec();
     const updatedProduct = await ProductModel.findOne({ _id: __id }).lean().exec();
     if (!updatedProduct) {
       throw new NotFoundError('Product was not updated');
     }
     return updatedProduct;
-  };
+  }
 
-  public getAvgRating = async (__id: string) => {
+  public async getAvgRating(__id: string) {
     const avgResponse = await ProductModel.aggregate([
       { $match: { _id: new ObjectId(__id) } },
       { $unwind: '$ratings' },
@@ -69,5 +69,5 @@ export class ProductTypegooseRepository implements IProductRepository {
       throw new NotFoundError('Avg rating was not calculated');
     }
     return avg;
-  };
+  }
 }

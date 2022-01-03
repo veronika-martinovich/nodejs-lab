@@ -5,7 +5,7 @@ import { PRODUCT_FIELDS } from '../../helpers/constants';
 import { NotFoundError } from '../../helpers/errors';
 
 export class CategoryTypeormRepository implements ICategoryRepository {
-  getAll = async () => {
+  public async getAll() {
     const categoryRepository = getRepository(Category);
     // @ts-ignore
     const categories = await categoryRepository.find({ select: [PRODUCT_FIELDS.id, PRODUCT_FIELDS.displayName] });
@@ -13,9 +13,9 @@ export class CategoryTypeormRepository implements ICategoryRepository {
       throw new NotFoundError('Categories not found');
     }
     return categories;
-  };
+  }
 
-  getById = async (id: string) => {
+  public async getById(id: string) {
     const categoryRepository = getRepository(Category);
     const category = await categoryRepository.find({
       // @ts-ignore
@@ -26,9 +26,9 @@ export class CategoryTypeormRepository implements ICategoryRepository {
       throw new NotFoundError(`Category with id ${id} not found`);
     }
     return category[0];
-  };
+  }
 
-  save = async (category: ICategory) => {
+  public async save(category: ICategory) {
     const categoryRepository = getRepository(Category);
     const newCategory = categoryRepository.create({
       displayName: category.displayName,
@@ -39,5 +39,5 @@ export class CategoryTypeormRepository implements ICategoryRepository {
       throw new NotFoundError('Category was not created');
     }
     return savedCategory;
-  };
+  }
 }

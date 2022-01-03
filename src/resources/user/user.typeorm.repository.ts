@@ -4,16 +4,16 @@ import { IUserRepository, INewUser } from '../../types';
 import { NotFoundError } from '../../helpers/errors';
 
 export class UserTypeormRepository implements IUserRepository {
-  getAll = async () => {
+  public async getAll() {
     const userRepository = getRepository(User);
     const users = await userRepository.find();
     if (!users) {
       throw new NotFoundError('Users not found');
     }
     return users;
-  };
+  }
 
-  getByUsername = async (username: string) => {
+  public async getByUsername(username: string) {
     const userRepository = getRepository(User);
     const users = await userRepository.find({ where: { username } });
     if (!users) {
@@ -21,9 +21,9 @@ export class UserTypeormRepository implements IUserRepository {
     }
     if (users.length > 1) throw new Error('More than one user found with provided username');
     return users[0];
-  };
+  }
 
-  getById = async (__id: string) => {
+  public async getById(__id: string) {
     const userRepository = getRepository(User);
     const users = await userRepository.find({ where: { __id } });
     if (!users) {
@@ -31,9 +31,9 @@ export class UserTypeormRepository implements IUserRepository {
     }
     if (users.length > 1) throw new Error('More than one user found with provided username');
     return users[0];
-  };
+  }
 
-  save = async (user: INewUser) => {
+  public async save(user: INewUser) {
     const userRepository = getRepository(User);
     const newUser = userRepository.create({
       username: user.username,
@@ -48,9 +48,9 @@ export class UserTypeormRepository implements IUserRepository {
       throw new NotFoundError('User was not created');
     }
     return savedUser;
-  };
+  }
 
-  update = async (__id: string, fieldsToUpdate: INewUser) => {
+  public async update(__id: string, fieldsToUpdate: INewUser) {
     const userRepository = getRepository(User);
     await userRepository.update({ __id }, { ...fieldsToUpdate });
     const updatedUser = await userRepository.find({ where: { __id } });
@@ -59,5 +59,5 @@ export class UserTypeormRepository implements IUserRepository {
       throw new NotFoundError('User was not updated');
     }
     return updatedUser[0];
-  };
+  }
 }
