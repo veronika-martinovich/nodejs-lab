@@ -12,45 +12,45 @@ class UsersService implements IUserService {
     this.repository = repository;
   }
 
-  getAll = async () => {
+  public async getAll() {
     try {
       return await this.repository.getAll();
     } catch (error) {
       throw new Error();
     }
-  };
+  }
 
-  getByUsername = async (username: string) => {
+  public async getByUsername(username: string) {
     try {
       return await this.repository.getByUsername(username);
     } catch (error) {
       throw new Error();
     }
-  };
+  }
 
-  getById = async (__id: string) => {
+  public async getById(__id: string) {
     try {
       return await this.repository.getById(__id);
     } catch (error) {
       throw new Error();
     }
-  };
+  }
 
-  save = async (user: INewUser) => {
+  public async save(user: INewUser) {
     try {
       return await this.repository.save(user);
     } catch (error) {
       throw new Error();
     }
-  };
+  }
 
-  update = async (__id: string, fieldsToUpdate: INewUser) => {
+  public async update(__id: string, fieldsToUpdate: INewUser) {
     try {
       return await this.repository.update(__id, fieldsToUpdate);
     } catch (error) {
       throw new Error();
     }
-  };
+  }
 }
 
 const repository = DB === DB_TYPES.POSTGRES ? new UserTypeormRepository() : new UserTypegooseRepository();

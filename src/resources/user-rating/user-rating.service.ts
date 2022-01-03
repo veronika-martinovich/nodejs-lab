@@ -8,45 +8,45 @@ class UserRatingService implements IUserRatingService {
     this.repository = repository;
   }
 
-  getAll = async () => {
+  public async getAll() {
     try {
       return await this.repository.getAll();
     } catch (error) {
       throw new Error();
     }
-  };
+  }
 
-  getAvgByProduct = async (prodId: string) => {
+  public async getAvgByProduct(prodId: string) {
     try {
       return await this.repository.getAvgByProduct(prodId);
     } catch (error) {
       throw new Error();
     }
-  };
+  }
 
-  get = async (params: IUserRatingSearchParams) => {
+  public async get(params: IUserRatingSearchParams) {
     try {
       return await this.repository.get(params);
     } catch (error) {
       throw new Error();
     }
-  };
+  }
 
-  save = async (userRating: IUserRating) => {
+  public async save(userRating: IUserRating) {
     try {
       return await this.repository.save(userRating);
     } catch (error) {
       throw new Error();
     }
-  };
+  }
 
-  update = async (__id: string, userRating: IUserRating) => {
+  public async update(__id: string, userRating: IUserRating) {
     try {
       return await this.repository.update(__id, userRating);
     } catch (error) {
       throw new Error();
     }
-  };
+  }
 }
 
 const repository = new UserRatingTypeormRepository();

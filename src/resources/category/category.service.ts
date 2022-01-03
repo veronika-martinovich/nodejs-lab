@@ -14,15 +14,15 @@ class CategoryService implements ICategoryService {
     this.repository = repository;
   }
 
-  public getAll = async () => {
+  public async getAll() {
     try {
       return await this.repository.getAll();
     } catch (error) {
       throw new Error();
     }
-  };
+  }
 
-  public getByIdAndQueryParams = async (id: string, params: ICategoryQueryParams) => {
+  public async getByIdAndQueryParams(id: string, params: ICategoryQueryParams) {
     try {
       const category = await this.repository.getById(id);
       if (isEmptyObject(params)) {
@@ -49,15 +49,15 @@ class CategoryService implements ICategoryService {
     } catch (error) {
       throw new Error();
     }
-  };
+  }
 
-  public save = async (category: ICategory) => {
+  public async save(category: ICategory) {
     try {
       return await this.repository.save(category);
     } catch (error) {
       throw new Error();
     }
-  };
+  }
 }
 
 const repository = DB === DB_TYPES.POSTGRES ? new CategoryTypeormRepository() : new CategoryTypegooseRepository();

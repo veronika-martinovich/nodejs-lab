@@ -4,25 +4,25 @@ import { IProduct, IProductRepository, IProductSearchParams, IProductFieldsToUpd
 import { NotFoundError } from '../../helpers/errors';
 
 export class ProductTypeormRepository implements IProductRepository {
-  getAll = async () => {
+  public async getAll() {
     const productRepository = getRepository(Product);
     const products = await productRepository.find();
     if (!products) {
       throw new NotFoundError('Products not found');
     }
     return products;
-  };
+  }
 
-  get = async (searchParams: IProductSearchParams) => {
+  public async get(searchParams: IProductSearchParams) {
     const productRepository = getRepository(Product);
     const products = await productRepository.find(searchParams);
     if (!products) {
       throw new NotFoundError('Products not found');
     }
     return products;
-  };
+  }
 
-  save = async (product: IProduct) => {
+  public async save(product: IProduct) {
     const productRepository = getRepository(Product);
     const newProduct = productRepository.create({
       displayName: product.displayName,
@@ -36,9 +36,9 @@ export class ProductTypeormRepository implements IProductRepository {
       throw new NotFoundError('Product was not created');
     }
     return savedProduct;
-  };
+  }
 
-  update = async (__id: string, fieldsToUpdate: IProductFieldsToUpdate) => {
+  public async update(__id: string, fieldsToUpdate: IProductFieldsToUpdate) {
     const productRepository = getRepository(Product);
     await productRepository.update({ __id }, { ...fieldsToUpdate });
     const updatedProduct = await productRepository.find({ where: { __id } });
@@ -47,18 +47,18 @@ export class ProductTypeormRepository implements IProductRepository {
       throw new NotFoundError('Product was not updated');
     }
     return updatedProduct[0];
-  };
+  }
 
-  updateSubdocBySelectors = async (querySelector: any, updateSelector: any) => {
+  public async updateSubdocBySelectors(querySelector: any, updateSelector: any) {
     // Dummy method for mongo db repository compatability
     console.log(querySelector, updateSelector);
-  };
+  }
 
-  getAvgRating = async (__id: string) => {
+  public async getAvgRating(__id: string) {
     // Dummy method for mongo db repository compatability
     console.log(__id);
     const mockAvg = 1;
 
     return mockAvg;
-  };
+  }
 }
