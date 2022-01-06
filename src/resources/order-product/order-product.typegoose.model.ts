@@ -1,4 +1,4 @@
-import { prop } from '@typegoose/typegoose';
+import { prop, getModelForClass } from '@typegoose/typegoose';
 
 export class OrderProduct {
   @prop()
@@ -10,3 +10,5 @@ export class OrderProduct {
   @prop()
   public quantity: number;
 }
+
+export const OrderProductModel = getModelForClass(OrderProduct);
