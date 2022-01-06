@@ -158,6 +158,63 @@ export interface IProductService {
   rate(userRating: IUserRatingReq): Promise<IProduct>;
 }
 
+// OrderProduct
+
+export interface IOrderProduct {
+  __id: string;
+  productId: string;
+  quantity: number;
+}
+
+export interface IOrderProductReq {
+  productId: string;
+  quantity: number;
+}
+
+export interface IOrderProductRepository {
+  save(orderProduct: IOrderProductReq): Promise<IOrderProduct>;
+}
+
+export interface IOrderProductService {
+  repository: IOrderProductRepository;
+  save(orderProduct: IOrderProductReq): Promise<IOrderProduct>;
+}
+
+// OrderList
+
+export interface IOrderList {
+  __id: string;
+  userId: string;
+  createdAt: Date;
+  products: Array<IOrderProduct>;
+}
+
+export interface IOrderListReq {
+  userId: string;
+  products: Array<IOrderProductReq>;
+}
+
+export interface IOrderListWhereParams {
+  userId?: string;
+  productId?: string;
+}
+
+export interface IOrderListSearchParams {
+  where?: IOrderListWhereParams;
+}
+
+export interface IOrderListRepository {
+  get(searchParams: IOrderListSearchParams): Promise<Array<IOrderList | any>>;
+  save(order: IOrderListReq): Promise<IOrderList | any>;
+}
+
+export interface IOrderListService {
+  repository: IOrderListRepository;
+  addProducts(userId: string, products: Array<IOrderProductReq>): Promise<IOrderList>;
+  get(searchParams: IOrderListSearchParams): Promise<Array<IOrderList | any>>;
+  save(order: IOrderListReq): Promise<IOrderList | any>;
+}
+
 // Category
 
 export interface ICategory {

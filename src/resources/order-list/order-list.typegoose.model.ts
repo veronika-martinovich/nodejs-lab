@@ -20,9 +20,6 @@ export class OrderList {
 
   @prop({ ref: () => OrderProduct })
   public products: Ref<OrderProduct>[];
-
-  @prop()
-  public quantity: number;
 }
 
 export const OrderListModel = getModelForClass(OrderList);

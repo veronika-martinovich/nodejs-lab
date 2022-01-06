@@ -1,13 +1,4 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  OneToOne,
-  OneToMany,
-  JoinColumn,
-  RelationId,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToOne, OneToMany, JoinColumn } from 'typeorm';
 
 import { User } from '../user/user.typeorm.model';
 import { OrderProduct } from '../order-product/order-product.typeorm.model';
@@ -22,15 +13,11 @@ export class OrderList {
   user: User;
 
   @Column()
-  @RelationId((orderList: OrderList) => orderList.user)
   public userId: string;
 
   @OneToMany(() => OrderProduct, (product) => product.orderList)
-  products: OrderProduct[];
+  public products: OrderProduct[];
 
   @CreateDateColumn()
   public createdAt: Date;
-
-  @Column()
-  public quantity: string;
 }
