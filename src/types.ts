@@ -160,24 +160,44 @@ export interface IProductService {
 
 // OrderProduct
 
+export interface IOrderProductList {
+  __id: string;
+  userId: string;
+}
+
 export interface IOrderProduct {
   __id: string;
-  productId: string;
+  product: string;
   quantity: number;
 }
 
 export interface IOrderProductReq {
-  productId: string;
+  product: string;
   quantity: number;
+  orderList?: IOrderProductList;
+}
+
+export interface IOrderProductWhereParams {
+  orderList?: string;
+}
+
+export interface IOrderProductSearchParams {
+  where?: IOrderProductWhereParams;
+  relations?: Array<string>;
+  order?: IStringValue;
+  skip?: number;
+  take?: number;
 }
 
 export interface IOrderProductRepository {
-  save(orderProduct: IOrderProductReq): Promise<IOrderProduct>;
+  get(searchParams: IOrderProductSearchParams): Promise<Array<IOrderProduct | any>>;
+  save(orderProduct: IOrderProductReq): Promise<IOrderProduct | any>;
 }
 
 export interface IOrderProductService {
   repository: IOrderProductRepository;
-  save(orderProduct: IOrderProductReq): Promise<IOrderProduct>;
+  get(searchParams: IOrderProductSearchParams): Promise<Array<IOrderProduct | any>>;
+  save(orderProduct: IOrderProductReq): Promise<IOrderProduct | any>;
 }
 
 // OrderList
@@ -185,13 +205,12 @@ export interface IOrderProductService {
 export interface IOrderList {
   __id: string;
   userId: string;
-  createdAt: Date;
-  products: Array<IOrderProduct>;
+  orderProducts?: Array<IOrderProduct>;
 }
 
 export interface IOrderListReq {
   userId: string;
-  products: Array<IOrderProductReq>;
+  orderProducts?: Array<IOrderProductReq>;
 }
 
 export interface IOrderListWhereParams {
@@ -201,6 +220,7 @@ export interface IOrderListWhereParams {
 
 export interface IOrderListSearchParams {
   where?: IOrderListWhereParams;
+  relations?: Array<string>;
 }
 
 export interface IOrderListRepository {

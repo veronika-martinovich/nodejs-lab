@@ -1,6 +1,11 @@
 import { OrderProductTypegooseRepository } from './order-product.typegoose.repository';
 import { OrderProductTypeormRepository } from './order-product.typeorm.repository';
-import { IOrderProductService, IOrderProductRepository, IOrderProductReq } from '../../types';
+import {
+  IOrderProductService,
+  IOrderProductRepository,
+  IOrderProductReq,
+  IOrderProductSearchParams,
+} from '../../types';
 import { DB_TYPES } from '../../helpers/constants';
 
 const { DB } = require('../../config');
@@ -10,6 +15,14 @@ class OrderProductService implements IOrderProductService {
 
   constructor(repository: IOrderProductRepository) {
     this.repository = repository;
+  }
+
+  public async get(searchParams: IOrderProductSearchParams) {
+    try {
+      return await this.repository.get(searchParams);
+    } catch (error) {
+      throw new Error();
+    }
   }
 
   public async save(orderProduct: IOrderProductReq) {
@@ -31,6 +44,7 @@ class OrderProductService implements IOrderProductService {
 
 const repository =
   DB === DB_TYPES.POSTGRES ? new OrderProductTypeormRepository() : new OrderProductTypegooseRepository();
+
 const orderProductService = new OrderProductService(repository);
 
 export default orderProductService;

@@ -44,29 +44,39 @@ class OrderListService implements IOrderListService {
   //   }
   // }
 
-  public async addProducts(userId: string, products: Array<IOrderProductReq>) {
+  public async addProducts(userId: string, orderProducts: Array<IOrderProductReq>) {
     try {
-      const newOrderProducts: Array<IOrderProduct> = [];
-      products.forEach(async (item) => {
-        const newOrderProduct = await orderProductService.save(item);
-        newOrderProducts.push(newOrderProduct);
-      });
       const orders = await this.get({ where: { userId } });
       const currentOrder = orders[0];
       const isOrderExists = !!currentOrder;
 
-      let orderToReturn;
-
       if (isOrderExists) {
-        newOrderProducts.forEach((item) => {
-          currentOrder.products.push(item);
+        const promises = orderProducts.map(async (item) => {
+          const newOrderProduct = await orderProductService.save({ ...item, orderList: currentOrder });
+          return newOrderProduct;
         });
-        orderToReturn = await this.save(currentOrder);
+
+        await Promise.all(promises);
       } else {
-        orderToReturn = await this.save({ userId, products: newOrderProducts });
+        const newOrderList = await this.save({ userId });
+
+        const promises = orderProducts.map(async (item) => {
+          const newOrderProduct = await orderProductService.save({ ...item, orderList: newOrderList });
+          return newOrderProduct;
+        });
+
+        await Promise.all(promises);
       }
 
-      return orderToReturn;
+      const listOrders = await this.get({ where: { userId } });
+      const listOrder = listOrders[0];
+      const orderProductsToReturn: Array<IOrderProduct> = await orderProductService.get({
+        where: { orderList: listOrder.__id },
+        relations: ['product', 'orderList'],
+      });
+      const listOrderToReturn = { ...listOrder, orderProducts: orderProductsToReturn };
+
+      return listOrderToReturn;
     } catch (error) {
       throw new Error();
     }

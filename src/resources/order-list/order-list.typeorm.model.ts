@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToOne, OneToMany, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, OneToOne, OneToMany, JoinColumn } from 'typeorm';
 
 import { User } from '../user/user.typeorm.model';
 import { OrderProduct } from '../order-product/order-product.typeorm.model';
@@ -9,15 +9,9 @@ export class OrderList {
   public __id: string;
 
   @OneToOne(() => User)
-  @JoinColumn()
-  user: User;
+  @JoinColumn({ name: 'userId' })
+  userId: User;
 
-  @Column()
-  public userId: string;
-
-  @OneToMany(() => OrderProduct, (product) => product.orderList)
-  public products: OrderProduct[];
-
-  @CreateDateColumn()
-  public createdAt: Date;
+  @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.orderList)
+  public orderProducts: OrderProduct[];
 }

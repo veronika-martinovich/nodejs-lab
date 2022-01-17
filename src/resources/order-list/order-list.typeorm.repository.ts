@@ -15,10 +15,9 @@ export class OrderListTypeormRepository implements IOrderListRepository {
 
   public async save(order: IOrderListReq) {
     const orderListRepository = getRepository(OrderList);
-    const newOrderList = orderListRepository.create({
+    const newOrderList = await orderListRepository.create({
       userId: order.userId,
-      products: order.products,
-    });
+    } as any);
 
     const savedOrderList = await orderListRepository.save(newOrderList);
     if (!savedOrderList) {
