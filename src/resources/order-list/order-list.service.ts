@@ -52,7 +52,9 @@ class OrderListService implements IOrderListService {
 
       if (isOrderExists) {
         const promises = orderProducts.map(async (item) => {
-          const newOrderProduct = await orderProductService.save({ ...item, orderList: currentOrder });
+          const orderProductToSave =
+            DB === DB_TYPES.POSTGRES ? { ...item, orderList: currentOrder } : { ...item, orderList: currentOrder._id };
+          const newOrderProduct = await orderProductService.save(orderProductToSave);
           return newOrderProduct;
         });
 
@@ -61,7 +63,9 @@ class OrderListService implements IOrderListService {
         const newOrderList = await this.save({ userId });
 
         const promises = orderProducts.map(async (item) => {
-          const newOrderProduct = await orderProductService.save({ ...item, orderList: newOrderList });
+          const orderProductToSave =
+            DB === DB_TYPES.POSTGRES ? { ...item, orderList: newOrderList } : { ...item, orderList: newOrderList._id };
+          const newOrderProduct = await orderProductService.save(orderProductToSave);
           return newOrderProduct;
         });
 
@@ -70,8 +74,9 @@ class OrderListService implements IOrderListService {
 
       const listOrders = await this.get({ where: { userId } });
       const listOrder = listOrders[0];
+
       const orderProductsToReturn: Array<IOrderProduct> = await orderProductService.get({
-        where: { orderList: listOrder.__id },
+        where: { orderList: listOrder.__id || listOrder._id },
         relations: ['product', 'orderList'],
       });
       const listOrderToReturn = { ...listOrder, orderProducts: orderProductsToReturn };

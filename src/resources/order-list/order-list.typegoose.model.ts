@@ -1,4 +1,4 @@
-import { prop, modelOptions, getModelForClass, Ref } from '@typegoose/typegoose';
+import { prop, modelOptions, Ref } from '@typegoose/typegoose';
 import { User } from '../user/user.typegoose.model';
 import { OrderProduct } from '../order-product/order-product.typegoose.model';
 
@@ -10,16 +10,8 @@ export class OrderList {
   public __id: string;
 
   @prop({ ref: () => User })
-  public user: Ref<User>;
-
-  @prop()
-  public userId: string;
-
-  @prop({ default: Date.now })
-  public createdAt: Date;
+  public userId: Ref<User>;
 
   @prop({ ref: () => OrderProduct })
-  public products: Ref<OrderProduct>[];
+  public orderProducts: Ref<OrderProduct>[];
 }
-
-export const OrderListModel = getModelForClass(OrderList);
