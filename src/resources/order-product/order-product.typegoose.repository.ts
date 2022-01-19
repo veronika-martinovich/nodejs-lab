@@ -1,5 +1,10 @@
 import { OrderProductModel } from '../common/typeoose.models';
-import { IOrderProductRepository, IOrderProductReq, IOrderProductSearchParams } from '../../types';
+import {
+  IOrderProductRepository,
+  IOrderProductReq,
+  IOrderProductSearchParams,
+  IOrderProductWhereParams,
+} from '../../types';
 import { NotFoundError } from '../../helpers/errors';
 
 export class OrderProductTypegooseRepository implements IOrderProductRepository {
@@ -28,5 +33,23 @@ export class OrderProductTypegooseRepository implements IOrderProductRepository 
       throw new NotFoundError('Order product was not created');
     }
     return orderProductToReturn;
+  }
+
+  public async delete(searchParams: IOrderProductWhereParams) {
+    const result = await OrderProductModel.deleteMany(searchParams as any).exec();
+
+    if (!result) {
+      throw new NotFoundError('Order product was not deleted');
+    }
+    return result.deletedCount;
+  }
+
+  public async updateOne(searchParams: IOrderProductSearchParams, quantity: number) {
+    await OrderProductModel.updateOne(searchParams, { quantity }).lean().exec();
+    const orderProduct = await OrderProductModel.findOne(searchParams).lean().exec();
+    if (!orderProduct) {
+      throw new NotFoundError('Order product was not updated');
+    }
+    return orderProduct;
   }
 }

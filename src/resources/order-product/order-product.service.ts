@@ -5,6 +5,7 @@ import {
   IOrderProductRepository,
   IOrderProductReq,
   IOrderProductSearchParams,
+  IOrderProductWhereParams,
 } from '../../types';
 import { DB_TYPES } from '../../helpers/constants';
 
@@ -33,13 +34,21 @@ class OrderProductService implements IOrderProductService {
     }
   }
 
-  // public async update() {
-  //   try {
-  //     return await this.repository.update(__id, fieldsToUpdate);
-  //   } catch (error) {
-  //     throw new Error();
-  //   }
-  // }
+  public async delete(searchParams: IOrderProductWhereParams) {
+    try {
+      return await this.repository.delete(searchParams);
+    } catch (error) {
+      throw new Error();
+    }
+  }
+
+  public async update(searchParams: IOrderProductSearchParams, quantity: number) {
+    try {
+      return await this.repository.updateOne(searchParams, quantity);
+    } catch (error) {
+      throw new Error();
+    }
+  }
 }
 
 const repository =

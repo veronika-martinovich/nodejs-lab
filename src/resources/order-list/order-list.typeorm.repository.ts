@@ -25,15 +25,4 @@ export class OrderListTypeormRepository implements IOrderListRepository {
     }
     return savedOrderList;
   }
-
-  // public async update(__id: string, fieldsToUpdate: IProductFieldsToUpdate) {
-  //   const productRepository = getRepository(Product);
-  //   await productRepository.update({ __id }, { ...fieldsToUpdate });
-  //   const updatedProduct = await productRepository.find({ where: { __id } });
-
-  //   if (!updatedProduct) {
-  //     throw new NotFoundError('Product was not updated');
-  //   }
-  //   return updatedProduct[0];
-  // }
 }

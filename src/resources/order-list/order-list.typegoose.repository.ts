@@ -17,25 +17,20 @@ export class OrderListTypegooseRepository implements IOrderListRepository {
   }
 
   public async save(order: IOrderListReq) {
-    const newOrderList = await OrderListModel.create(order);
-    const productToReturn = await OrderListModel.findOne({ _id: newOrderList._id })
-      .populate('userId')
-      .populate('orderProducts')
-      .lean()
-      .exec();
+    try {
+      const newOrderList = await OrderListModel.create(order);
+      const productToReturn = await OrderListModel.findOne({ _id: newOrderList._id })
+        .populate('userId')
+        .populate('orderProducts')
+        .lean()
+        .exec();
 
-    if (!productToReturn) {
-      throw new NotFoundError('Order list was not created');
+      if (!productToReturn) {
+        throw new NotFoundError('Order list was not created');
+      }
+      return productToReturn;
+    } catch (e) {
+      console.log(e);
     }
-    return productToReturn;
   }
-
-  // public async update() {
-  //   await OrderListModel.updateOne({ _id: __id }, { ...fieldsToUpdate }).exec();
-  //   const updatedProduct = await ProductModel.findOne({ _id: __id }).lean().exec();
-  //   if (!updatedProduct) {
-  //     throw new NotFoundError('Product was not updated');
-  //   }
-  //   return updatedProduct;
-  // }
 }

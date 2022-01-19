@@ -174,11 +174,13 @@ export interface IOrderProduct {
 export interface IOrderProductReq {
   product: string;
   quantity: number;
-  orderList?: IOrderProductList;
+  orderList?: IOrderProductList | string;
+  delete?: boolean;
 }
 
 export interface IOrderProductWhereParams {
   orderList?: string;
+  product?: string;
 }
 
 export interface IOrderProductSearchParams {
@@ -192,12 +194,16 @@ export interface IOrderProductSearchParams {
 export interface IOrderProductRepository {
   get(searchParams: IOrderProductSearchParams): Promise<Array<IOrderProduct | any>>;
   save(orderProduct: IOrderProductReq): Promise<IOrderProduct | any>;
+  delete(searchParams: IOrderProductWhereParams): Promise<number>;
+  updateOne(searchParams: IOrderProductSearchParams, quantity: number): Promise<IOrderProduct | any>;
 }
 
 export interface IOrderProductService {
   repository: IOrderProductRepository;
-  get(searchParams: IOrderProductSearchParams): Promise<Array<IOrderProduct | any>>;
-  save(orderProduct: IOrderProductReq): Promise<IOrderProduct | any>;
+  get(searchParams: IOrderProductSearchParams): Promise<Array<IOrderProduct>>;
+  save(orderProduct: IOrderProductReq): Promise<IOrderProduct>;
+  delete(searchParams: IOrderProductWhereParams): Promise<number>;
+  update(searchParams: IOrderProductSearchParams, quantity: number): Promise<IOrderProduct>;
 }
 
 // OrderList
@@ -230,9 +236,13 @@ export interface IOrderListRepository {
 
 export interface IOrderListService {
   repository: IOrderListRepository;
-  addProducts(userId: string, products: Array<IOrderProductReq>): Promise<IOrderList>;
-  get(searchParams: IOrderListSearchParams): Promise<Array<IOrderList | any>>;
-  save(order: IOrderListReq): Promise<IOrderList | any>;
+  get(searchParams: IOrderListSearchParams): Promise<Array<IOrderList>>;
+  getOne(searchParams: IOrderListSearchParams): Promise<{ order: IOrderList; isOrderExists: boolean }>;
+  getOneWithOrderProducts(searchParams: IOrderListSearchParams): Promise<IOrderList>;
+  save(order: IOrderListReq): Promise<IOrderList>;
+  addProducts(userId: string, orderProducts: Array<IOrderProductReq>): Promise<IOrderList>;
+  editProducts(userId: string, orderProducts: Array<IOrderProductReq>): Promise<IOrderList>;
+  deleteProducts(userId: string): Promise<IOrderList>;
 }
 
 // Category
