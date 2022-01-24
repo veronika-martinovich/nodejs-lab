@@ -9,7 +9,7 @@ import { NotFoundError } from '../../helpers/errors';
 
 export class OrderProductTypegooseRepository implements IOrderProductRepository {
   public async get(searchParams: IOrderProductSearchParams) {
-    const orderProducts = await OrderProductModel.find(searchParams.where!)
+    const orderProducts = await OrderProductModel.find(searchParams.where as any)
       .sort(searchParams.order)
       .skip(searchParams.skip!)
       .limit(searchParams.take!)
@@ -21,21 +21,16 @@ export class OrderProductTypegooseRepository implements IOrderProductRepository 
     return orderProducts;
   }
 
-  public async save(orderProduct: IOrderProductReq) {
-    const newOrderProduct = await OrderProductModel.create(orderProduct);
-    const orderProductToReturn = await OrderProductModel.findOne({ _id: newOrderProduct._id })
-      .populate('orderList')
-      .populate('product')
-      .lean()
-      .exec();
+  public async saveMany(orderProducts: Array<IOrderProductReq>) {
+    const newOrderProducts = await OrderProductModel.insertMany(orderProducts);
 
-    if (!orderProductToReturn) {
+    if (!newOrderProducts) {
       throw new NotFoundError('Order product was not created');
     }
-    return orderProductToReturn;
+    return newOrderProducts;
   }
 
-  public async delete(searchParams: IOrderProductWhereParams) {
+  public async deleteMany(searchParams: IOrderProductWhereParams) {
     const result = await OrderProductModel.deleteMany(searchParams as any).exec();
 
     if (!result) {

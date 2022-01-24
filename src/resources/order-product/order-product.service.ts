@@ -26,17 +26,17 @@ class OrderProductService implements IOrderProductService {
     }
   }
 
-  public async save(orderProduct: IOrderProductReq) {
+  public async saveMany(orderProducts: Array<IOrderProductReq>) {
     try {
-      return await this.repository.save(orderProduct);
+      return await this.repository.saveMany(orderProducts);
     } catch (error) {
       throw new Error();
     }
   }
 
-  public async delete(searchParams: IOrderProductWhereParams) {
+  public async deleteMany(searchParams: IOrderProductWhereParams) {
     try {
-      return await this.repository.delete(searchParams);
+      return await this.repository.deleteMany(searchParams);
     } catch (error) {
       throw new Error();
     }

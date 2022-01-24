@@ -180,7 +180,7 @@ export interface IOrderProductReq {
 
 export interface IOrderProductWhereParams {
   orderList?: string;
-  product?: string;
+  product?: string | Array<string>;
 }
 
 export interface IOrderProductSearchParams {
@@ -193,16 +193,16 @@ export interface IOrderProductSearchParams {
 
 export interface IOrderProductRepository {
   get(searchParams: IOrderProductSearchParams): Promise<Array<IOrderProduct | any>>;
-  save(orderProduct: IOrderProductReq): Promise<IOrderProduct | any>;
-  delete(searchParams: IOrderProductWhereParams): Promise<number>;
+  saveMany(orderProducts: Array<IOrderProductReq>): Promise<Array<IOrderProductReq> | any>;
+  deleteMany(searchParams: IOrderProductWhereParams): Promise<number>;
   updateOne(searchParams: IOrderProductSearchParams, quantity: number): Promise<IOrderProduct | any>;
 }
 
 export interface IOrderProductService {
   repository: IOrderProductRepository;
   get(searchParams: IOrderProductSearchParams): Promise<Array<IOrderProduct>>;
-  save(orderProduct: IOrderProductReq): Promise<IOrderProduct>;
-  delete(searchParams: IOrderProductWhereParams): Promise<number>;
+  saveMany(orderProducts: Array<IOrderProductReq>): Promise<Array<IOrderProductReq>>;
+  deleteMany(searchParams: IOrderProductWhereParams): Promise<number>;
   update(searchParams: IOrderProductSearchParams, quantity: number): Promise<IOrderProduct>;
 }
 

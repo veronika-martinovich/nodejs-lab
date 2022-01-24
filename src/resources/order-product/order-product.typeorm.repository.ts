@@ -18,15 +18,9 @@ export class OrderProductTypeormRepository implements IOrderProductRepository {
     return orderProducts;
   }
 
-  public async save(orderProduct: IOrderProductReq) {
+  public async saveMany(orderProducts: Array<IOrderProductReq>) {
     const orderProductRepository = getRepository(OrderProduct);
-    const newOrderProduct = await orderProductRepository.create({
-      product: orderProduct.product,
-      quantity: orderProduct.quantity,
-      orderList: orderProduct.orderList,
-    } as any);
-
-    const savedOrderProduct = await orderProductRepository.save(newOrderProduct);
+    const savedOrderProduct = await orderProductRepository.save(orderProducts as any);
 
     if (!savedOrderProduct) {
       throw new NotFoundError('Order product was not created');
@@ -34,7 +28,7 @@ export class OrderProductTypeormRepository implements IOrderProductRepository {
     return savedOrderProduct[0];
   }
 
-  public async delete(searchParams: IOrderProductWhereParams) {
+  public async deleteMany(searchParams: IOrderProductWhereParams) {
     const orderProductRepository = getRepository(OrderProduct);
     const result = await orderProductRepository.delete(searchParams as any);
 

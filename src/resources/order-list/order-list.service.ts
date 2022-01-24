@@ -1,9 +1,11 @@
+/* eslint-disable prettier/prettier */
 import { OrderListTypegooseRepository } from './order-list.typegoose.repository';
 import { OrderListTypeormRepository } from './order-list.typeorm.repository';
 import orderProductService from '../order-product/order-product.service';
 import {
   IOrderListService,
   IOrderListRepository,
+  IOrderProductWhereParams,
   IOrderListSearchParams,
   IOrderProductReq,
   IOrderProduct,
@@ -66,29 +68,15 @@ class OrderListService implements IOrderListService {
       const { order: currentOrder, isOrderExists } = await this.getOne({ where: { userId } });
 
       if (isOrderExists) {
-        const promises = orderProducts.map(async (item) => {
-          const orderProductToSave =
-            DB === DB_TYPES.POSTGRES
-              ? { ...item, orderList: currentOrder }
-              : { ...item, orderList: currentOrder._id || currentOrder.__id };
-          const newOrderProduct = await orderProductService.save(orderProductToSave);
-          return newOrderProduct;
-        });
-
-        await Promise.all(promises);
+        const orderProductsToSave = orderProducts.map((item) =>
+          (DB === DB_TYPES.POSTGRES ? { ...item, orderList: currentOrder } : { ...item, orderList: currentOrder._id }));
+        await orderProductService.saveMany(orderProductsToSave);
       } else {
         const newOrderList = await this.save({ userId });
 
-        const promises = orderProducts.map(async (item) => {
-          const orderProductToSave =
-            DB === DB_TYPES.POSTGRES
-              ? { ...item, orderList: newOrderList }
-              : { ...item, orderList: newOrderList._id || newOrderList.__id };
-          const newOrderProduct = await orderProductService.save(orderProductToSave);
-          return newOrderProduct;
-        });
-
-        await Promise.all(promises);
+        const orderProductsToSave = orderProducts.map((item) =>
+          (DB === DB_TYPES.POSTGRES ? { ...item, orderList: newOrderList } : { ...item, orderList: newOrderList._id }));
+        await orderProductService.saveMany(orderProductsToSave);
       }
       const listOrderToReturn = await this.getOneWithOrderProducts({ where: { userId } });
 
@@ -103,22 +91,29 @@ class OrderListService implements IOrderListService {
       const { order: currentOrder, isOrderExists } = await this.getOne({ where: { userId } });
 
       if (isOrderExists) {
-        const promises = orderProducts.map(async (item) => {
+        const searchParamsToDelete: IOrderProductWhereParams = {
+          orderList: currentOrder._id || currentOrder.__id,
+          product: [],
+        };
+        const orderProductsToUpdatePromises: Array<Promise<IOrderProduct>> = [];
+        orderProducts.forEach(async (item) => {
           if (item.delete) {
-            await orderProductService.delete({
-              orderList: currentOrder._id || currentOrder.__id,
-              product: item.product,
-            });
+            if (Array.isArray(searchParamsToDelete.product)) searchParamsToDelete.product.push(item.product);
           } else {
-            await orderProductService.update(
+            const promise = await orderProductService.update(
               {
                 where: { orderList: currentOrder._id || currentOrder.__id, product: item.product },
               },
               item.quantity
             );
+            orderProductsToUpdatePromises.push(promise);
           }
         });
-        await Promise.all(promises);
+
+        if (Array.isArray(searchParamsToDelete.product) && !!searchParamsToDelete.product.length) {
+          await orderProductService.deleteMany(searchParamsToDelete);
+        }
+        if (orderProductsToUpdatePromises.length) await Promise.all(orderProductsToUpdatePromises);
 
         const listOrderToReturn: IOrderList = await this.getOneWithOrderProducts({ where: { userId } });
 
@@ -135,7 +130,7 @@ class OrderListService implements IOrderListService {
       const { order: currentOrder, isOrderExists } = await this.getOne({ where: { userId } });
 
       if (isOrderExists) {
-        await orderProductService.delete({
+        await orderProductService.deleteMany({
           orderList: currentOrder._id || currentOrder.__id,
         });
 
