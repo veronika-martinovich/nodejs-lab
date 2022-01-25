@@ -43,18 +43,6 @@ class OrderListService implements IOrderListService {
     }
   }
 
-  public async getOneWithOrderProducts(searchParams: IOrderListSearchParams) {
-    try {
-      const { order } = await this.getOne(searchParams);
-      const orderProducts: Array<IOrderProduct> = await orderProductService.get({
-        where: { orderList: order._id || order.__id },
-      });
-      return { ...order, orderProducts };
-    } catch (error) {
-      throw new Error();
-    }
-  }
-
   public async save(order: IOrderListReq) {
     try {
       return await this.repository.save(order);
@@ -63,22 +51,41 @@ class OrderListService implements IOrderListService {
     }
   }
 
+  public async update(order: IOrderList, orderProducts: Array<IOrderProduct>) {
+    try {
+      if (DB === DB_TYPES.POSTGRES) {
+        return await this.repository.save({ ...order, orderProducts });
+      }
+      const orderListProducts = [...orderProducts.map((item: IOrderProduct) => item._id)];
+        return await this.repository.update({ _id: order._id }, { orderProducts: orderListProducts as Array<string> });
+    } catch (error) {
+      throw new Error();
+    }
+  }
+
   public async addProducts(userId: string, orderProducts: Array<IOrderProductReq>) {
     try {
       const { order: currentOrder, isOrderExists } = await this.getOne({ where: { userId } });
-
       if (isOrderExists) {
         const orderProductsToSave = orderProducts.map((item) =>
           (DB === DB_TYPES.POSTGRES ? { ...item, orderList: currentOrder } : { ...item, orderList: currentOrder._id }));
-        await orderProductService.saveMany(orderProductsToSave);
-      } else {
+
+          const savedOrderProducts = await orderProductService.saveMany(orderProductsToSave);
+          const orderListProducts = [...currentOrder.orderProducts, ...savedOrderProducts];
+
+          await this.update(currentOrder, orderListProducts);
+          } else {
         const newOrderList = await this.save({ userId });
 
         const orderProductsToSave = orderProducts.map((item) =>
           (DB === DB_TYPES.POSTGRES ? { ...item, orderList: newOrderList } : { ...item, orderList: newOrderList._id }));
-        await orderProductService.saveMany(orderProductsToSave);
+
+          const savedOrderProducts = await orderProductService.saveMany(orderProductsToSave);
+
+          await this.update(newOrderList, savedOrderProducts);
       }
-      const listOrderToReturn = await this.getOneWithOrderProducts({ where: { userId } });
+
+      const { order: listOrderToReturn } = await this.getOne({ where: { userId } });
 
       return listOrderToReturn;
     } catch (error) {
@@ -91,31 +98,47 @@ class OrderListService implements IOrderListService {
       const { order: currentOrder, isOrderExists } = await this.getOne({ where: { userId } });
 
       if (isOrderExists) {
-        const searchParamsToDelete: IOrderProductWhereParams = {
-          orderList: currentOrder._id || currentOrder.__id,
-          product: [],
-        };
-        const orderProductsToUpdatePromises: Array<Promise<IOrderProduct>> = [];
+        const orderProductsToDelete: Array<string> = [];
+        const orderProductsToUpdate: Array<IOrderProductReq> = [];
+
         orderProducts.forEach(async (item) => {
           if (item.delete) {
-            if (Array.isArray(searchParamsToDelete.product)) searchParamsToDelete.product.push(item.product);
+              orderProductsToDelete.push(item.product);
           } else {
-            const promise = await orderProductService.update(
+            orderProductsToUpdate.push(item);
+          }
+        });
+
+        if (orderProductsToDelete.length) {
+          const searchParamsToDelete: IOrderProductWhereParams = {
+            orderList: currentOrder._id || currentOrder.__id,
+            product: orderProductsToDelete,
+          };
+
+          await orderProductService.deleteMany(searchParamsToDelete);
+
+          const orderListProducts: Array<IOrderProduct> = [];
+          currentOrder.orderProducts.forEach((item: IOrderProduct) => {
+            if (!orderProductsToDelete.includes(item.product.toString())) orderListProducts.push(item);
+          });
+          await this.update(currentOrder, orderListProducts);
+        }
+
+        if (orderProductsToUpdate.length) {
+          const promises = orderProductsToUpdate.map(async (item) => {
+            const updatedOrderProduct = await orderProductService.update(
               {
                 where: { orderList: currentOrder._id || currentOrder.__id, product: item.product },
               },
               item.quantity
             );
-            orderProductsToUpdatePromises.push(promise);
-          }
-        });
+            return updatedOrderProduct;
+          });
 
-        if (Array.isArray(searchParamsToDelete.product) && !!searchParamsToDelete.product.length) {
-          await orderProductService.deleteMany(searchParamsToDelete);
+          await Promise.all(promises);
         }
-        if (orderProductsToUpdatePromises.length) await Promise.all(orderProductsToUpdatePromises);
 
-        const listOrderToReturn: IOrderList = await this.getOneWithOrderProducts({ where: { userId } });
+        const { order: listOrderToReturn } = await this.getOne({ where: { userId } });
 
         return listOrderToReturn;
       }
@@ -133,8 +156,8 @@ class OrderListService implements IOrderListService {
         await orderProductService.deleteMany({
           orderList: currentOrder._id || currentOrder.__id,
         });
-
-        const listOrderToReturn: IOrderList = await this.getOneWithOrderProducts({ where: { userId } });
+        await this.update(currentOrder, []);
+        const { order: listOrderToReturn } = await this.getOne({ where: { userId } });
 
         return listOrderToReturn;
       }

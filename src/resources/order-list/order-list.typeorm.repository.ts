@@ -1,12 +1,18 @@
 import { getRepository } from 'typeorm';
 import { OrderList } from './order-list.typeorm.model';
-import { IOrderListSearchParams, IOrderListRepository, IOrderListReq } from '../../types';
+import {
+  IOrderListSearchParams,
+  IOrderListRepository,
+  IOrderListReq,
+  IOrderListWhereParams,
+  IOrderListFieldsToUpdate,
+} from '../../types';
 import { NotFoundError } from '../../helpers/errors';
 
 export class OrderListTypeormRepository implements IOrderListRepository {
   public async get(searchParams: IOrderListSearchParams) {
     const orderListRepository = getRepository(OrderList);
-    const orderLists = await orderListRepository.find(searchParams);
+    const orderLists = await orderListRepository.find({ ...searchParams, relations: ['orderProducts'] });
     if (!orderLists) {
       throw new NotFoundError('Order lists not found');
     }
@@ -24,5 +30,10 @@ export class OrderListTypeormRepository implements IOrderListRepository {
       throw new NotFoundError('Product list was not created');
     }
     return savedOrderList;
+  }
+
+  public async update(searchParams: IOrderListWhereParams, fieldsToUpdate: IOrderListFieldsToUpdate) {
+    // Dummy method for mongo db repository compatability
+    console.log(searchParams, fieldsToUpdate);
   }
 }

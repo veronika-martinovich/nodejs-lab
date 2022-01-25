@@ -166,7 +166,8 @@ export interface IOrderProductList {
 }
 
 export interface IOrderProduct {
-  __id: string;
+  _id?: string;
+  __id?: string;
   product: string;
   quantity: number;
 }
@@ -179,12 +180,12 @@ export interface IOrderProductReq {
 }
 
 export interface IOrderProductWhereParams {
-  orderList?: string;
-  product?: string | Array<string>;
+  orderList: string;
+  product?: Array<string>;
 }
 
 export interface IOrderProductSearchParams {
-  where?: IOrderProductWhereParams;
+  where?: IOrderProductWhereParams | any;
   relations?: Array<string>;
   order?: IStringValue;
   skip?: number;
@@ -209,9 +210,16 @@ export interface IOrderProductService {
 // OrderList
 
 export interface IOrderList {
-  __id: string;
+  _id?: string;
+  __id?: string;
   userId: string;
   orderProducts?: Array<IOrderProduct>;
+}
+
+export interface IOrderListToSave {
+  __id?: string;
+  userId: string;
+  orderProducts?: Array<IOrderProduct | string>;
 }
 
 export interface IOrderListReq {
@@ -219,7 +227,12 @@ export interface IOrderListReq {
   orderProducts?: Array<IOrderProductReq>;
 }
 
+export interface IOrderListFieldsToUpdate {
+  orderProducts: Array<string>;
+}
+
 export interface IOrderListWhereParams {
+  _id?: string;
   userId?: string;
   productId?: string;
 }
@@ -231,6 +244,7 @@ export interface IOrderListSearchParams {
 
 export interface IOrderListRepository {
   get(searchParams: IOrderListSearchParams): Promise<Array<IOrderList | any>>;
+  update(searchParams: IOrderListWhereParams, fieldsToUpdate: IOrderListFieldsToUpdate): Promise<IOrderList | any>;
   save(order: IOrderListReq): Promise<IOrderList | any>;
 }
 
@@ -238,8 +252,8 @@ export interface IOrderListService {
   repository: IOrderListRepository;
   get(searchParams: IOrderListSearchParams): Promise<Array<IOrderList>>;
   getOne(searchParams: IOrderListSearchParams): Promise<{ order: IOrderList; isOrderExists: boolean }>;
-  getOneWithOrderProducts(searchParams: IOrderListSearchParams): Promise<IOrderList>;
   save(order: IOrderListReq): Promise<IOrderList>;
+  update(order: IOrderList, orderProducts: Array<IOrderProduct>): Promise<IOrderList>;
   addProducts(userId: string, orderProducts: Array<IOrderProductReq>): Promise<IOrderList>;
   editProducts(userId: string, orderProducts: Array<IOrderProductReq>): Promise<IOrderList>;
   deleteProducts(userId: string): Promise<IOrderList>;

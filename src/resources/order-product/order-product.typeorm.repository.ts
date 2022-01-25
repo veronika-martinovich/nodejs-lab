@@ -20,12 +20,12 @@ export class OrderProductTypeormRepository implements IOrderProductRepository {
 
   public async saveMany(orderProducts: Array<IOrderProductReq>) {
     const orderProductRepository = getRepository(OrderProduct);
-    const savedOrderProduct = await orderProductRepository.save(orderProducts as any);
+    const savedOrderProducts = await orderProductRepository.save(orderProducts as any);
 
-    if (!savedOrderProduct) {
+    if (!savedOrderProducts) {
       throw new NotFoundError('Order product was not created');
     }
-    return savedOrderProduct[0];
+    return savedOrderProducts;
   }
 
   public async deleteMany(searchParams: IOrderProductWhereParams) {
