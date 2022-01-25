@@ -7,8 +7,9 @@ import { NotFoundError } from '../../helpers/errors';
 export class CategoryTypeormRepository implements ICategoryRepository {
   public async getAll() {
     const categoryRepository = getRepository(Category);
-    // @ts-ignore
-    const categories = await categoryRepository.find({ select: [PRODUCT_FIELDS.id, PRODUCT_FIELDS.displayName] });
+    const categories = await categoryRepository.find({
+      select: [PRODUCT_FIELDS.id, PRODUCT_FIELDS.displayName],
+    } as any);
     if (!categories) {
       throw new NotFoundError('Categories not found');
     }
@@ -18,10 +19,9 @@ export class CategoryTypeormRepository implements ICategoryRepository {
   public async getById(id: string) {
     const categoryRepository = getRepository(Category);
     const category = await categoryRepository.find({
-      // @ts-ignore
       select: [PRODUCT_FIELDS.id, PRODUCT_FIELDS.displayName],
       where: { __id: id },
-    });
+    } as any);
     if (!category) {
       throw new NotFoundError(`Category with id ${id} not found`);
     }

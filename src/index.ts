@@ -9,6 +9,7 @@ import express, { Express } from 'express';
 import productsRouter from './resources/product/product.router';
 import categoriesRouter from './resources/category/category.router';
 import usersRouter from './resources/user/user.router';
+import orderListRouter from './resources/order-list/order-list.router';
 import { DBConnect } from './helpers/DBConnect';
 import { applyPassportStrategy } from './helpers/passport';
 
@@ -39,6 +40,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // Routers
 app.use('/products', productsRouter);
 app.use('/categories', categoriesRouter);
+app.use('/order-list', orderListRouter);
 app.use('/', usersRouter);
 
 // Invalid request

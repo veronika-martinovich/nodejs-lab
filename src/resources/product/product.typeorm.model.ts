@@ -7,8 +7,10 @@ import {
   RelationId,
   Index,
   JoinTable,
+  OneToMany,
 } from 'typeorm';
 import { Category } from '../category/category.typeorm.model';
+import { OrderProduct } from '../order-product/order-product.typeorm.model';
 
 @Entity()
 @Index(['displayName', 'totalRating', 'price'])
@@ -35,4 +37,7 @@ export class Product {
 
   @Column()
   public price: number;
+
+  @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.product)
+  public orderProducts: OrderProduct[];
 }
