@@ -60,7 +60,7 @@ usersRouter.route('/profile/password').put(authenticate, async (req: Request, re
 
 usersRouter.route('/register').post(validateUser, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { username, password, firstName, lastName }: IUserToRegister = req.body;
+    const { username, password, firstName, lastName, role }: IUserToRegister = req.body;
     const user = await usersService.getByUsername(username);
     if (!user) {
       const hashedPassword = hashString(password);
@@ -69,6 +69,7 @@ usersRouter.route('/register').post(validateUser, async (req: Request, res: Resp
         password: hashedPassword,
         firstName,
         lastName,
+        role,
       });
       const userToReturn = { ...newUser };
       delete userToReturn.password;

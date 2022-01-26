@@ -40,6 +40,7 @@ export class UserTypeormRepository implements IUserRepository {
       password: user.password,
       firstName: user.firstName,
       lastName: user.lastName,
+      role: user.role,
     });
 
     const savedUser = await userRepository.save(newUser);

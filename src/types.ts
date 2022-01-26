@@ -313,12 +313,14 @@ export interface INewUser {
   firstName?: string;
   lastName?: string;
   createdAt?: Date;
+  role?: string;
 }
 export interface IUserToRegister {
   username: string;
   password: string;
   firstName?: string;
   lastName?: string;
+  role: string;
 }
 
 export interface IUserToReturn {
@@ -330,6 +332,7 @@ export interface IUserToReturn {
   createdAt?: Date;
   token: string;
   refreshToken?: string;
+  role: string;
 }
 export interface IUser {
   __id?: string;
@@ -338,6 +341,7 @@ export interface IUser {
   firstName?: string;
   lastName?: string;
   createdAt?: Date;
+  role: string;
 }
 
 export interface ITokenList {
