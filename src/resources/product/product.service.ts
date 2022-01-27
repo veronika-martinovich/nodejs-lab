@@ -88,6 +88,14 @@ class ProductsService implements IProductService {
     }
   }
 
+  public async deleteById(id: string) {
+    try {
+      return await this.repository.deleteById(id);
+    } catch (error) {
+      throw new Error();
+    }
+  }
+
   public async updateSubdocBySelectors(id: string, querySelector: any, updateSelector: any) {
     try {
       return await this.repository.updateSubdocBySelectors(id, querySelector, updateSelector);

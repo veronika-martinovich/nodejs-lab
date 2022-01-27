@@ -35,7 +35,18 @@ adminProductsRouter
         next(err);
       }
     }
-  );
+  )
+  .delete(authenticate, checkAdminRole, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const productId = req.params.prodId;
+      const productToReturn = await productsService.deleteById(productId);
+
+      res.status(200).json(productToReturn);
+      res.end();
+    } catch (err) {
+      next(err);
+    }
+  });
 
 adminProductsRouter
   .route('/')

@@ -58,6 +58,18 @@ export class ProductTypeormRepository implements IProductRepository {
     return updatedProduct[0];
   }
 
+  public async deleteById(id: string) {
+    const productRepository = getRepository(Product);
+    const products = await this.get({ where: { __id: id } });
+    const productToDelete = products[0];
+    const deletedProduct = await productRepository.remove(productToDelete);
+
+    if (!deletedProduct) {
+      throw new NotFoundError('Product was not deleted');
+    }
+    return deletedProduct;
+  }
+
   public async updateSubdocBySelectors(id: string, querySelector: any, updateSelector: any) {
     // Dummy method for mongo db repository compatability
     console.log(id, querySelector, updateSelector);

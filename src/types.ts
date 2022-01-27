@@ -132,6 +132,7 @@ export interface IProductRepository {
   save(product: IProduct): Promise<IProduct>;
   get(searchParams: IProductSearchParams): Promise<Array<IProduct>>;
   getById(id: string): Promise<IProduct>;
+  deleteById(id: string): Promise<IProduct | any>;
   update(id: string, fieldsToUpdate: IProductFieldsToUpdate): Promise<IProduct>;
   updateSubdocBySelectors(id: string, querySelector: any, updateSelector: any): Promise<IProduct | void>;
   getAvgRating(id: string): Promise<number>;
@@ -142,6 +143,7 @@ export interface IProductService {
   getAll(): Promise<Array<IProduct>>;
   get(params: IProductQueryParams): Promise<Array<IProduct> | null>;
   getById(id: string): Promise<IProduct>;
+  deleteById(id: string): Promise<IProduct>;
   save(product: IProduct): Promise<IProduct>;
   update(id: string, fieldsToUpdate: IProductFieldsToUpdate): Promise<IProduct>;
   updateSubdocBySelectors(id: string, querySelector: any, updateSelector: any): Promise<IProduct | void>;

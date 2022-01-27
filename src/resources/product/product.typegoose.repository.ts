@@ -51,6 +51,16 @@ export class ProductTypegooseRepository implements IProductRepository {
     return updatedProduct;
   }
 
+  public async deleteById(id: string) {
+    const deletedProduct = await ProductModel.findOne({ _id: id }).lean().exec();
+    const result = await ProductModel.deleteOne({ _id: id }).exec();
+
+    if (!result.deletedCount) {
+      throw new NotFoundError('Product was not deleted');
+    }
+    return deletedProduct;
+  }
+
   public async updateSubdocBySelectors(id: string, querySelector: any, updateSelector: any) {
     await ProductModel.updateOne(querySelector, updateSelector).exec();
     const updatedProduct = await ProductModel.findOne({ _id: id }).lean().exec();
