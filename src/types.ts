@@ -132,9 +132,9 @@ export interface IProductRepository {
   save(product: IProduct): Promise<IProduct>;
   get(searchParams: IProductSearchParams): Promise<Array<IProduct>>;
   getById(id: string): Promise<IProduct>;
-  update(__id: string, fieldsToUpdate: IProductFieldsToUpdate): Promise<IProduct>;
-  updateSubdocBySelectors(__id: string, querySelector: any, updateSelector: any): Promise<IProduct | void>;
-  getAvgRating(__id: string): Promise<number>;
+  update(id: string, fieldsToUpdate: IProductFieldsToUpdate): Promise<IProduct>;
+  updateSubdocBySelectors(id: string, querySelector: any, updateSelector: any): Promise<IProduct | void>;
+  getAvgRating(id: string): Promise<number>;
 }
 
 export interface IProductService {
@@ -143,9 +143,9 @@ export interface IProductService {
   get(params: IProductQueryParams): Promise<Array<IProduct> | null>;
   getById(id: string): Promise<IProduct>;
   save(product: IProduct): Promise<IProduct>;
-  update(__id: string, fieldsToUpdate: IProductFieldsToUpdate): Promise<IProduct>;
-  updateSubdocBySelectors(__id: string, querySelector: any, updateSelector: any): Promise<IProduct | void>;
-  getAvgRating(__id: string): Promise<number>;
+  update(id: string, fieldsToUpdate: IProductFieldsToUpdate): Promise<IProduct>;
+  updateSubdocBySelectors(id: string, querySelector: any, updateSelector: any): Promise<IProduct | void>;
+  getAvgRating(id: string): Promise<number>;
   getByCategory({
     id,
     limit,

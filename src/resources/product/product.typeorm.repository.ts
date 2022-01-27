@@ -47,10 +47,10 @@ export class ProductTypeormRepository implements IProductRepository {
     return savedProduct;
   }
 
-  public async update(__id: string, fieldsToUpdate: IProductFieldsToUpdate) {
+  public async update(id: string, fieldsToUpdate: IProductFieldsToUpdate) {
     const productRepository = getRepository(Product);
-    await productRepository.update({ __id }, { ...fieldsToUpdate });
-    const updatedProduct = await productRepository.find({ where: { __id } });
+    await productRepository.update({ __id: id }, { ...fieldsToUpdate });
+    const updatedProduct = await productRepository.find({ where: { __id: id } });
 
     if (!updatedProduct) {
       throw new NotFoundError('Product was not updated');
@@ -58,14 +58,14 @@ export class ProductTypeormRepository implements IProductRepository {
     return updatedProduct[0];
   }
 
-  public async updateSubdocBySelectors(querySelector: any, updateSelector: any) {
+  public async updateSubdocBySelectors(id: string, querySelector: any, updateSelector: any) {
     // Dummy method for mongo db repository compatability
-    console.log(querySelector, updateSelector);
+    console.log(id, querySelector, updateSelector);
   }
 
-  public async getAvgRating(__id: string) {
+  public async getAvgRating(id: string) {
     // Dummy method for mongo db repository compatability
-    console.log(__id);
+    console.log(id);
     const mockAvg = 1;
 
     return mockAvg;

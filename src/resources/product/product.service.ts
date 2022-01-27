@@ -80,25 +80,25 @@ class ProductsService implements IProductService {
     }
   }
 
-  public async update(__id: string, fieldsToUpdate: IProductFieldsToUpdate) {
+  public async update(id: string, fieldsToUpdate: IProductFieldsToUpdate) {
     try {
-      return await this.repository.update(__id, fieldsToUpdate);
+      return await this.repository.update(id, fieldsToUpdate);
     } catch (error) {
       throw new Error();
     }
   }
 
-  public async updateSubdocBySelectors(__id: string, querySelector: any, updateSelector: any) {
+  public async updateSubdocBySelectors(id: string, querySelector: any, updateSelector: any) {
     try {
-      return await this.repository.updateSubdocBySelectors(__id, querySelector, updateSelector);
+      return await this.repository.updateSubdocBySelectors(id, querySelector, updateSelector);
     } catch (error) {
       throw new Error();
     }
   }
 
-  public async getAvgRating(__id: string) {
+  public async getAvgRating(id: string) {
     try {
-      return await this.repository.getAvgRating(__id);
+      return await this.repository.getAvgRating(id);
     } catch (error) {
       throw new Error();
     }

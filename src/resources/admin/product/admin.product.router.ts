@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import productsService from '../../product/product.service';
-import { validateProductBody } from '../../product/product.validation';
+import { validateProductBody, validateProductBodyOptional } from '../../product/product.validation';
 import { checkAdminRole } from '../../../helpers/check-admin-role';
 import { authenticate } from '../../../helpers/authenticate';
 
@@ -18,7 +18,24 @@ adminProductsRouter
     } catch (err) {
       next(err);
     }
-  });
+  })
+  .patch(
+    authenticate,
+    checkAdminRole,
+    validateProductBodyOptional,
+    async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const productId = req.params.prodId;
+        const fieldsToUpdate = req.body;
+        const productToReturn = await productsService.update(productId, fieldsToUpdate);
+
+        res.status(200).json(productToReturn);
+        res.end();
+      } catch (err) {
+        next(err);
+      }
+    }
+  );
 
 adminProductsRouter
   .route('/')
