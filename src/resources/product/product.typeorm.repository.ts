@@ -22,6 +22,15 @@ export class ProductTypeormRepository implements IProductRepository {
     return products;
   }
 
+  public async getById(id: string) {
+    const productRepository = getRepository(Product);
+    const products = await productRepository.find({ where: { __id: id } });
+    if (!products) {
+      throw new NotFoundError('Product not found');
+    }
+    return products[0];
+  }
+
   public async save(product: IProduct) {
     const productRepository = getRepository(Product);
     const newProduct = productRepository.create({

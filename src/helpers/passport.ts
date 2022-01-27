@@ -13,7 +13,7 @@ export const applyPassportStrategy = (passport: any) => {
       const { username } = payload;
       const user = await usersService.getByUsername(username);
       if (user) {
-        return done(null, { username: user.username, __id: user.__id });
+        return done(null, user);
       }
       return done(null, false);
     })

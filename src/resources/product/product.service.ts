@@ -39,6 +39,14 @@ class ProductsService implements IProductService {
     }
   }
 
+  public async getById(id: string) {
+    try {
+      return await this.repository.getById(id);
+    } catch (error) {
+      throw new Error();
+    }
+  }
+
   public async getByCategory({
     id,
     limit,

@@ -131,6 +131,7 @@ export interface IProductRepository {
   getAll(): Promise<Array<IProduct>>;
   save(product: IProduct): Promise<IProduct>;
   get(searchParams: IProductSearchParams): Promise<Array<IProduct>>;
+  getById(id: string): Promise<IProduct>;
   update(__id: string, fieldsToUpdate: IProductFieldsToUpdate): Promise<IProduct>;
   updateSubdocBySelectors(__id: string, querySelector: any, updateSelector: any): Promise<IProduct | void>;
   getAvgRating(__id: string): Promise<number>;
@@ -140,6 +141,7 @@ export interface IProductService {
   repository: IProductRepository;
   getAll(): Promise<Array<IProduct>>;
   get(params: IProductQueryParams): Promise<Array<IProduct> | null>;
+  getById(id: string): Promise<IProduct>;
   save(product: IProduct): Promise<IProduct>;
   update(__id: string, fieldsToUpdate: IProductFieldsToUpdate): Promise<IProduct>;
   updateSubdocBySelectors(__id: string, querySelector: any, updateSelector: any): Promise<IProduct | void>;
