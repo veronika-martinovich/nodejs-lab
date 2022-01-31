@@ -12,4 +12,7 @@ export class UserRating {
 
   @prop()
   public comment: string;
+
+  @prop({ default: Date.now })
+  public createdAt: Date;
 }

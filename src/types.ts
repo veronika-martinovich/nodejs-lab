@@ -61,6 +61,8 @@ export interface IUserRating {
 
 export interface IUserRatingSearchParams {
   where?: IUserRating;
+  limit?: number;
+  sortBy?: any;
 }
 
 export interface IUserRatingRepository {
@@ -76,6 +78,7 @@ export interface IUserRatingService {
   getAll(): Promise<Array<IUserRating>>;
   get(params: IUserRatingSearchParams): Promise<Array<IUserRating>>;
   getAvgByProduct(prodId: string): Promise<number>;
+  getLastRatings(params: IUserRatingSearchParams): Promise<Array<IUserRating>>;
   save(userRating: IUserRating): Promise<IUserRating | null>;
   update(__id: string, userRating: IUserRating): Promise<IUserRating | null>;
 }

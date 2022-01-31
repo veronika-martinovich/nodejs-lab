@@ -1,5 +1,8 @@
 import { UserRatingTypeormRepository } from './user-rating.typeorm.repository';
 import { IUserRatingSearchParams, IUserRating, IUserRatingService, IUserRatingRepository } from '../../types';
+import { SORTING_ORDER, DB_TYPES } from '../../helpers/constants';
+
+const { DB } = require('../../config');
 
 class UserRatingService implements IUserRatingService {
   repository: IUserRatingRepository;
@@ -27,6 +30,20 @@ class UserRatingService implements IUserRatingService {
   public async get(params: IUserRatingSearchParams) {
     try {
       return await this.repository.get(params);
+    } catch (error) {
+      throw new Error();
+    }
+  }
+
+  public async getLastRatings() {
+    try {
+      const searchParams = {
+        limit: 10,
+        sortBy: {
+          createdAt: DB === DB_TYPES.POSTGRES ? SORTING_ORDER.DESC.toUpperCase() : SORTING_ORDER.DESC,
+        },
+      };
+      return await this.repository.get(searchParams);
     } catch (error) {
       throw new Error();
     }
