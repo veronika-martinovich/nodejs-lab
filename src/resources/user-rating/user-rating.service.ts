@@ -1,6 +1,14 @@
 import { UserRatingTypeormRepository } from './user-rating.typeorm.repository';
-import { IUserRatingSearchParams, IUserRating, IUserRatingService, IUserRatingRepository } from '../../types';
+import {
+  IUserRatingSearchParams,
+  IUserRating,
+  IUserRatingService,
+  IUserRatingRepository,
+  IProduct,
+  IUserRatingReq,
+} from '../../types';
 import { SORTING_ORDER, DB_TYPES } from '../../helpers/constants';
+import productsService from '../product/product.service';
 
 const { DB } = require('../../config');
 
@@ -37,13 +45,31 @@ class UserRatingService implements IUserRatingService {
 
   public async getLastRatings() {
     try {
-      const searchParams = {
-        limit: 10,
-        sortBy: {
-          createdAt: DB === DB_TYPES.POSTGRES ? SORTING_ORDER.DESC.toUpperCase() : SORTING_ORDER.DESC,
-        },
-      };
-      return await this.repository.get(searchParams);
+      if (DB === DB_TYPES.POSTGRES) {
+        const searchParams = {
+          limit: 10,
+          sortBy: {
+            createdAt: SORTING_ORDER.DESC.toUpperCase(),
+          },
+        };
+        return await this.repository.get(searchParams);
+      }
+      const userRatings: Array<IUserRating> = [];
+      const products = await productsService.getAll();
+      products.forEach((item: IProduct) => {
+        if (item.ratings) {
+          item.ratings.forEach((i) => {
+            if (i.createdAt) {
+              userRatings.push(i);
+            }
+          });
+        }
+      });
+      const lastRatings = userRatings
+        .sort((a, b) => new Date(b.createdAt!).valueOf() - new Date(a.createdAt!).valueOf())
+        .slice(0, 10);
+
+      return lastRatings;
     } catch (error) {
       throw new Error();
     }
@@ -57,7 +83,7 @@ class UserRatingService implements IUserRatingService {
     }
   }
 
-  public async update(__id: string, userRating: IUserRating) {
+  public async update(__id: string, userRating: IUserRatingReq) {
     try {
       return await this.repository.update(__id, userRating);
     } catch (error) {

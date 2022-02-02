@@ -164,7 +164,7 @@ class ProductsService implements IProductService {
 
     const avgRating = await this.getAvgRating(userRating.productId);
     const fieldsToUpdate: IProductFieldsToUpdate = {
-      totalRating: avgRating,
+      totalRating: Number(avgRating.toFixed(2)),
     };
     const updatedProduct = await this.update(userRating.productId, fieldsToUpdate);
     return updatedProduct;
