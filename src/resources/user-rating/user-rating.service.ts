@@ -83,9 +83,9 @@ class UserRatingService implements IUserRatingService {
     }
   }
 
-  public async update(__id: string, userRating: IUserRatingReq) {
+  public async update(id: string, userRating: IUserRatingReq) {
     try {
-      return await this.repository.update(__id, userRating);
+      return await this.repository.update(id, userRating);
     } catch (error) {
       throw new Error();
     }

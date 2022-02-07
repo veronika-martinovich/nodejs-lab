@@ -126,8 +126,8 @@ class ProductsService implements IProductService {
       });
       const isUserRatingExist = !!currentUserRating.length;
 
-      if (isUserRatingExist && currentUserRating[0].__id) {
-        await userRatingsService.update(currentUserRating[0].__id, userRating);
+      if (isUserRatingExist && currentUserRating[0]._id) {
+        await userRatingsService.update(currentUserRating[0]._id, userRating);
       } else {
         await userRatingsService.save(userRating);
         await lastRatingsService.save(userRating);

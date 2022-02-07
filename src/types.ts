@@ -55,7 +55,7 @@ export interface IUserRatingReq {
 }
 
 export interface IUserRating {
-  __id?: string;
+  _id?: string;
   userId?: string;
   productId?: string;
   rating?: number;
@@ -74,7 +74,7 @@ export interface IUserRatingRepository {
   get(params: IUserRatingSearchParams): Promise<Array<IUserRating | UserRating>>;
   getAvgByProduct(prodId: string): Promise<number>;
   save(userRating: IUserRating): Promise<IUserRating | UserRating | null>;
-  update(__id: string, userRating: IUserRating): Promise<IUserRating | UserRating | null>;
+  update(id: string, userRating: IUserRating): Promise<IUserRating | UserRating | null>;
 }
 
 export interface IUserRatingService {
@@ -84,7 +84,7 @@ export interface IUserRatingService {
   getAvgByProduct(prodId: string): Promise<number>;
   getLastRatings(params: IUserRatingSearchParams): Promise<Array<IUserRating>>;
   save(userRating: IUserRating): Promise<IUserRating | null>;
-  update(__id: string, userRating: IUserRating): Promise<IUserRating | null>;
+  update(id: string, userRating: IUserRating): Promise<IUserRating | null>;
 }
 
 // Product
