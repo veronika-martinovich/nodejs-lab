@@ -1,6 +1,7 @@
 import { ProductTypegooseRepository } from './product.typegoose.repository';
 import { ProductTypeormRepository } from './product.typeorm.repository';
 import userRatingsService from '../user-rating/user-rating.service';
+import lastRatingsService from '../last-ratings/last-ratings.service';
 import {
   IUserRatingReq,
   IProduct,
@@ -115,7 +116,7 @@ class ProductsService implements IProductService {
 
   public async rate(userRating: IUserRatingReq) {
     const emitNewRatingEvent = async () => {
-      const lastRatings = await userRatingsService.getLastRatings();
+      const lastRatings = await lastRatingsService.getAll();
       io.emit('newRating', { lastRatings });
     };
 
@@ -129,6 +130,7 @@ class ProductsService implements IProductService {
         await userRatingsService.update(currentUserRating[0].__id, userRating);
       } else {
         await userRatingsService.save(userRating);
+        await lastRatingsService.save(userRating);
       }
 
       const avgRating = await userRatingsService.getAvgByProduct(userRating.productId);
@@ -167,6 +169,7 @@ class ProductsService implements IProductService {
     } else {
       productToRate.ratings?.push(userRating);
       await this.save(productToRate);
+      await lastRatingsService.save(userRating);
     }
 
     const avgRating = await this.getAvgRating(userRating.productId);
