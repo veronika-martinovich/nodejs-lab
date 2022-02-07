@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { UserRating } from './resources/user-rating/user-rating.typeorm.model';
+import { User } from './resources/user/user.typeorm.model';
+import { LastRatings } from './resources/last-ratings/last-ratings.typeorm.model';
 
 export interface IMongoDBRange {
   $gte?: number;
@@ -165,6 +167,28 @@ export interface IProductService {
     sortField?: string;
   }): Promise<Array<IProduct>>;
   rate(userRating: IUserRatingReq): Promise<IProduct>;
+}
+
+// Last Ratings
+
+export interface ILastRating {
+  _id?: string;
+  userId?: string | User;
+  productId?: string;
+  rating?: number;
+  comment?: string;
+  createdAt?: Date;
+}
+
+export interface ILastRatingsRepository {
+  getAll(): Promise<Array<ILastRating | LastRatings | any>>;
+  save(lastRating: IUserRatingReq): Promise<ILastRating | LastRatings | any>;
+}
+
+export interface ILastRatingsService {
+  repository: ILastRatingsRepository;
+  getAll(): Promise<Array<ILastRating | LastRatings>>;
+  save(lastRating: IUserRatingReq): Promise<ILastRating | LastRatings>;
 }
 
 // OrderProduct
