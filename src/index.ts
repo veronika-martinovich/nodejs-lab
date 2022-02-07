@@ -31,7 +31,7 @@ const port = PORT || 3000;
 
 // Socket.io
 const server = http.createServer(app);
-const io = new Server(server);
+export const io = new Server(server);
 
 // Passport
 applyPassportStrategy(passport);
@@ -68,7 +68,7 @@ io.on('connection', (socket: any) => {
 });
 
 DBConnect().then(() => {
-  app.listen(PORT, () => {
+  server.listen(PORT, () => {
     console.log(`Server is running on port ${port}`);
   });
 });

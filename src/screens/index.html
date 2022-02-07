@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.IO User Ratings</title>
+  </head>
+ 
+  <body>
+      <script src="socket.io/socket.io.js"></script>
+      <script>
+        const socket = io();
+
+        // For initial ratings display
+        fetch('http://localhost:3000/lastRatings')
+        .then(response => response.json())
+        .then(data => console.log(data))
+
+        socket.on('newRating', function(msg) {
+          console.log(msg)
+        });
+      </script>
+  </body>
+</html>

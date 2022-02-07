@@ -12,6 +12,7 @@ import {
 } from '../../types';
 import { DB_TYPES } from '../../helpers/constants';
 import { formProductSearchParams } from '../../helpers/form-product-search-params';
+import { io } from '../../index';
 
 const { DB } = require('../../config');
 
@@ -113,6 +114,11 @@ class ProductsService implements IProductService {
   }
 
   public async rate(userRating: IUserRatingReq) {
+    const emitNewRatingEvent = async () => {
+      const lastRatings = await userRatingsService.getLastRatings();
+      io.emit('newRating', { lastRatings });
+    };
+
     if (DB === DB_TYPES.POSTGRES && userRating.productId) {
       const currentUserRating = await userRatingsService.get({
         where: { productId: userRating.productId, userId: userRating.userId },
@@ -130,6 +136,7 @@ class ProductsService implements IProductService {
         totalRating: Number(avgRating),
       };
       const updatedProduct = await this.update(userRating.productId, fieldsToUpdate);
+      emitNewRatingEvent();
       return updatedProduct;
     }
 
@@ -167,6 +174,7 @@ class ProductsService implements IProductService {
       totalRating: Number(avgRating.toFixed(2)),
     };
     const updatedProduct = await this.update(userRating.productId, fieldsToUpdate);
+    emitNewRatingEvent();
     return updatedProduct;
   }
 }
