@@ -183,12 +183,14 @@ export interface ILastRating {
 export interface ILastRatingsRepository {
   getAll(): Promise<Array<ILastRating | LastRatings | any>>;
   save(lastRating: IUserRatingReq): Promise<ILastRating | LastRatings | any>;
+  cleanUpOld(): Promise<number>;
 }
 
 export interface ILastRatingsService {
   repository: ILastRatingsRepository;
   getAll(): Promise<Array<ILastRating | LastRatings>>;
   save(lastRating: IUserRatingReq): Promise<ILastRating | LastRatings>;
+  cleanUpOld(): Promise<number>;
 }
 
 // OrderProduct
