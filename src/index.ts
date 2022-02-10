@@ -10,6 +10,7 @@ import productsRouter from './resources/product/product.router';
 import categoriesRouter from './resources/category/category.router';
 import usersRouter from './resources/user/user.router';
 import orderListRouter from './resources/order-list/order-list.router';
+import adminProductsRouter from './resources/admin/product/admin.product.router';
 import { DBConnect } from './helpers/DBConnect';
 import { applyPassportStrategy } from './helpers/passport';
 
@@ -42,6 +43,7 @@ app.use('/products', productsRouter);
 app.use('/categories', categoriesRouter);
 app.use('/order-list', orderListRouter);
 app.use('/', usersRouter);
+app.use('/admin/products', adminProductsRouter);
 
 // Invalid request
 app.use(middlewareNotFoundHandler);

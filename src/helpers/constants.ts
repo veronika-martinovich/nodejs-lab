@@ -26,3 +26,8 @@ export const BOOLEAN_MAP: IBooleanValue = {
   true: true,
   false: false,
 };
+
+export const ROLES = {
+  ADMIN: 'admin',
+  BUYER: 'buyer',
+};

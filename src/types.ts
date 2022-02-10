@@ -131,19 +131,23 @@ export interface IProductRepository {
   getAll(): Promise<Array<IProduct>>;
   save(product: IProduct): Promise<IProduct>;
   get(searchParams: IProductSearchParams): Promise<Array<IProduct>>;
-  update(__id: string, fieldsToUpdate: IProductFieldsToUpdate): Promise<IProduct>;
-  updateSubdocBySelectors(__id: string, querySelector: any, updateSelector: any): Promise<IProduct | void>;
-  getAvgRating(__id: string): Promise<number>;
+  getById(id: string): Promise<IProduct>;
+  deleteById(id: string): Promise<IProduct | any>;
+  update(id: string, fieldsToUpdate: IProductFieldsToUpdate): Promise<IProduct>;
+  updateSubdocBySelectors(id: string, querySelector: any, updateSelector: any): Promise<IProduct | void>;
+  getAvgRating(id: string): Promise<number>;
 }
 
 export interface IProductService {
   repository: IProductRepository;
   getAll(): Promise<Array<IProduct>>;
   get(params: IProductQueryParams): Promise<Array<IProduct> | null>;
+  getById(id: string): Promise<IProduct>;
+  deleteById(id: string): Promise<IProduct>;
   save(product: IProduct): Promise<IProduct>;
-  update(__id: string, fieldsToUpdate: IProductFieldsToUpdate): Promise<IProduct>;
-  updateSubdocBySelectors(__id: string, querySelector: any, updateSelector: any): Promise<IProduct | void>;
-  getAvgRating(__id: string): Promise<number>;
+  update(id: string, fieldsToUpdate: IProductFieldsToUpdate): Promise<IProduct>;
+  updateSubdocBySelectors(id: string, querySelector: any, updateSelector: any): Promise<IProduct | void>;
+  getAvgRating(id: string): Promise<number>;
   getByCategory({
     id,
     limit,
@@ -313,12 +317,14 @@ export interface INewUser {
   firstName?: string;
   lastName?: string;
   createdAt?: Date;
+  role?: string;
 }
 export interface IUserToRegister {
   username: string;
   password: string;
   firstName?: string;
   lastName?: string;
+  role: string;
 }
 
 export interface IUserToReturn {
@@ -330,6 +336,7 @@ export interface IUserToReturn {
   createdAt?: Date;
   token: string;
   refreshToken?: string;
+  role: string;
 }
 export interface IUser {
   __id?: string;
@@ -338,6 +345,7 @@ export interface IUser {
   firstName?: string;
   lastName?: string;
   createdAt?: Date;
+  role: string;
 }
 
 export interface ITokenList {

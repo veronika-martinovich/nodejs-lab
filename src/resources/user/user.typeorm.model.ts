@@ -19,4 +19,7 @@ export class User {
 
   @CreateDateColumn()
   public createdAt: Date;
+
+  @Column()
+  public role: string;
 }

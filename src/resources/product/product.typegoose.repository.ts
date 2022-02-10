@@ -23,6 +23,15 @@ export class ProductTypegooseRepository implements IProductRepository {
     return products;
   }
 
+  public async getById(id: string) {
+    const product = await ProductModel.findById(id).exec();
+
+    if (!product) {
+      throw new NotFoundError('Product not found');
+    }
+    return product;
+  }
+
   public async save(product: IProduct) {
     const newProduct = await ProductModel.create(product);
     const productToReturn = await ProductModel.findOne({ _id: newProduct._id }).lean().exec();
@@ -33,27 +42,37 @@ export class ProductTypegooseRepository implements IProductRepository {
     return productToReturn;
   }
 
-  public async update(__id: string, fieldsToUpdate: IProductFieldsToUpdate) {
-    await ProductModel.updateOne({ _id: __id }, { ...fieldsToUpdate }).exec();
-    const updatedProduct = await ProductModel.findOne({ _id: __id }).lean().exec();
+  public async update(id: string, fieldsToUpdate: IProductFieldsToUpdate) {
+    await ProductModel.updateOne({ _id: id }, { ...fieldsToUpdate }).exec();
+    const updatedProduct = await ProductModel.findOne({ _id: id }).lean().exec();
     if (!updatedProduct) {
       throw new NotFoundError('Product was not updated');
     }
     return updatedProduct;
   }
 
-  public async updateSubdocBySelectors(__id: string, querySelector: any, updateSelector: any) {
+  public async deleteById(id: string) {
+    const deletedProduct = await ProductModel.findOne({ _id: id }).lean().exec();
+    const result = await ProductModel.deleteOne({ _id: id }).exec();
+
+    if (!result.deletedCount) {
+      throw new NotFoundError('Product was not deleted');
+    }
+    return deletedProduct;
+  }
+
+  public async updateSubdocBySelectors(id: string, querySelector: any, updateSelector: any) {
     await ProductModel.updateOne(querySelector, updateSelector).exec();
-    const updatedProduct = await ProductModel.findOne({ _id: __id }).lean().exec();
+    const updatedProduct = await ProductModel.findOne({ _id: id }).lean().exec();
     if (!updatedProduct) {
       throw new NotFoundError('Product was not updated');
     }
     return updatedProduct;
   }
 
-  public async getAvgRating(__id: string) {
+  public async getAvgRating(id: string) {
     const avgResponse = await ProductModel.aggregate([
-      { $match: { _id: new ObjectId(__id) } },
+      { $match: { _id: new ObjectId(id) } },
       { $unwind: '$ratings' },
       {
         $group: {

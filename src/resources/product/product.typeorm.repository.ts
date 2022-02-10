@@ -22,6 +22,15 @@ export class ProductTypeormRepository implements IProductRepository {
     return products;
   }
 
+  public async getById(id: string) {
+    const productRepository = getRepository(Product);
+    const products = await productRepository.find({ where: { __id: id } });
+    if (!products) {
+      throw new NotFoundError('Product not found');
+    }
+    return products[0];
+  }
+
   public async save(product: IProduct) {
     const productRepository = getRepository(Product);
     const newProduct = productRepository.create({
@@ -38,10 +47,10 @@ export class ProductTypeormRepository implements IProductRepository {
     return savedProduct;
   }
 
-  public async update(__id: string, fieldsToUpdate: IProductFieldsToUpdate) {
+  public async update(id: string, fieldsToUpdate: IProductFieldsToUpdate) {
     const productRepository = getRepository(Product);
-    await productRepository.update({ __id }, { ...fieldsToUpdate });
-    const updatedProduct = await productRepository.find({ where: { __id } });
+    await productRepository.update({ __id: id }, { ...fieldsToUpdate });
+    const updatedProduct = await productRepository.find({ where: { __id: id } });
 
     if (!updatedProduct) {
       throw new NotFoundError('Product was not updated');
@@ -49,14 +58,26 @@ export class ProductTypeormRepository implements IProductRepository {
     return updatedProduct[0];
   }
 
-  public async updateSubdocBySelectors(querySelector: any, updateSelector: any) {
-    // Dummy method for mongo db repository compatability
-    console.log(querySelector, updateSelector);
+  public async deleteById(id: string) {
+    const productRepository = getRepository(Product);
+    const products = await this.get({ where: { __id: id } });
+    const productToDelete = products[0];
+    const deletedProduct = await productRepository.remove(productToDelete);
+
+    if (!deletedProduct) {
+      throw new NotFoundError('Product was not deleted');
+    }
+    return deletedProduct;
   }
 
-  public async getAvgRating(__id: string) {
+  public async updateSubdocBySelectors(id: string, querySelector: any, updateSelector: any) {
     // Dummy method for mongo db repository compatability
-    console.log(__id);
+    console.log(id, querySelector, updateSelector);
+  }
+
+  public async getAvgRating(id: string) {
+    // Dummy method for mongo db repository compatability
+    console.log(id);
     const mockAvg = 1;
 
     return mockAvg;

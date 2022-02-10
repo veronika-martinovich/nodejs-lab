@@ -21,6 +21,9 @@ export class User {
 
   @prop({ default: Date.now })
   public createdAt: Date;
+
+  @prop()
+  public role: string;
 }
 
 export const UserModel = getModelForClass(User);
