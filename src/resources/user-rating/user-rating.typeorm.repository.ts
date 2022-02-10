@@ -28,7 +28,12 @@ export class UserRatingTypeormRepository implements IUserRatingRepository {
 
   public async get(params: IUserRatingSearchParams) {
     const userRatingsRepository = getRepository(UserRating);
-    const userRatings = await userRatingsRepository.find(params);
+    const searchParams = {
+      where: params.where,
+      take: params.limit,
+      order: params.sortBy,
+    };
+    const userRatings = await userRatingsRepository.find(searchParams);
     if (!userRatings) {
       throw new NotFoundError('User ratings not found');
     }

@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { UserRating } from './resources/user-rating/user-rating.typeorm.model';
 
 export interface IMongoDBRange {
   $gte?: number;
@@ -57,18 +58,21 @@ export interface IUserRating {
   productId?: string;
   rating?: number;
   comment?: string;
+  createdAt?: Date;
 }
 
 export interface IUserRatingSearchParams {
-  where?: IUserRating;
+  where?: any;
+  limit?: number;
+  sortBy?: any;
 }
 
 export interface IUserRatingRepository {
-  getAll(): Promise<Array<IUserRating>>;
-  get(params: IUserRatingSearchParams): Promise<Array<IUserRating>>;
+  getAll(): Promise<Array<IUserRating | UserRating>>;
+  get(params: IUserRatingSearchParams): Promise<Array<IUserRating | UserRating>>;
   getAvgByProduct(prodId: string): Promise<number>;
-  save(userRating: IUserRating): Promise<IUserRating | null>;
-  update(__id: string, userRating: IUserRating): Promise<IUserRating | null>;
+  save(userRating: IUserRating): Promise<IUserRating | UserRating | null>;
+  update(__id: string, userRating: IUserRating): Promise<IUserRating | UserRating | null>;
 }
 
 export interface IUserRatingService {
@@ -76,6 +80,7 @@ export interface IUserRatingService {
   getAll(): Promise<Array<IUserRating>>;
   get(params: IUserRatingSearchParams): Promise<Array<IUserRating>>;
   getAvgByProduct(prodId: string): Promise<number>;
+  getLastRatings(params: IUserRatingSearchParams): Promise<Array<IUserRating>>;
   save(userRating: IUserRating): Promise<IUserRating | null>;
   update(__id: string, userRating: IUserRating): Promise<IUserRating | null>;
 }

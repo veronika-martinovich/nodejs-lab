@@ -32,7 +32,7 @@ export class Product {
   @CreateDateColumn()
   public createdAt: Date;
 
-  @Column()
+  @Column({ type: 'float', nullable: true })
   public totalRating: number;
 
   @Column()
