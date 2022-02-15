@@ -16,7 +16,8 @@ export class LastRatingsTypeormRepository implements ILastRatingsRepository {
 
   public async cleanUpOld() {
     const lastRatingsRepository = getRepository(LastRatings);
-    const lastRatingsToDelete = await lastRatingsRepository.find({ skip: LATEST_RATINGS_AMOUNT });
+    const allLastRatings = await lastRatingsRepository.find();
+    const lastRatingsToDelete = allLastRatings.slice(0, -LATEST_RATINGS_AMOUNT);
     const deletedLastRatings = await lastRatingsRepository.remove(lastRatingsToDelete);
 
     if (!deletedLastRatings) {

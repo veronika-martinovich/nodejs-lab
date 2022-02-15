@@ -14,7 +14,8 @@ export class LastRatingsTypegooseRepository implements ILastRatingsRepository {
   }
 
   public async cleanUpOld() {
-    const lastRatingsToDelete = await LastRatingsModel.find({}).skip(LATEST_RATINGS_AMOUNT);
+    const allLastRatings = await LastRatingsModel.find({});
+    const lastRatingsToDelete = allLastRatings.slice(0, -LATEST_RATINGS_AMOUNT);
     const lastRatingsToDeleteIds = lastRatingsToDelete.map((item) => item._id);
     const deletedLastRatings = await LastRatingsModel.deleteMany({
       _id: {
