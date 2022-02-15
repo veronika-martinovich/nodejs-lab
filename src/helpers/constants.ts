@@ -32,4 +32,4 @@ export const ROLES = {
   BUYER: 'buyer',
 };
 
-export const LATEST_RATINGS_AMOUNT = 1;
+export const LATEST_RATINGS_AMOUNT = 10;

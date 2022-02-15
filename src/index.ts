@@ -14,6 +14,7 @@ import adminProductsRouter from './resources/admin/product/admin.product.router'
 import lastRatingsRouter from './resources/last-ratings/last-ratings.router';
 import { DBConnect } from './helpers/DBConnect';
 import { applyPassportStrategy } from './helpers/passport';
+import { lastRatingsJob } from './jobs/last-ratings';
 
 const path = require('path');
 const http = require('http');
@@ -70,5 +71,6 @@ io.on('connection', (socket: any) => {
 DBConnect().then(() => {
   server.listen(PORT, () => {
     console.log(`Server is running on port ${port}`);
+    lastRatingsJob.start();
   });
 });
