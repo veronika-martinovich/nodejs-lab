@@ -31,3 +31,5 @@ export const ROLES = {
   ADMIN: 'admin',
   BUYER: 'buyer',
 };
+
+export const LATEST_RATINGS_AMOUNT = 10;

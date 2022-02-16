@@ -57,10 +57,10 @@ export class UserRatingTypeormRepository implements IUserRatingRepository {
     return savedUserRating;
   }
 
-  public async update(__id: string, userRating: IUserRating) {
+  public async update(id: string, userRating: IUserRating) {
     const userRatingsRepository = getRepository(UserRating);
-    await userRatingsRepository.update({ __id }, { ...userRating });
-    const updatedUser = await userRatingsRepository.find({ where: { __id } });
+    await userRatingsRepository.update({ _id: id }, { ...userRating });
+    const updatedUser = await userRatingsRepository.find({ where: { _id: id } });
 
     if (!updatedUser) {
       throw new NotFoundError('User rating was not updated');

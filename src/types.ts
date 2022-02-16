@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { UserRating } from './resources/user-rating/user-rating.typeorm.model';
+import { User } from './resources/user/user.typeorm.model';
+import { LastRatings } from './resources/last-ratings/last-ratings.typeorm.model';
 
 export interface IMongoDBRange {
   $gte?: number;
@@ -53,7 +55,7 @@ export interface IUserRatingReq {
 }
 
 export interface IUserRating {
-  __id?: string;
+  _id?: string;
   userId?: string;
   productId?: string;
   rating?: number;
@@ -72,7 +74,7 @@ export interface IUserRatingRepository {
   get(params: IUserRatingSearchParams): Promise<Array<IUserRating | UserRating>>;
   getAvgByProduct(prodId: string): Promise<number>;
   save(userRating: IUserRating): Promise<IUserRating | UserRating | null>;
-  update(__id: string, userRating: IUserRating): Promise<IUserRating | UserRating | null>;
+  update(id: string, userRating: IUserRating): Promise<IUserRating | UserRating | null>;
 }
 
 export interface IUserRatingService {
@@ -82,7 +84,7 @@ export interface IUserRatingService {
   getAvgByProduct(prodId: string): Promise<number>;
   getLastRatings(params: IUserRatingSearchParams): Promise<Array<IUserRating>>;
   save(userRating: IUserRating): Promise<IUserRating | null>;
-  update(__id: string, userRating: IUserRating): Promise<IUserRating | null>;
+  update(id: string, userRating: IUserRating): Promise<IUserRating | null>;
 }
 
 // Product
@@ -165,6 +167,30 @@ export interface IProductService {
     sortField?: string;
   }): Promise<Array<IProduct>>;
   rate(userRating: IUserRatingReq): Promise<IProduct>;
+}
+
+// Last Ratings
+
+export interface ILastRating {
+  _id?: string;
+  userId?: string | User;
+  productId?: string;
+  rating?: number;
+  comment?: string;
+  createdAt?: Date;
+}
+
+export interface ILastRatingsRepository {
+  getAll(): Promise<Array<ILastRating | LastRatings | any>>;
+  save(lastRating: IUserRatingReq): Promise<ILastRating | LastRatings | any>;
+  cleanUpOld(): Promise<number>;
+}
+
+export interface ILastRatingsService {
+  repository: ILastRatingsRepository;
+  getAll(): Promise<Array<ILastRating | LastRatings>>;
+  save(lastRating: IUserRatingReq): Promise<ILastRating | LastRatings>;
+  cleanUpOld(): Promise<number>;
 }
 
 // OrderProduct
