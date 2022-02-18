@@ -1,3 +1,6 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-await-in-loop */
+/* eslint-disable guard-for-in */
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
@@ -28,9 +31,9 @@ const close = async () => {
 
 const clear = async () => {
   const { collections } = mongoose.connection;
-  Object.keys(collections).forEach(async (collectionKey) => {
-    await collections[collectionKey].deleteMany();
-  });
+  for (const key in collections) {
+    await collections[key].deleteMany();
+  }
 };
 
 module.exports = {
