@@ -27,7 +27,7 @@ const { middlewareErrorHandler, middlewareHttpLogger, middlewareNotFoundHandler 
 
 const swaggerDocument = YAML.load(path.join(__dirname, './swagger.yaml'));
 
-const app: Express = express();
+export const app: Express = express();
 const port = PORT || 3000;
 
 // Socket.io
