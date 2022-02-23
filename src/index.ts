@@ -12,24 +12,19 @@ import usersRouter from './resources/user/user.router';
 import orderListRouter from './resources/order-list/order-list.router';
 import adminProductsRouter from './resources/admin/product/admin.product.router';
 import lastRatingsRouter from './resources/last-ratings/last-ratings.router';
-import { DBConnect } from './helpers/DBConnect';
 import { applyPassportStrategy } from './helpers/passport';
-import { lastRatingsJob } from './jobs/last-ratings';
 
 const path = require('path');
 const http = require('http');
 const passport = require('passport');
 const { Server } = require('socket.io');
-const { PORT } = require('./config');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const { middlewareErrorHandler, middlewareHttpLogger, middlewareNotFoundHandler } = require('./helpers/middlewares');
 
 const swaggerDocument = YAML.load(path.join(__dirname, './swagger.yaml'));
 
-export const app: Express = express();
-const port = PORT || 3000;
-
+const app: Express = express();
 // Socket.io
 const server = http.createServer(app);
 export const io = new Server(server);
@@ -68,9 +63,4 @@ io.on('connection', (socket: any) => {
   });
 });
 
-DBConnect().then(() => {
-  server.listen(PORT, () => {
-    console.log(`Server is running on port ${port}`);
-    lastRatingsJob.start();
-  });
-});
+export { server };

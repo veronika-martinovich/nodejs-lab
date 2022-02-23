@@ -2,11 +2,14 @@
   "name": "nodejs-lab",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.ts",
+  "main": "dist/server.ts",
+  "jest": {
+    "testEnvironment": "node"
+  },
   "scripts": {
-    "start": "ts-node-dev src/index.ts",
+    "start": "ts-node-dev src/server.ts",
     "build": "rimraf dist/* && tsc",
-    "test": "jest --watchAll --verbose --silent --runInBand"
+    "test": "jest --watchAll --verbose  --runInBand --forceExit"
   },
   "author": "",
   "license": "ISC",

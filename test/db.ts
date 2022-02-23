@@ -12,16 +12,11 @@ const opts = {
 };
 
 const connect = async () => {
-  await mongoose.disconnect();
-
   mongoServer = await MongoMemoryServer.create();
 
   const mongoUri = await mongoServer.getUri();
-  await mongoose.connect(mongoUri, opts, (err: any) => {
-    if (err) {
-      console.error(err);
-    }
-  });
+  await mongoose.connect(mongoUri, opts);
+  console.log('MongoMemoryServer connection was successful');
 };
 
 const close = async () => {

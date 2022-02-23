@@ -1,13 +1,12 @@
 /* eslint-disable no-return-await */
-import { app } from '../src/index';
+import { server } from '../src/server';
 
 const request = require('supertest');
 const db = require('./db');
 
-const agent = request.agent(app);
+const agent = request.agent(server);
 
 beforeAll(async () => await db.connect());
-beforeEach(async () => await db.clear());
 afterAll(async () => await db.close());
 
 describe('Product router endpoints', () => {
@@ -17,9 +16,45 @@ describe('Product router endpoints', () => {
       .send({ displayName: 'Pokemon Go', categoryId: '', totalRating: 10, price: 100 })
       .expect(200)
       .then((res: any) => {
-        console.log(res.body);
-        expect(res.body.__id).toBeTruthy();
+        expect(res.body._id).toBeTruthy();
         done();
       });
+  });
+
+  it('POST /api/products throw error', (done) => {
+    agent
+      .post('/products')
+      .send({})
+      .expect(400, {
+        statusCode: 400,
+        message: 'Invalid data: displayName, totalRating, categoryId, price.',
+      })
+      .then(() => {
+        done();
+      });
+  });
+
+  it('GET /api/products array have length', (done) => {
+    agent
+      .get('/products')
+      .expect(200)
+      .then((res: any) => {
+        expect(res.body).toBeDefined();
+        expect(res.body).toHaveLength(1);
+        done();
+      });
+  });
+
+  it('GET /api/products empty array', (done) => {
+    db.clear().then(() => {
+      agent
+        .get('/products')
+        .expect(200)
+        .then((res: any) => {
+          expect(res.body).toBeDefined();
+          expect(res.body).toHaveLength(0);
+          done();
+        });
+    });
   });
 });
