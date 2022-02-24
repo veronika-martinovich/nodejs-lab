@@ -11,7 +11,7 @@ export const validateProductBody = [
     const errors = validationResult(req).array();
     const errorFields = errors.map((item) => item.param);
     if (errors.length) {
-      throw new BadRequestError(`Invalid data: ${errorFields.join(', ')}.`);
+      throw new BadRequestError(`Invalid data: ${[...new Set(errorFields)].join(', ')}.`);
     }
     next();
   },
@@ -26,7 +26,7 @@ export const validateProductBodyOptional = [
     const errors = validationResult(req).array();
     const errorFields = errors.map((item) => item.param);
     if (errors.length) {
-      throw new BadRequestError(`Invalid data: ${errorFields.join(', ')}.`);
+      throw new BadRequestError(`Invalid data: ${[...new Set(errorFields)].join(', ')}.`);
     }
     next();
   },
@@ -47,7 +47,7 @@ export const validateProductQuery = [
     const errors = validationResult(req).array();
     const errorFields = errors.map((item) => item.param);
     if (errors.length) {
-      throw new BadRequestError(`Invalid data: ${errorFields.join(', ')}.`);
+      throw new BadRequestError(`Invalid data: ${[...new Set(errorFields)].join(', ')}.`);
     }
     next();
   },
