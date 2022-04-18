@@ -15,8 +15,6 @@ import {
 import { DB_TYPES } from '../../helpers/constants';
 import { NotFoundError } from '../../helpers/errors';
 
-const { DB } = require('../../config');
-
 class OrderListService implements IOrderListService {
   repository: IOrderListRepository;
 
@@ -53,11 +51,11 @@ class OrderListService implements IOrderListService {
 
   public async update(order: IOrderList, orderProducts: Array<IOrderProduct>) {
     try {
-      if (DB === DB_TYPES.POSTGRES) {
+      if (process.env.DB === DB_TYPES.POSTGRES) {
         return await this.repository.save({ ...order, orderProducts });
       }
       const orderListProducts = [...orderProducts.map((item: IOrderProduct) => item._id)];
-        return await this.repository.update({ _id: order._id }, { orderProducts: orderListProducts as Array<string> });
+      return await this.repository.update({ _id: order._id }, { orderProducts: orderListProducts as Array<string> });
     } catch (error) {
       throw new Error();
     }
@@ -68,21 +66,27 @@ class OrderListService implements IOrderListService {
       const { order: currentOrder, isOrderExists } = await this.getOne({ where: { userId } });
       if (isOrderExists) {
         const orderProductsToSave = orderProducts.map((item) =>
-          (DB === DB_TYPES.POSTGRES ? { ...item, orderList: currentOrder } : { ...item, orderList: currentOrder._id }));
+          process.env.DB === DB_TYPES.POSTGRES
+            ? { ...item, orderList: currentOrder }
+            : { ...item, orderList: currentOrder._id }
+        );
 
-          const savedOrderProducts = await orderProductService.saveMany(orderProductsToSave);
-          const orderListProducts = [...currentOrder.orderProducts, ...savedOrderProducts];
+        const savedOrderProducts = await orderProductService.saveMany(orderProductsToSave);
+        const orderListProducts = [...currentOrder.orderProducts, ...savedOrderProducts];
 
-          await this.update(currentOrder, orderListProducts);
-          } else {
+        await this.update(currentOrder, orderListProducts);
+      } else {
         const newOrderList = await this.save({ userId });
 
         const orderProductsToSave = orderProducts.map((item) =>
-          (DB === DB_TYPES.POSTGRES ? { ...item, orderList: newOrderList } : { ...item, orderList: newOrderList._id }));
+          process.env.DB === DB_TYPES.POSTGRES
+            ? { ...item, orderList: newOrderList }
+            : { ...item, orderList: newOrderList._id }
+        );
 
-          const savedOrderProducts = await orderProductService.saveMany(orderProductsToSave);
+        const savedOrderProducts = await orderProductService.saveMany(orderProductsToSave);
 
-          await this.update(newOrderList, savedOrderProducts);
+        await this.update(newOrderList, savedOrderProducts);
       }
 
       const { order: listOrderToReturn } = await this.getOne({ where: { userId } });
@@ -103,7 +107,7 @@ class OrderListService implements IOrderListService {
 
         orderProducts.forEach(async (item) => {
           if (item.delete) {
-              orderProductsToDelete.push(item.product);
+            orderProductsToDelete.push(item.product);
           } else {
             orderProductsToUpdate.push(item);
           }
@@ -168,7 +172,8 @@ class OrderListService implements IOrderListService {
   }
 }
 
-const repository = DB === DB_TYPES.POSTGRES ? new OrderListTypeormRepository() : new OrderListTypegooseRepository();
+const repository =
+  process.env.DB === DB_TYPES.POSTGRES ? new OrderListTypeormRepository() : new OrderListTypegooseRepository();
 const orderListService = new OrderListService(repository);
 
 export default orderListService;

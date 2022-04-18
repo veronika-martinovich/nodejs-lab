@@ -5,8 +5,6 @@ import { ICategory, ICategoryService, ICategoryRepository, ICategoryQueryParams,
 import { isEmptyObject } from '../../helpers/validation';
 import productsService from '../product/product.service';
 
-const { DB } = require('../../config');
-
 class CategoryService implements ICategoryService {
   repository: ICategoryRepository;
 
@@ -60,7 +58,8 @@ class CategoryService implements ICategoryService {
   }
 }
 
-const repository = DB === DB_TYPES.POSTGRES ? new CategoryTypeormRepository() : new CategoryTypegooseRepository();
+const repository =
+  process.env.DB === DB_TYPES.POSTGRES ? new CategoryTypeormRepository() : new CategoryTypegooseRepository();
 const categoryService = new CategoryService(repository);
 
 export default categoryService;

@@ -10,8 +10,6 @@ import {
 import { SORTING_ORDER, DB_TYPES } from '../../helpers/constants';
 import productsService from '../product/product.service';
 
-const { DB } = require('../../config');
-
 class UserRatingService implements IUserRatingService {
   repository: IUserRatingRepository;
 
@@ -45,7 +43,7 @@ class UserRatingService implements IUserRatingService {
 
   public async getLastRatings() {
     try {
-      if (DB === DB_TYPES.POSTGRES) {
+      if (process.env.DB === DB_TYPES.POSTGRES) {
         const searchParams = {
           limit: 10,
           sortBy: {

@@ -15,8 +15,6 @@ import { DB_TYPES } from '../../helpers/constants';
 import { formProductSearchParams } from '../../helpers/form-product-search-params';
 import { io } from '../../index';
 
-const { DB } = require('../../config');
-
 class ProductsService implements IProductService {
   repository: IProductRepository;
 
@@ -120,7 +118,7 @@ class ProductsService implements IProductService {
       io.emit('newRating', { lastRatings });
     };
 
-    if (DB === DB_TYPES.POSTGRES && userRating.productId) {
+    if (process.env.DB === DB_TYPES.POSTGRES && userRating.productId) {
       const currentUserRating = await userRatingsService.get({
         where: { productId: userRating.productId, userId: userRating.userId },
       });
@@ -182,7 +180,8 @@ class ProductsService implements IProductService {
   }
 }
 
-const repository = DB === DB_TYPES.POSTGRES ? new ProductTypeormRepository() : new ProductTypegooseRepository();
+const repository =
+  process.env.DB === DB_TYPES.POSTGRES ? new ProductTypeormRepository() : new ProductTypegooseRepository();
 const productsService = new ProductsService(repository);
 
 export default productsService;
