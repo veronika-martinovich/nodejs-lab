@@ -3,10 +3,8 @@ import { SELECTION_PARAMS, DB_TYPES } from './constants';
 import { formComparisonParamsPostgres } from './form-comparison-params-postgres';
 import { formComparisonParamsMongo } from './form-comparison-params-mongo';
 
-const { DB } = require('../config');
-
 const formComparisonParams = (params: { comparisonValue: string; minValue?: number; maxValue?: number }) => {
-  if (DB === DB_TYPES.POSTGRES) {
+  if (process.env.DB === DB_TYPES.POSTGRES) {
     return formComparisonParamsPostgres({
       ...params,
     });
@@ -23,7 +21,7 @@ export const formProductSearchParams = (queryParams: IProductQueryParams) => {
   const order: IStringValue = {};
 
   if (queryParams.__id) {
-    if (DB === DB_TYPES.POSTGRES) {
+    if (process.env.DB === DB_TYPES.POSTGRES) {
       where.__id = queryParams.__id;
     }
     where._id = queryParams.__id;

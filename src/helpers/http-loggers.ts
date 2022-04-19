@@ -1,7 +1,6 @@
 import { IHttpLoggerProps } from '../types';
 
 const { createLogger, transports, format } = require('winston');
-const { NODE_ENV } = require('../config');
 
 const { combine, timestamp, json } = format;
 
@@ -45,7 +44,7 @@ const httpErrLogger = createLogger({
   transports: [new transports.File(loggerOptions.err)],
 });
 
-if (NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
   httpReqLogger.add(
     new transports.Console({
       ...loggerOptions.req,

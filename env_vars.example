@@ -1,0 +1,15 @@
+// Mongo
+DB=mongo
+NODE_ENV=development/production/test
+// localhost
+MONGO_DB_URL="mongodb://mongo:27017/game-store"
+// docker container
+MONGO_DB_URL="mongodb://localhost:27017/game-store"
+
+//Postgres
+DB=postgres
+NODE_ENV=development/production/test
+// localhost
+POSTGRES_DB_HOST=localhost
+// docker container
+POSTGRES_DB_HOST=postgres

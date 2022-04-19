@@ -9,8 +9,6 @@ import {
 } from '../../types';
 import { DB_TYPES } from '../../helpers/constants';
 
-const { DB } = require('../../config');
-
 class OrderProductService implements IOrderProductService {
   repository: IOrderProductRepository;
 
@@ -52,7 +50,7 @@ class OrderProductService implements IOrderProductService {
 }
 
 const repository =
-  DB === DB_TYPES.POSTGRES ? new OrderProductTypeormRepository() : new OrderProductTypegooseRepository();
+  process.env.DB === DB_TYPES.POSTGRES ? new OrderProductTypeormRepository() : new OrderProductTypegooseRepository();
 
 const orderProductService = new OrderProductService(repository);
 

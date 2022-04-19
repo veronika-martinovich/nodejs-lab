@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  nodejs-lab:
+    container_name: nodejs-lab
+    image: nodejs-lab-mongo
+    restart: always
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    links:
+      - mongo
+    environment:
+      - DB=mongo
+      - NODE_ENV=development
+      - MONGO_DB_URL=mongodb://mongo:27017/game-store
+
+
+  mongo:
+    container_name: mongo-db
+    image: mongo
+    volumes:
+      - mongodb:/data/db
+      - mongodb_config:/data/configdb
+    ports:
+      - 27017:27017
+    command: mongod
+
+volumes:
+  mongodb:
+  mongodb_config:

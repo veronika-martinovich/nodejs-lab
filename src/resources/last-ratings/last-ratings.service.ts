@@ -3,8 +3,6 @@ import { LastRatingsTypeormRepository } from './last-ratings.typeorm.repository'
 import { ILastRatingsService, ILastRatingsRepository, IUserRatingReq } from '../../types';
 import { DB_TYPES } from '../../helpers/constants';
 
-const { DB } = require('../../config');
-
 class LastRatingsService implements ILastRatingsService {
   repository: ILastRatingsRepository;
 
@@ -37,7 +35,8 @@ class LastRatingsService implements ILastRatingsService {
   }
 }
 
-const repository = DB === DB_TYPES.POSTGRES ? new LastRatingsTypeormRepository() : new LastRatingsTypegooseRepository();
+const repository =
+  process.env.DB === DB_TYPES.POSTGRES ? new LastRatingsTypeormRepository() : new LastRatingsTypegooseRepository();
 const lastRatingsService = new LastRatingsService(repository);
 
 export default lastRatingsService;

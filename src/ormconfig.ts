@@ -10,7 +10,7 @@ import { ormCredentials } from '../credentials/orm.creds';
 
 export default {
   type: 'postgres',
-  host: 'localhost',
+  host: process.env.POSTGRES_DB_HOST,
   port: ormCredentials.port,
   username: ormCredentials.username,
   password: ormCredentials.password,

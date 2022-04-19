@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  nodejs-lab:
+    container_name: nodejs-lab
+    image: nodejs-lab-postgres
+    restart: always
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    links:
+      - postgres
+    environment:
+      - DB=postgres
+      - NODE_ENV=development
+      - POSTGRES_DB_HOST=postgres
+
+
+  postgres:
+    container_name: postgres-db
+    image: postgres
+    volumes:
+      - postgresdb:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+
+volumes:
+  postgresdb:
+      

@@ -3,8 +3,6 @@ import { UserTypeormRepository } from './user.typeorm.repository';
 import { INewUser, IUserService, IUserRepository } from '../../types';
 import { DB_TYPES } from '../../helpers/constants';
 
-const { DB } = require('../../config');
-
 class UsersService implements IUserService {
   repository: IUserRepository;
 
@@ -53,7 +51,7 @@ class UsersService implements IUserService {
   }
 }
 
-const repository = DB === DB_TYPES.POSTGRES ? new UserTypeormRepository() : new UserTypegooseRepository();
+const repository = process.env.DB === DB_TYPES.POSTGRES ? new UserTypeormRepository() : new UserTypegooseRepository();
 const usersService = new UsersService(repository);
 
 export default usersService;

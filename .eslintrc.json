@@ -61,6 +61,8 @@
       "max-classes-per-file": 0,
       "class-methods-use-this": 0,
       "import/no-cycle": 0,
-      "import/no-extraneous-dependencies": ["error", {"devDependencies": true}]
+      "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+      "no-confusing-arrow": 0,
+      "function-paren-newline": 0
     }
 }
