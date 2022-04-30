@@ -5,6 +5,8 @@ NODE_ENV=development/production/test
 MONGO_DB_URL="mongodb://mongo:27017/game-store"
 // docker container
 MONGO_DB_URL="mongodb://localhost:27017/game-store"
+// Mongo Atlas
+MONGO_DB_URL="mongodb+srv://nodejslab:<password>@nodejslab.lxilr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 
 //Postgres
 DB=postgres
