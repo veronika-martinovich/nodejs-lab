@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, Index } from 'typeorm';
-import { ICategory } from '../../types';
+import { ICategory } from './category.types';
 
 @Entity()
 @Index(['__id', 'displayName'])

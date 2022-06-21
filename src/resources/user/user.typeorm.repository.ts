@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
 import { User } from './user.typeorm.model';
-import { IUserRepository, INewUser } from '../../types';
+import { IUserRepository, INewUser } from './user.types';
 import { NotFoundError } from '../../helpers/errors';
 
 export class UserTypeormRepository implements IUserRepository {

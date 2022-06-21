@@ -1,5 +1,5 @@
 import { UserModel } from './user.typegoose.model';
-import { INewUser, IUserRepository } from '../../types';
+import { INewUser, IUserRepository } from './user.types';
 import { NotFoundError } from '../../helpers/errors';
 
 export class UserTypegooseRepository implements IUserRepository {

@@ -1,4 +1,4 @@
-import { IBooleanValue } from '../types';
+import { IBooleanValue } from '../resources/common/common.types';
 
 export const DB_TYPES = {
   POSTGRES: 'postgres',

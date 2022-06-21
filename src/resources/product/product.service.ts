@@ -3,14 +3,14 @@ import { ProductTypeormRepository } from './product.typeorm.repository';
 import userRatingsService from '../user-rating/user-rating.service';
 import lastRatingsService from '../last-ratings/last-ratings.service';
 import {
-  IUserRatingReq,
   IProduct,
   IProductService,
   IProductRepository,
   IProductQueryParams,
   IProductSearchParams,
   IProductFieldsToUpdate,
-} from '../../types';
+} from './product.types';
+import { IUserRatingReq } from '../user-rating/user-rating.types';
 import { DB_TYPES } from '../../helpers/constants';
 import { formProductSearchParams } from '../../helpers/form-product-search-params';
 import { io } from '../../index';

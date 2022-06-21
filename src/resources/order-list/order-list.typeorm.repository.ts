@@ -6,7 +6,7 @@ import {
   IOrderListReq,
   IOrderListWhereParams,
   IOrderListFieldsToUpdate,
-} from '../../types';
+} from './order-list.types';
 import { NotFoundError } from '../../helpers/errors';
 
 export class OrderListTypeormRepository implements IOrderListRepository {

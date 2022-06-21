@@ -4,7 +4,7 @@ import {
   IOrderProductReq,
   IOrderProductSearchParams,
   IOrderProductWhereParams,
-} from '../../types';
+} from './order-product.types';
 import { NotFoundError } from '../../helpers/errors';
 
 export class OrderProductTypegooseRepository implements IOrderProductRepository {

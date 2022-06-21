@@ -6,7 +6,7 @@ import {
   IOrderProductReq,
   IOrderProductSearchParams,
   IOrderProductWhereParams,
-} from '../../types';
+} from './order-product.types';
 import { DB_TYPES } from '../../helpers/constants';
 
 class OrderProductService implements IOrderProductService {

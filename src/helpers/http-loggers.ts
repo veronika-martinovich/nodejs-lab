@@ -1,4 +1,4 @@
-import { IHttpLoggerProps } from '../types';
+import { IHttpLoggerProps } from '../resources/common/common.types';
 
 const { createLogger, transports, format } = require('winston');
 

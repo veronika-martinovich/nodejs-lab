@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
 import { Product } from './product.typeorm.model';
-import { IProduct, IProductRepository, IProductSearchParams, IProductFieldsToUpdate } from '../../types';
+import { IProduct, IProductRepository, IProductSearchParams, IProductFieldsToUpdate } from './product.types';
 import { NotFoundError } from '../../helpers/errors';
 
 export class ProductTypeormRepository implements IProductRepository {

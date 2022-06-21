@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import usersService from './user.service';
 import { validateUser } from './user.validation';
 import { hashString } from '../../helpers/hashString';
-import { IUserToRegister, IUserToReturn, ITokenList } from '../../types';
+import { IUserToRegister, IUserToReturn, ITokenList } from './user.types';
 import { ForbiddenError } from '../../helpers/errors';
 import { TOKEN, REFRESH_TOKEN } from '../../../credentials/configs';
 import { authenticate } from '../../helpers/authenticate';

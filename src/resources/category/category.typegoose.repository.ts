@@ -1,5 +1,5 @@
 import { CategoryModel } from './category.typegoose.model';
-import { ICategory, ICategoryRepository } from '../../types';
+import { ICategory, ICategoryRepository } from './category.types';
 import { PRODUCT_FIELDS } from '../../helpers/constants';
 import { NotFoundError } from '../../helpers/errors';
 

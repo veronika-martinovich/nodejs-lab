@@ -1,4 +1,4 @@
-import { IError } from '../types';
+import { IError } from '../resources/common/common.types';
 
 export class BadRequestError extends Error implements IError {
   statusCode: number;

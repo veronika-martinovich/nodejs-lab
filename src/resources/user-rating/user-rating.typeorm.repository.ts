@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
 import { UserRating } from './user-rating.typeorm.model';
-import { IUserRatingRepository, IUserRating, IUserRatingSearchParams } from '../../types';
+import { IUserRatingRepository, IUserRating, IUserRatingSearchParams } from './user-rating.types';
 import { NotFoundError } from '../../helpers/errors';
 
 export class UserRatingTypeormRepository implements IUserRatingRepository {

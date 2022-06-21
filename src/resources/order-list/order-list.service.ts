@@ -5,13 +5,11 @@ import orderProductService from '../order-product/order-product.service';
 import {
   IOrderListService,
   IOrderListRepository,
-  IOrderProductWhereParams,
   IOrderListSearchParams,
-  IOrderProductReq,
-  IOrderProduct,
   IOrderListReq,
   IOrderList,
-} from '../../types';
+} from './order-list.types';
+import { IOrderProductWhereParams, IOrderProductReq, IOrderProduct } from '../order-product/order-product.types';
 import { DB_TYPES } from '../../helpers/constants';
 import { NotFoundError } from '../../helpers/errors';
 

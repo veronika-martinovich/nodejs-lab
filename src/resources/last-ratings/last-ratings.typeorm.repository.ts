@@ -1,6 +1,7 @@
 import { getRepository } from 'typeorm';
 import { LastRatings } from './last-ratings.typeorm.model';
-import { ILastRatingsRepository, IUserRatingReq } from '../../types';
+import { ILastRatingsRepository } from './last-ratings.types';
+import { IUserRatingReq } from '../user-rating/user-rating.types';
 import { NotFoundError } from '../../helpers/errors';
 import { LATEST_RATINGS_AMOUNT } from '../../helpers/constants';
 

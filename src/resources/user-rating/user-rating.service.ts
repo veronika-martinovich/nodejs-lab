@@ -4,9 +4,9 @@ import {
   IUserRating,
   IUserRatingService,
   IUserRatingRepository,
-  IProduct,
   IUserRatingReq,
-} from '../../types';
+} from './user-rating.types';
+import { IProduct } from '../product/product.types';
 import { SORTING_ORDER, DB_TYPES } from '../../helpers/constants';
 import productsService from '../product/product.service';
 

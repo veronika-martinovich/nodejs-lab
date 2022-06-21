@@ -1,7 +1,13 @@
 import { BOOLEAN_MAP, DB_TYPES, SORTING_ORDER, PRODUCT_FIELDS } from '../../helpers/constants';
 import { CategoryTypegooseRepository } from './category.typegoose.repository';
 import { CategoryTypeormRepository } from './category.typeorm.repository';
-import { ICategory, ICategoryService, ICategoryRepository, ICategoryQueryParams, ICategoryExtended } from '../../types';
+import {
+  ICategory,
+  ICategoryService,
+  ICategoryRepository,
+  ICategoryQueryParams,
+  ICategoryExtended,
+} from './category.types';
 import { isEmptyObject } from '../../helpers/validation';
 import productsService from '../product/product.service';
 

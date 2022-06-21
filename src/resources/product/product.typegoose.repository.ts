@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { ProductModel } from './product.typegoose.model';
-import { IProduct, IProductRepository, IProductSearchParams, IProductFieldsToUpdate } from '../../types';
+import { IProduct, IProductRepository, IProductSearchParams, IProductFieldsToUpdate } from './product.types';
 import { NotFoundError } from '../../helpers/errors';
 
 export class ProductTypegooseRepository implements IProductRepository {

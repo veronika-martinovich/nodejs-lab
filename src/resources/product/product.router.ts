@@ -3,7 +3,7 @@ import productsService from './product.service';
 import { validateProductBody, validateProductQuery } from './product.validation';
 import { isEmptyObject } from '../../helpers/validation';
 import { authenticate } from '../../helpers/authenticate';
-import { IUserRatingReq } from '../../types';
+import { IUserRatingReq } from '../user-rating/user-rating.types';
 
 const productsRouter = express.Router();
 
