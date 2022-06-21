@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/server.ts",
+  "type": "module",
   "jest": {
     "testEnvironment": "node"
   },
   "scripts": {
-    "start": "ts-node-dev src/server.ts",
+    "start": "ts-node-dev --inspect -- src/server.ts",
+    "start-mongo": "set DB=mongo && set NODE_ENV=development && set MONGO_DB_URL=mongodb://127.0.0.1:27017/game-store &&  ts-node-dev src/server.ts",
+    "start-postgres": "set DB=postgres && set NODE_ENV=development && ts-node-dev src/server.ts",
     "build": "rimraf dist/* && tsc",
     "test": "jest --watchAll --verbose  --runInBand --forceExit"
   },
