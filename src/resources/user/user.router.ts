@@ -1,33 +1,14 @@
 import express, { Request, Response, NextFunction } from 'express';
-import usersService from './user.service';
+import userController from './user.controller';
 import { validateUser } from './user.validation';
-import { hashString } from '../../helpers/hashString';
-import { IUserToRegister, IUserToReturn, ITokenList } from './user.types';
-import { ForbiddenError } from '../../helpers/errors';
-import { TOKEN, REFRESH_TOKEN } from '../../../credentials/configs';
 import { authenticate } from '../../helpers/authenticate';
-
-const jwt = require('jsonwebtoken');
 
 const usersRouter = express.Router();
 
-const tokenList: ITokenList = {};
-
 usersRouter.route('/profile').put(authenticate, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { __id, fieldsToUpdate } = req.body;
-    const user = await usersService.getById(__id);
-
-    if (user && fieldsToUpdate) {
-      const updatedUser = await usersService.update(__id, fieldsToUpdate);
-      const userToReturn = { ...updatedUser };
-      delete userToReturn.password;
-
-      res.status(200).json(userToReturn);
-      res.end();
-    } else {
-      throw new ForbiddenError('Incorrect user data');
-    }
+    res.status(200).json(await userController.update(req.body));
+    res.end();
   } catch (err) {
     next(err);
   }
@@ -35,24 +16,8 @@ usersRouter.route('/profile').put(authenticate, async (req: Request, res: Respon
 
 usersRouter.route('/profile/password').put(authenticate, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { __id, password, newPassword } = req.body;
-    const user = await usersService.getById(__id);
-    const isPasswordMatched = user?.password === hashString(password);
-
-    if (isPasswordMatched && newPassword) {
-      const newHashedPassword = hashString(newPassword);
-      const fieldsToUpdate = {
-        password: newHashedPassword,
-      };
-      const updatedUser = await usersService.update(__id, fieldsToUpdate);
-      const userToReturn = { ...updatedUser };
-      delete userToReturn.password;
-
-      res.status(200).json(userToReturn);
-      res.end();
-    } else {
-      throw new ForbiddenError('Incorrect user data');
-    }
+    res.status(200).json(await userController.updatePassword(req.body));
+    res.end();
   } catch (err) {
     next(err);
   }
@@ -60,25 +25,8 @@ usersRouter.route('/profile/password').put(authenticate, async (req: Request, re
 
 usersRouter.route('/register').post(validateUser, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { username, password, firstName, lastName, role }: IUserToRegister = req.body;
-    const user = await usersService.getByUsername(username);
-    if (!user) {
-      const hashedPassword = hashString(password);
-      const newUser = await usersService.save({
-        username,
-        password: hashedPassword,
-        firstName,
-        lastName,
-        role,
-      });
-      const userToReturn = { ...newUser };
-      delete userToReturn.password;
-
-      res.status(200).json(userToReturn);
-      res.end();
-    } else {
-      throw new ForbiddenError('User with provided username already exists');
-    }
+    res.status(200).json(await userController.register(req.body));
+    res.end();
   } catch (err) {
     next(err);
   }
@@ -86,34 +34,8 @@ usersRouter.route('/register').post(validateUser, async (req: Request, res: Resp
 
 usersRouter.route('/authenticate').post(async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { username, password }: IUserToRegister = req.body;
-    const user = await usersService.getByUsername(username);
-
-    if (user) {
-      const isPasswordMatched = hashString(password) === user.password;
-      if (isPasswordMatched) {
-        const payload = {
-          username: user.username,
-          id: user.__id,
-        };
-        const token: string = jwt.sign(payload, TOKEN.secret, {
-          expiresIn: TOKEN.expiresIn,
-        });
-        const refreshToken: string = jwt.sign(payload, REFRESH_TOKEN.secret, {
-          expiresIn: REFRESH_TOKEN.expiresIn,
-        });
-        const userToReturn: IUserToReturn = { ...user, token, refreshToken };
-        tokenList[refreshToken] = userToReturn;
-        delete userToReturn.password;
-
-        res.status(200).json(userToReturn);
-        res.end();
-      } else {
-        throw new ForbiddenError('Password is incorrect');
-      }
-    } else {
-      throw new ForbiddenError('Username is incorrect');
-    }
+    res.status(200).json(await userController.authenticate(req.body));
+    res.end();
   } catch (err) {
     next(err);
   }
@@ -121,32 +43,8 @@ usersRouter.route('/authenticate').post(async (req: Request, res: Response, next
 
 usersRouter.route('/token').post(async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { refreshToken: oldRefreshToken } = req.body;
-
-    if (!!oldRefreshToken && oldRefreshToken in tokenList) {
-      const user = tokenList[oldRefreshToken];
-      const payload = {
-        username: user.username,
-        id: user.__id,
-      };
-
-      const token: string = jwt.sign(payload, TOKEN.secret, {
-        expiresIn: TOKEN.expiresIn,
-      });
-      const refreshToken: string = jwt.sign(payload, REFRESH_TOKEN.secret, {
-        expiresIn: REFRESH_TOKEN.expiresIn,
-      });
-
-      delete tokenList[oldRefreshToken];
-
-      const userToReturn = { ...user, token, refreshToken };
-      tokenList[refreshToken] = userToReturn;
-
-      res.status(200).json(userToReturn);
-      res.end();
-    } else {
-      throw new ForbiddenError('Invalid refreshToken');
-    }
+    res.status(200).json(await userController.tokenize(req.body));
+    res.end();
   } catch (err) {
     next(err);
   }

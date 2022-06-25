@@ -24,7 +24,7 @@ export interface IUserToReturn {
   createdAt?: Date;
   token: string;
   refreshToken?: string;
-  role: string;
+  role?: string;
 }
 export interface IUser {
   __id?: string;
@@ -33,7 +33,7 @@ export interface IUser {
   firstName?: string;
   lastName?: string;
   createdAt?: Date;
-  role: string;
+  role?: string;
 }
 
 export interface ITokenList {
@@ -55,4 +55,20 @@ export interface IUserService {
   getById(__id: string): Promise<IUser | null>;
   save(user: INewUser): Promise<IUser | null>;
   update(__id: string, fieldsToUpdate: INewUser): Promise<IUser>;
+}
+
+export interface IUserController {
+  update({ __id, fieldsToUpdate }: { __id: string; fieldsToUpdate: INewUser }): Promise<IUser>;
+  updatePassword({
+    __id,
+    password,
+    newPassword,
+  }: {
+    __id: string;
+    password: string;
+    newPassword: string;
+  }): Promise<IUser>;
+  register(userToRegister: IUserToRegister): Promise<IUser>;
+  authenticate(userToRegister: IUserToRegister): Promise<IUser>;
+  tokenize({ refreshToken: oldRefreshToken }: { refreshToken: string }): Promise<IUser>;
 }

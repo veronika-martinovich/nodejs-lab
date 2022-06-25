@@ -11,43 +11,23 @@ class UsersService implements IUserService {
   }
 
   public async getAll() {
-    try {
-      return await this.repository.getAll();
-    } catch (error) {
-      throw new Error();
-    }
+    return this.repository.getAll();
   }
 
   public async getByUsername(username: string) {
-    try {
-      return await this.repository.getByUsername(username);
-    } catch (error) {
-      throw new Error();
-    }
+    return this.repository.getByUsername(username);
   }
 
   public async getById(__id: string) {
-    try {
-      return await this.repository.getById(__id);
-    } catch (error) {
-      throw new Error();
-    }
+    return this.repository.getById(__id);
   }
 
   public async save(user: INewUser) {
-    try {
-      return await this.repository.save(user);
-    } catch (error) {
-      throw new Error();
-    }
+    return this.repository.save(user);
   }
 
   public async update(__id: string, fieldsToUpdate: INewUser) {
-    try {
-      return await this.repository.update(__id, fieldsToUpdate);
-    } catch (error) {
-      throw new Error();
-    }
+    return this.repository.update(__id, fieldsToUpdate);
   }
 }
 
