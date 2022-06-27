@@ -43,3 +43,9 @@ export interface ICategoryService {
   getByIdAndQueryParams(id: string, params: ICategoryQueryParams): Promise<ICategory | ICategoryExtended | null>;
   save(category: ICategory): Promise<ICategory>;
 }
+
+export interface ICategoryController {
+  getAll(): Promise<Array<ICategory>>;
+  create(displayName: string): Promise<ICategory>;
+  getByIdAndQueryParams(id: string, params: ICategoryQueryParams): Promise<ICategory | ICategoryExtended | null>;
+}

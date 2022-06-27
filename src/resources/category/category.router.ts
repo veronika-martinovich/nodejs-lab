@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
-import categoryService from './category.service';
+import categoryController from './category.controller';
 import { validateCategoryBody, validateCategoryQuery } from './category.validation';
 
 const categoriesRouter = express.Router();
@@ -8,9 +8,7 @@ categoriesRouter
   .route('/')
   .get(async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const categories = await categoryService.getAll();
-
-      res.status(200).json(categories);
+      res.status(200).json(await categoryController.getAll());
       res.end();
     } catch (err) {
       next(err);
@@ -18,10 +16,7 @@ categoriesRouter
   })
   .post(validateCategoryBody, async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const newCategory = await categoryService.save({
-        displayName: req.body.displayName,
-      });
-      res.status(200).json(newCategory);
+      res.status(200).json(await categoryController.create(req.body.displayName));
       res.end();
     } catch (err) {
       next(err);
@@ -32,8 +27,7 @@ categoriesRouter
   .route('/:catId')
   .get(validateCategoryQuery, async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const category = await categoryService.getByIdAndQueryParams(req.params.catId, req.query);
-      res.status(200).json(category);
+      res.status(200).json(await categoryController.getByIdAndQueryParams(req.params.catId, req.query));
       res.end();
     } catch (err) {
       next(err);

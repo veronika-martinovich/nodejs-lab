@@ -19,48 +19,36 @@ class CategoryService implements ICategoryService {
   }
 
   public async getAll() {
-    try {
-      return await this.repository.getAll();
-    } catch (error) {
-      throw new Error();
-    }
+    return this.repository.getAll();
   }
 
   public async getByIdAndQueryParams(id: string, params: ICategoryQueryParams) {
-    try {
-      const category = await this.repository.getById(id);
-      if (isEmptyObject(params)) {
-        return category;
-      }
-
-      const extendedCategory: ICategoryExtended = { ...category };
-      if (params.includeProducts && BOOLEAN_MAP[params.includeProducts]) {
-        const products = await productsService.getByCategory({ id });
-
-        if (products) extendedCategory.products = products;
-      }
-      if (params.includeTop3Products && BOOLEAN_MAP[params.includeTop3Products]) {
-        const PORDUCTS_NUMBER = 3;
-        const top3Products = await productsService.getByCategory({
-          id,
-          limit: PORDUCTS_NUMBER,
-          sortDirection: DB_TYPES.MONGO ? SORTING_ORDER.DESC : SORTING_ORDER.DESC.toUpperCase(),
-          sortField: PRODUCT_FIELDS.totalRating,
-        });
-        if (top3Products) extendedCategory.top3Products = top3Products;
-      }
-      return extendedCategory;
-    } catch (error) {
-      throw new Error();
+    const category = await this.repository.getById(id);
+    if (isEmptyObject(params)) {
+      return category;
     }
+
+    const extendedCategory: ICategoryExtended = { ...category };
+    if (params.includeProducts && BOOLEAN_MAP[params.includeProducts]) {
+      const products = await productsService.getByCategory({ id });
+
+      if (products) extendedCategory.products = products;
+    }
+    if (params.includeTop3Products && BOOLEAN_MAP[params.includeTop3Products]) {
+      const PORDUCTS_NUMBER = 3;
+      const top3Products = await productsService.getByCategory({
+        id,
+        limit: PORDUCTS_NUMBER,
+        sortDirection: DB_TYPES.MONGO ? SORTING_ORDER.DESC : SORTING_ORDER.DESC.toUpperCase(),
+        sortField: PRODUCT_FIELDS.totalRating,
+      });
+      if (top3Products) extendedCategory.top3Products = top3Products;
+    }
+    return extendedCategory;
   }
 
   public async save(category: ICategory) {
-    try {
-      return await this.repository.save(category);
-    } catch (error) {
-      throw new Error();
-    }
+    return this.repository.save(category);
   }
 }
 
