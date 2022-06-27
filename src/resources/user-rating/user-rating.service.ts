@@ -18,75 +18,51 @@ class UserRatingService implements IUserRatingService {
   }
 
   public async getAll() {
-    try {
-      return await this.repository.getAll();
-    } catch (error) {
-      throw new Error();
-    }
+    return this.repository.getAll();
   }
 
   public async getAvgByProduct(prodId: string) {
-    try {
-      return await this.repository.getAvgByProduct(prodId);
-    } catch (error) {
-      throw new Error();
-    }
+    return this.repository.getAvgByProduct(prodId);
   }
 
   public async get(params: IUserRatingSearchParams) {
-    try {
-      return await this.repository.get(params);
-    } catch (error) {
-      throw new Error();
-    }
+    return this.repository.get(params);
   }
 
   public async getLastRatings() {
-    try {
-      if (process.env.DB === DB_TYPES.POSTGRES) {
-        const searchParams = {
-          limit: 10,
-          sortBy: {
-            createdAt: SORTING_ORDER.DESC.toUpperCase(),
-          },
-        };
-        return await this.repository.get(searchParams);
-      }
-      const userRatings: Array<IUserRating> = [];
-      const products = await productsService.getAll();
-      products.forEach((item: IProduct) => {
-        if (item.ratings) {
-          item.ratings.forEach((i) => {
-            if (i.createdAt) {
-              userRatings.push(i);
-            }
-          });
-        }
-      });
-      const lastRatings = userRatings
-        .sort((a, b) => new Date(b.createdAt!).valueOf() - new Date(a.createdAt!).valueOf())
-        .slice(0, 10);
-
-      return lastRatings;
-    } catch (error) {
-      throw new Error();
+    if (process.env.DB === DB_TYPES.POSTGRES) {
+      const searchParams = {
+        limit: 10,
+        sortBy: {
+          createdAt: SORTING_ORDER.DESC.toUpperCase(),
+        },
+      };
+      return this.repository.get(searchParams);
     }
+    const userRatings: Array<IUserRating> = [];
+    const products = await productsService.getAll();
+    products.forEach((item: IProduct) => {
+      if (item.ratings) {
+        item.ratings.forEach((i) => {
+          if (i.createdAt) {
+            userRatings.push(i);
+          }
+        });
+      }
+    });
+    const lastRatings = userRatings
+      .sort((a, b) => new Date(b.createdAt!).valueOf() - new Date(a.createdAt!).valueOf())
+      .slice(0, 10);
+
+    return lastRatings;
   }
 
   public async save(userRating: IUserRating) {
-    try {
-      return await this.repository.save(userRating);
-    } catch (error) {
-      throw new Error();
-    }
+    return this.repository.save(userRating);
   }
 
   public async update(id: string, userRating: IUserRatingReq) {
-    try {
-      return await this.repository.update(id, userRating);
-    } catch (error) {
-      throw new Error();
-    }
+    return this.repository.update(id, userRating);
   }
 }
 

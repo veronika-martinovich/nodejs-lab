@@ -12,27 +12,15 @@ class LastRatingsService implements ILastRatingsService {
   }
 
   public async getAll() {
-    try {
-      return await this.repository.getAll();
-    } catch (error) {
-      throw new Error();
-    }
+    return this.repository.getAll();
   }
 
   public async cleanUpOld() {
-    try {
-      return await this.repository.cleanUpOld();
-    } catch (error) {
-      throw new Error();
-    }
+    return this.repository.cleanUpOld();
   }
 
   public async save(lastRating: IUserRatingReq) {
-    try {
-      return await this.repository.save(lastRating);
-    } catch (error) {
-      throw new Error();
-    }
+    return this.repository.save(lastRating);
   }
 }
 
