@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
-import orderListService from './order-list.service';
+import orderListController from './order-list.controller';
 
 const orderListRouter = express.Router();
 
@@ -7,9 +7,7 @@ orderListRouter
   .route('/')
   .post(async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { userId, orderProducts } = req.body;
-      const orderToReturn = await orderListService.addProducts(userId, orderProducts);
-      res.status(200).json(orderToReturn);
+      res.status(200).json(await orderListController.addProducts(req.body));
       res.end();
     } catch (err) {
       next(err);
@@ -17,9 +15,7 @@ orderListRouter
   })
   .put(async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { userId, orderProducts } = req.body;
-      const orderToReturn = await orderListService.editProducts(userId, orderProducts);
-      res.status(200).json(orderToReturn);
+      res.status(200).json(await orderListController.editProducts(req.body));
       res.end();
     } catch (err) {
       next(err);
@@ -28,9 +24,7 @@ orderListRouter
 
 orderListRouter.route('/clear').post(async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { userId } = req.body;
-    const orderToReturn = await orderListService.deleteProducts(userId);
-    res.status(200).json(orderToReturn);
+    res.status(200).json(await orderListController.deleteProducts(req.body));
     res.end();
   } catch (err) {
     next(err);

@@ -49,3 +49,21 @@ export interface IOrderListService {
   editProducts(userId: string, orderProducts: Array<IOrderProductReq>): Promise<IOrderList>;
   deleteProducts(userId: string): Promise<IOrderList>;
 }
+
+export interface IOrderListController {
+  addProducts({
+    userId,
+    orderProducts,
+  }: {
+    userId: string;
+    orderProducts: Array<IOrderProductReq>;
+  }): Promise<IOrderList>;
+  editProducts({
+    userId,
+    orderProducts,
+  }: {
+    userId: string;
+    orderProducts: Array<IOrderProductReq>;
+  }): Promise<IOrderList>;
+  deleteProducts({ userId }: { userId: string }): Promise<IOrderList>;
+}

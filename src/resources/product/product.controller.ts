@@ -26,8 +26,7 @@ class ProductController implements IProductController {
   }
 
   public async rate(userRating: IUserRatingReq) {
-    const updatedProduct = await productsService.rate(userRating);
-    return updatedProduct;
+    return productsService.rate(userRating);
   }
 }
 
