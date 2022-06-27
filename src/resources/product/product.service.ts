@@ -23,28 +23,16 @@ class ProductsService implements IProductService {
   }
 
   public async getAll() {
-    try {
-      return await this.repository.getAll();
-    } catch (error) {
-      throw new Error();
-    }
+    return this.repository.getAll();
   }
 
   public async get(params: IProductQueryParams) {
-    try {
-      const searchParams: IProductSearchParams = formProductSearchParams(params);
-      return await this.repository.get(searchParams);
-    } catch (error) {
-      throw new Error();
-    }
+    const searchParams: IProductSearchParams = formProductSearchParams(params);
+    return this.repository.get(searchParams);
   }
 
   public async getById(id: string) {
-    try {
-      return await this.repository.getById(id);
-    } catch (error) {
-      throw new Error();
-    }
+    return this.repository.getById(id);
   }
 
   public async getByCategory({
@@ -58,58 +46,34 @@ class ProductsService implements IProductService {
     sortDirection?: string;
     sortField?: string;
   }) {
-    try {
-      const searchParams: IProductSearchParams = { where: { categoryId: id }, relations: ['category'] };
-      if (!!sortField && !!sortDirection) {
-        searchParams.order = { [sortField as string]: sortDirection };
-      }
-      if (limit) {
-        searchParams.take = limit;
-      }
-      return await this.repository.get(searchParams);
-    } catch (error) {
-      throw new Error();
+    const searchParams: IProductSearchParams = { where: { categoryId: id }, relations: ['category'] };
+    if (!!sortField && !!sortDirection) {
+      searchParams.order = { [sortField as string]: sortDirection };
     }
+    if (limit) {
+      searchParams.take = limit;
+    }
+    return this.repository.get(searchParams);
   }
 
   public async save(product: IProduct) {
-    try {
-      return await this.repository.save(product);
-    } catch (error) {
-      throw new Error();
-    }
+    return this.repository.save(product);
   }
 
   public async update(id: string, fieldsToUpdate: IProductFieldsToUpdate) {
-    try {
-      return await this.repository.update(id, fieldsToUpdate);
-    } catch (error) {
-      throw new Error();
-    }
+    return this.repository.update(id, fieldsToUpdate);
   }
 
   public async deleteById(id: string) {
-    try {
-      return await this.repository.deleteById(id);
-    } catch (error) {
-      throw new Error();
-    }
+    return this.repository.deleteById(id);
   }
 
   public async updateSubdocBySelectors(id: string, querySelector: any, updateSelector: any) {
-    try {
-      return await this.repository.updateSubdocBySelectors(id, querySelector, updateSelector);
-    } catch (error) {
-      throw new Error();
-    }
+    return this.repository.updateSubdocBySelectors(id, querySelector, updateSelector);
   }
 
   public async getAvgRating(id: string) {
-    try {
-      return await this.repository.getAvgRating(id);
-    } catch (error) {
-      throw new Error();
-    }
+    return this.repository.getAvgRating(id);
   }
 
   public async rate(userRating: IUserRatingReq) {

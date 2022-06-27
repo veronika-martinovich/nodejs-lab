@@ -80,3 +80,9 @@ export interface IProductService {
   }): Promise<Array<IProduct>>;
   rate(userRating: IUserRatingReq): Promise<IProduct>;
 }
+
+export interface IProductController {
+  get(params: IProductQueryParams): Promise<Array<IProduct> | null>;
+  create(product: IProduct): Promise<IProduct>;
+  rate(userRating: IUserRatingReq): Promise<IProduct>;
+}
