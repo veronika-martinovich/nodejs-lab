@@ -1,3 +1,4 @@
+import { Request, Response, NextFunction } from 'express';
 import { IHttpLoggerProps } from '../resources/common/common.types';
 
 const { createLogger, transports, format } = require('winston');
@@ -85,4 +86,9 @@ export const logHttpData = ({ err, req, res }: IHttpLoggerProps) => {
       } body:${JSON.stringify(res.req.body)}`
     );
   }
+};
+
+export const middlewareHttpLogger = (req: Request, res: Response, next: NextFunction) => {
+  logHttpData({ req, res });
+  next();
 };

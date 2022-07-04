@@ -1,8 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express';
 import productsService from '../../product/product.service';
 import { validateProductBody, validateProductBodyOptional } from '../../product/product.validation';
-import { checkAdminRole } from '../../../helpers/check-admin-role';
-import { authenticate } from '../../../helpers/authenticate';
+import { checkAdminRole } from '../../../middlewares/check-admin-role.middleware';
+import { authenticate } from '../../../middlewares/authenticate.middleware';
 
 const adminProductsRouter = express.Router();
 

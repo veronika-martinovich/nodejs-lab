@@ -7,7 +7,7 @@ import {
   IUserRatingReq,
 } from './user-rating.types';
 import { IProduct } from '../product/product.types';
-import { SORTING_ORDER, DB_TYPES } from '../../helpers/constants';
+import { SORTING_ORDER, DB_TYPES } from '../../constants';
 import productsService from '../product/product.service';
 
 class UserRatingService implements IUserRatingService {

@@ -1,7 +1,7 @@
 import { getRepository } from 'typeorm';
 import { Category } from './category.typeorm.model';
 import { ICategory, ICategoryRepository } from './category.types';
-import { PRODUCT_FIELDS } from '../../helpers/constants';
+import { PRODUCT_FIELDS } from '../../constants';
 import { NotFoundError } from '../../helpers/errors';
 
 export class CategoryTypeormRepository implements ICategoryRepository {

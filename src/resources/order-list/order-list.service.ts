@@ -10,7 +10,7 @@ import {
   IOrderList,
 } from './order-list.types';
 import { IOrderProductWhereParams, IOrderProductReq, IOrderProduct } from '../order-product/order-product.types';
-import { DB_TYPES } from '../../helpers/constants';
+import { DB_TYPES } from '../../constants';
 import { NotFoundError } from '../../helpers/errors';
 
 class OrderListService implements IOrderListService {

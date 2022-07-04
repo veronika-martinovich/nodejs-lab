@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { logHttpData } from './http-loggers';
+import { logHttpData } from './http-loggers.middleware';
 
-const middlewareErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+export const middlewareErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
   const { statusCode, message } = err;
 
   res.status(statusCode || 500).json({
@@ -13,7 +13,7 @@ const middlewareErrorHandler = (err: any, req: Request, res: Response, next: Nex
   next();
 };
 
-const middlewareNotFoundHandler = (req: Request, res: Response, next: NextFunction) => {
+export const middlewareNotFoundHandler = (req: Request, res: Response, next: NextFunction) => {
   res.json({
     error: {
       name: 'Error',
@@ -26,10 +26,3 @@ const middlewareNotFoundHandler = (req: Request, res: Response, next: NextFuncti
   logHttpData({ req, res });
   next();
 };
-
-const middlewareHttpLogger = (req: Request, res: Response, next: NextFunction) => {
-  logHttpData({ req, res });
-  next();
-};
-
-module.exports = { middlewareErrorHandler, middlewareHttpLogger, middlewareNotFoundHandler };

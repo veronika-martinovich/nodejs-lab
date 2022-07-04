@@ -12,7 +12,9 @@ import usersRouter from './resources/user/user.router';
 import orderListRouter from './resources/order-list/order-list.router';
 import adminProductsRouter from './resources/admin/product/admin.product.router';
 import lastRatingsRouter from './resources/last-ratings/last-ratings.router';
-import { applyPassportStrategy } from './helpers/passport';
+import { applyPassportStrategy } from './helpers/apply-passport-strategy';
+import { middlewareHttpLogger } from './middlewares/http-loggers.middleware';
+import { middlewareErrorHandler, middlewareNotFoundHandler } from './middlewares/error-handling.middlewares';
 
 const path = require('path');
 const http = require('http');
@@ -20,7 +22,6 @@ const passport = require('passport');
 const { Server } = require('socket.io');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
-const { middlewareErrorHandler, middlewareHttpLogger, middlewareNotFoundHandler } = require('./helpers/middlewares');
 
 const swaggerDocument = YAML.load(path.join(__dirname, './swagger.yaml'));
 

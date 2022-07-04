@@ -1,4 +1,4 @@
-import { BOOLEAN_MAP, DB_TYPES, SORTING_ORDER, PRODUCT_FIELDS } from '../../helpers/constants';
+import { BOOLEAN_MAP, DB_TYPES, SORTING_ORDER, PRODUCT_FIELDS } from '../../constants';
 import { CategoryTypegooseRepository } from './category.typegoose.repository';
 import { CategoryTypeormRepository } from './category.typeorm.repository';
 import {
@@ -8,7 +8,7 @@ import {
   ICategoryQueryParams,
   ICategoryExtended,
 } from './category.types';
-import { isEmptyObject } from '../../helpers/validation';
+import { isEmptyObject } from '../../helpers/is-empty-object';
 import productsService from '../product/product.service';
 
 class CategoryService implements ICategoryService {

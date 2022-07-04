@@ -1,4 +1,4 @@
-import { SELECTION_PARAMS } from './constants';
+import { SELECTION_PARAMS } from '../constants';
 
 export const formComparisonParamsMongo = ({
   comparisonValue,

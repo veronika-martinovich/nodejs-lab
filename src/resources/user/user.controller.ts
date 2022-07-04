@@ -1,7 +1,7 @@
 import usersService from './user.service';
 import { ForbiddenError } from '../../helpers/errors';
 import { IUserController, INewUser, IUserToRegister, IUserToReturn, ITokenList } from './user.types';
-import { hashString } from '../../helpers/hashString';
+import { hashString } from '../../helpers/hash-string';
 import { TOKEN, REFRESH_TOKEN } from '../../../credentials/configs';
 
 const jwt = require('jsonwebtoken');

@@ -7,7 +7,7 @@ import {
   IOrderProductSearchParams,
   IOrderProductWhereParams,
 } from './order-product.types';
-import { DB_TYPES } from '../../helpers/constants';
+import { DB_TYPES } from '../../constants';
 
 class OrderProductService implements IOrderProductService {
   repository: IOrderProductRepository;

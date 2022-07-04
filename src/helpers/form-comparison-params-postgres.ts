@@ -1,5 +1,5 @@
 import { Between, LessThanOrEqual, MoreThanOrEqual } from 'typeorm';
-import { SELECTION_PARAMS } from './constants';
+import { SELECTION_PARAMS } from '../constants';
 
 export const formComparisonParamsPostgres = ({
   comparisonValue,

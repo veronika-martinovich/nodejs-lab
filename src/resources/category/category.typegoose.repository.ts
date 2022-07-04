@@ -1,6 +1,6 @@
 import { CategoryModel } from './category.typegoose.model';
 import { ICategory, ICategoryRepository } from './category.types';
-import { PRODUCT_FIELDS } from '../../helpers/constants';
+import { PRODUCT_FIELDS } from '../../constants';
 import { NotFoundError } from '../../helpers/errors';
 
 export class CategoryTypegooseRepository implements ICategoryRepository {

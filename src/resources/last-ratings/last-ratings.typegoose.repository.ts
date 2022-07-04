@@ -2,7 +2,7 @@ import { LastRatingsModel } from './last-ratings.typegoose.model';
 import { ILastRatingsRepository } from './last-ratings.types';
 import { IUserRatingReq } from '../user-rating/user-rating.types';
 import { NotFoundError } from '../../helpers/errors';
-import { LATEST_RATINGS_AMOUNT } from '../../helpers/constants';
+import { LATEST_RATINGS_AMOUNT } from '../../constants';
 
 export class LastRatingsTypegooseRepository implements ILastRatingsRepository {
   public async getAll() {

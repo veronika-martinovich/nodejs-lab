@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { ROLES } from './constants';
-import { ForbiddenError } from './errors';
+import { ROLES } from '../constants';
+import { ForbiddenError } from '../helpers/errors';
 
 export const checkAdminRole = (req: Request, res: Response, next: NextFunction) => {
   const user = req.user as any;

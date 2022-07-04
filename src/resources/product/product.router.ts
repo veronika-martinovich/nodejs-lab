@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import productController from './product.controller';
 import { validateProductBody, validateProductQuery } from './product.validation';
-import { authenticate } from '../../helpers/authenticate';
+import { authenticate } from '../../middlewares/authenticate.middleware';
 
 const productsRouter = express.Router();
 

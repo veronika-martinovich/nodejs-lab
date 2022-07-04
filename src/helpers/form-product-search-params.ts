@@ -1,6 +1,6 @@
 import { IProductQueryParams, IProductWhereParams, IProductSearchParams } from '../resources/product/product.types';
 import { IStringValue } from '../resources/common/common.types';
-import { SELECTION_PARAMS, DB_TYPES } from './constants';
+import { SELECTION_PARAMS, DB_TYPES } from '../constants';
 import { formComparisonParamsPostgres } from './form-comparison-params-postgres';
 import { formComparisonParamsMongo } from './form-comparison-params-mongo';
 

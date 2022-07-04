@@ -1,7 +1,7 @@
 import { UserTypegooseRepository } from './user.typegoose.repository';
 import { UserTypeormRepository } from './user.typeorm.repository';
 import { INewUser, IUserService, IUserRepository } from './user.types';
-import { DB_TYPES } from '../../helpers/constants';
+import { DB_TYPES } from '../../constants';
 
 class UsersService implements IUserService {
   repository: IUserRepository;

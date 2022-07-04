@@ -1,4 +1,4 @@
-import { hashString } from '../src/helpers/hashString';
+import { hashString } from '../src/helpers/hash-string';
 
 describe('test hashString function', () => {
   const EXAMPLE_1 = 'Password';

@@ -1,7 +1,7 @@
 import productsService from './product.service';
 import { IProductController, IProductQueryParams, IProduct } from './product.types';
 import { IUserRatingReq } from '../user-rating/user-rating.types';
-import { isEmptyObject } from '../../helpers/validation';
+import { isEmptyObject } from '../../helpers/is-empty-object';
 
 class ProductController implements IProductController {
   public async get(params: IProductQueryParams) {

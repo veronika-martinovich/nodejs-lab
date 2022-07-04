@@ -2,7 +2,7 @@ import { LastRatingsTypegooseRepository } from './last-ratings.typegoose.reposit
 import { LastRatingsTypeormRepository } from './last-ratings.typeorm.repository';
 import { ILastRatingsService, ILastRatingsRepository } from './last-ratings.types';
 import { IUserRatingReq } from '../user-rating/user-rating.types';
-import { DB_TYPES } from '../../helpers/constants';
+import { DB_TYPES } from '../../constants';
 
 class LastRatingsService implements ILastRatingsService {
   repository: ILastRatingsRepository;

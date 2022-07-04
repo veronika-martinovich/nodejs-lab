@@ -11,7 +11,7 @@ import {
   IProductFieldsToUpdate,
 } from './product.types';
 import { IUserRatingReq } from '../user-rating/user-rating.types';
-import { DB_TYPES } from '../../helpers/constants';
+import { DB_TYPES } from '../../constants';
 import { formProductSearchParams } from '../../helpers/form-product-search-params';
 import { io } from '../../index';
 

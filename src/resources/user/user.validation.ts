@@ -1,7 +1,7 @@
 import { check, validationResult } from 'express-validator';
 import { Request, Response, NextFunction } from 'express';
 import { BadRequestError } from '../../helpers/errors';
-import { ROLES } from '../../helpers/constants';
+import { ROLES } from '../../constants';
 
 export const validateUser = [
   check('username').isString().isLength({ min: 3 }),

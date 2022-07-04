@@ -1,4 +1,4 @@
-import { DBConnect } from './helpers/DBConnect';
+import { DBConnect } from './helpers/db-connect';
 import { lastRatingsJob } from './jobs/last-ratings';
 import { server } from './index';
 

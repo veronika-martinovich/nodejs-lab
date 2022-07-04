@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import userController from './user.controller';
 import { validateUser } from './user.validation';
-import { authenticate } from '../../helpers/authenticate';
+import { authenticate } from '../../middlewares/authenticate.middleware';
 
 const usersRouter = express.Router();
 
